@@ -49,7 +49,7 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def leg3_id(self, row):
-        return row.eMVAIDH2TauWP and selections.elIsoLoose(row, 'e') and (row.eMissingHits==0)##THIS SEEMS too low
+        return selections.elIDTight(row,'e') and selections.elIsoTight(row, 'e') and (row.eMissingHits==0)##THIS SEEMS too low
 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
@@ -63,11 +63,11 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         if not selections.ZMuMuSelection(row): return False
         if selections.overlap(row, 'm1','m2','e','t') : return False
         if not selections.signalTauSelection(row,'t'): return False
-        if not bool(row.tAntiMuonLoose): return False
-        if not bool(row.tAntiElectronMVA2Tight): return False
+        if not bool(row.tAntiMuonLoose2): return False
+        if not bool(row.tAntiElectronMVA3Tight): return False
         #if not bool(row.tAntiElectronTight): return False
         #if row.LT < 45: return False
-        if row.ePt + row.tPt < 25: return False
+        if (row.ePt + row.tPt < 30): return False
         #if (row.e_t_SVfitMass < 100 or row.e_t_SVfitMass > 150): return False # for MSSM
         return selections.signalElectronSelection(row,'e')
 
@@ -84,7 +84,7 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.double_muon_trigger(row,'m1','m2')
 
     def leg3_weight(self, row):
-        return fr_fcn.e_loose_jetpt_fr( row.eJetPt ) / (1 - fr_fcn.e_loose_jetpt_fr( row.eJetPt ))
+        return fr_fcn.e_tight_jetpt_fr( row.eJetPt ) / (1 - fr_fcn.e_tight_jetpt_fr( row.eJetPt ))
 
     def leg4_weight(self, row):
         return fr_fcn.tau_jetpt_fr( row.tJetPt ) / (1 - fr_fcn.tau_jetpt_fr( row.tJetPt ))

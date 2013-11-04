@@ -20,13 +20,13 @@ def muIsoTight(row,muon):
     return objIsolation(row,muon) < 0.15
 
 def muIsoLoose(row,muon):
-    return objIsolation(row,muon) < 0.25
+    return objIsolation(row,muon) < 0.30
 
 def elIsoTight(row,el):
-    return objIsolation(row,el) < 0.10
+    return objIsolation(row,el) < 0.15
 
 def elIsoLoose(row,el):
-    return objIsolation(row,el) < 0.25
+    return objIsolation(row,el) < 0.30
 
 
 def MuTriggerMatching(row):
@@ -48,11 +48,14 @@ def Vetos(row):
     '''
     applies b-tag, muon, electron and tau veto
     '''
-    if bool(row.bjetCSVVeto):      return False
-    #if bool(row.bjetCSVVetoZHLikeNoJetId): return False
-    if bool(row.muGlbIsoVetoPt10): return False
-    if bool(row.tauHpsVetoPt20):   return False
-    if bool(row.eVetoMVAIso):      return False
+    #if bool(row.bjetCSVVeto):      return False
+    if bool(row.bjetCSVVetoZHLikeNoJetId_2): return False
+    #if bool(row.muGlbIsoVetoPt10): return False
+    #if bool(row.tauHpsVetoPt20):   return False
+    #if bool(row.eVetoMVAIso):      return False
+    if bool(row.muVetoZH): return False
+    if bool(row.eVetoZH): return False
+    if bool(row.tauVetoZH): return False
     return True
 
 def overlap(row,*args):
@@ -65,12 +68,31 @@ def eleID(row, name):
     if getattr(row, getVar(name, 'AbsEta') ) >= 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.6: return True
     return False
 
+def eleIDTight(row, name):
+    if (getattr(row, getVar(name, 'MissingHits') ) > 1 ): return False
+    if (getattr(row, getVar(name, 'Pt') ) < 20. and  getattr(row, getVar(name, 'AbsEta') ) < 0.8 and getattr(row, getVar(name, 'MVANonTrig')) > 0.925): return True
+    if (getattr(row, getVar(name, 'Pt') ) < 20. and getattr(row, getVar(name, 'AbsEta') ) >= 0.8 and getattr(row, getVar(name, 'AbsEta') ) < 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.915): return True
+    if (getattr(row, getVar(name, 'Pt') ) < 20. and getattr(row, getVar(name, 'AbsEta') ) >= 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.965): return True
+
+    if (getattr(row, getVar(name, 'Pt') ) > 20. and getattr(row, getVar(name, 'AbsEta') ) < 0.8 and getattr(row, getVar(name, 'MVANonTrig')) > 0.905): return True
+    if (getattr(row, getVar(name, 'Pt') ) > 20. and getattr(row, getVar(name, 'AbsEta') ) >= 0.8 and getattr(row, getVar(name, 'AbsEta') ) < 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.955): return True
+    if (getattr(row, getVar(name, 'Pt') ) > 20. and getattr(row, getVar(name, 'AbsEta') ) >= 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.975): return True
+    return False
+
+def muIDLoose(row, name):
+    if not bool(getattr(row, getVar(name, 'IsGlobal'))): return False
+    if not bool(getattr(row, getVar(name, 'IsTracker'))): return False
+    if not bool(getattr(row, getVar(name, 'IsPFMuon'))): return False
+    return True
+
+
+
 def ZMuMuSelectionNoVetos(row):
     '''
     Z Selection as AN
     '''
     #Z Selection
-    if not (row.doubleMuPass or row.doubleMuTrkPass):  return False
+    if not (row.doubleMuPass and row.doubleMuTrkPass):  return False
     if row.m1Pt < row.m2Pt:                            return False
     if row.m1Pt < 20:                                  return False
     if row.m2Pt < 10:                                  return False
@@ -78,11 +100,11 @@ def ZMuMuSelectionNoVetos(row):
     if row.m2AbsEta > 2.4:                             return False
     if abs(row.m1DZ) > 0.1:                            return False
     if abs(row.m2DZ) > 0.1:                            return False
-    #if not bool(row.m1PFIDTight):                      return False
-    #if not muIsoLoose(row,'m1'):                       return False
-    #if not bool(row.m2PFIDTight):                      return False
-    #if not muIsoLoose(row,'m2'):                       return False
-    #if bool(row.m1_m2_SS):                             return False
+    if not muIDLoose(row,'m1'):                      return False
+    if not muIsoLoose(row,'m1'):                       return False
+    if not muIDLoose(row,'m2'):                      return False
+    if not muIsoLoose(row,'m2'):                       return False
+    if bool(row.m1_m2_SS):                             return False
     if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 :   return False
     return True
 #return MuTriggerMatching(row)
@@ -102,11 +124,11 @@ def ZEESelectionNoVetos(row):
     if row.e2AbsEta > 2.5:                           return False
     if abs(row.e1DZ) > 0.1:                          return False
     if abs(row.e2DZ) > 0.1:                          return False
-    #if not eleID(row, 'e1'):                         return False
-    #if not elIsoLoose(row, 'e1'):                    return False
-    #if not eleID(row, 'e2'):                         return False
-    #if not elIsoLoose(row, 'e1'):                    return False
-    #if bool(row.e1_e2_SS):                           return False
+    if not eleID(row, 'e1'):                         return False
+    if not elIsoLoose(row, 'e1'):                    return False
+    if not eleID(row, 'e2'):                         return False
+    if not elIsoLoose(row, 'e1'):                    return False
+    if bool(row.e1_e2_SS):                           return False
     if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
     return True
 #return ElTriggerMatching(row)
@@ -124,7 +146,7 @@ def signalMuonSelection(row,muId):
         #if not bool(getattr(row, '%sPFIDTight' % muId) ): return False
     return True
 
-def signalTauSelection(row, tauId, ptThr = 20):
+def signalTauSelection(row, tauId, ptThr = 15):
     '''
     Basic selection for signal hadronic (the ones coming from Higgs). No Isolation is applied, but DecayMode is
     '''
@@ -132,7 +154,7 @@ def signalTauSelection(row, tauId, ptThr = 20):
     if getattr( row, getVar(tauId, 'Pt') )  < ptThr:                   return False
     if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
     if abs(getattr( row, getVar(tauId, 'DZ') ) ) > 0.1:                return False
-    if abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) > 0.898:      return False #Veto Btagged taus
+    #if abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) > 0.898:      return False #Veto Btagged taus
     return True
 
 

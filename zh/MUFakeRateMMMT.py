@@ -33,7 +33,7 @@ class MUFakeRateMMMT(EMUFakeRatesBase.EMUFakeRatesBase):
         return selections.signalMuonSelection(row,'m3')
 
     def lepton_passes_tight_iso(self, row):
-        return bool(row.m3RelPFIsoDB < 0.15) and bool(getattr(row, 'm3PFIDTight') ) ##THIS SEEMS too low        
+        return selections.muIsoTight(row, 'm3') and bool(getattr(row, 'm3PFIDTight') ) ##THIS SEEMS too low        
 
     def lepton_passes_loose_iso(self, row):
-        return bool(row.m3RelPFIsoDB < 0.30) and bool(getattr(row, 'm3PFIDTight') ) ##THIS SEEMS too low        
+        return selections.muIsoLoose(row, 'm3') and selections.muIDLoose(row, 'm3') ##THIS SEEMS too low        

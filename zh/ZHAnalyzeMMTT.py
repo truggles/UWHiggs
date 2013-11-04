@@ -51,11 +51,11 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def leg3_id(self, row):
-        return bool(row.t1LooseIso3Hits)
+        return bool(row.t1MediumIso3Hits)
        # return bool(row.t1MediumIso) 
 
     def leg4_id(self, row):
-        return bool(row.t2LooseIso3Hits)
+        return bool(row.t2MediumIso3Hits)
       #  return bool(row.t2MediumIso)
     def preselection(self, row):
         ''' Preselection applied to events.
@@ -66,13 +66,13 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         if selections.overlap(row, 'm1','m2','t1','t2') : return False
         if not selections.signalTauSelection(row,'t1'): return False
         if not selections.signalTauSelection(row,'t2'): return False
-        if not bool(row.t1AntiMuonLoose): return False
+        if not bool(row.t1AntiMuonLoose2): return False
         if not bool(row.t1AntiElectronLoose): return False
-        if not bool(row.t2AntiMuonLoose): return False
+        if not bool(row.t2AntiMuonLoose2): return False
         if not bool(row.t2AntiElectronLoose): return False
         if row.t1Pt < row.t2Pt: return False #Avoid double counting
         #if row.LT < 75: return False
-        if row.t1Pt + row.t2Pt < 70: return False
+        if (row.t1Pt + row.t2Pt < 70): return False
         #if (row.t1_t2_SVfitMass < 100 or row.t1_t2_SVfitMass > 150): return False # for MSSM
         return True
 

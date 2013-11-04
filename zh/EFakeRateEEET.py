@@ -25,15 +25,15 @@ class EFakeRateEEET(EMUFakeRatesBase.EMUFakeRatesBase):
         if not selections.ZEESelection(row): return False
         if selections.overlap(row, 'e1','e2','e3','t') : return False
         if not selections.signalTauSelection(row,'t',5): return False
-        if not bool(row.tAntiMuonLoose): return False
-        if not bool(row.tAntiElectronMVA2Tight): return False
+        if not bool(row.tAntiMuonLoose2): return False
+        if not bool(row.tAntiElectronMVA3Tight): return False
         if not selections.signalElectronSelection(row,'e3'): return False
         return True
 
     def lepton_passes_tight_iso(self, row):
-        return bool(row.e3RelPFIsoDB < 0.10) and selections.eleID(row, 'e3') #bool( row.e3MVAIDH2TauWP ) ##THIS SEEMS too low        
+        return selections.elIsoTight(row, 'e3') and selections.eleID(row, 'e3') #bool( row.e3MVAIDH2TauWP ) ##THIS SEEMS too low        
 
     def lepton_passes_loose_iso(self, row):
-        return bool(row.e3RelPFIsoDB < 0.3) and selections.eleID(row, 'e3') #bool( row.e3MVAIDH2TauWP ) ##THIS SEEMS too low        
+        return selections.elIsoLoose(row, 'e3') and selections.eleID(row, 'e3') #bool( row.e3MVAIDH2TauWP ) ##THIS SEEMS too low        
 
     

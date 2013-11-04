@@ -48,10 +48,11 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def leg3_id(self, row):
-        return selections.elIsoLoose(row, 'e3') and bool(row.e3MVAIDH2TauWP) and bool(row.e3MissingHits <= 1)
+       # return selections.elIsoLoose(row, 'e3') and bool(row.e3MVAIDH2TauWP) and bool(row.e3MissingHits <= 1)
+        return selections.elIsoLoose(row, 'e3') and selections.eleID(row, 'e3')
 
     def leg4_id(self, row):
-        return selections.muIsoLoose(row, 'm') and bool(row.mPFIDTight)
+        return selections.muIsoLoose(row, 'm') and selections.muIDLoose(row, 'm')
 
     def preselection(self, row):
         ''' Preselection applied to events.
@@ -63,7 +64,7 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         if not selections.signalMuonSelection(row,'m'): return False
         if not selections.signalElectronSelection(row,'e3'): return False
         #if row.LT < 25: return False
-        if row.e3Pt + row.mPt < 35: return False
+        if (row.e3Pt + row.mPt < 25): return False
         if row.e3MissingHits > 1: return False
         #if (row.e3_m_SVfitMass < 100 or row.e3_m_SVfitMass > 150): return False # for MSSM
         return True

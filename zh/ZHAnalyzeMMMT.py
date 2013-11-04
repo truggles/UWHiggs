@@ -57,8 +57,8 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book(folder, "doubleMuPrescale", "HLT prescale", 26, -5.5, 20.5)
 
     def leg3_id(self, row):
-        return bool(row.m3PFIDTight) and selections.muIsoLoose(row, 'm3') ##THIS SEEMS too low
-
+        #return bool(row.m3PFIDTight) and selections.muIsoLoose(row, 'm3') ##THIS SEEMS too low
+        return bool(row.m3PFIDTight) and bool(row.RelPFIsoDB < 0.25 )
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
 
@@ -73,7 +73,7 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
        # if row.LT < 45: return False
-        if row.m3Pt + row.tPt < 35: return False
+        if (row.m3Pt + row.tPt < 45): return False
         #if (row.m3_t_SVfitMass < 100 or row.m3_t_SVfitMass > 150): return False # for MSSM
         return selections.signalMuonSelection(row,'m3')
 

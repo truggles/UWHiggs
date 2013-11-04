@@ -48,7 +48,8 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def leg3_id(self, row):
-        return bool(row.mPFIDTight) and selections.muIsoLoose(row, 'm') 
+       # return bool(row.mPFIDTight) and selections.muIsoLoose(row, 'm') 
+         return bool(row.mPFIDTight) and bool( row.mRelPFIsoDB < 0.25 )
 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
@@ -65,7 +66,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
         #if row.LT < 45: return False
-        if row.mPt + row.tPt < 35: return False
+        if (row.mPt + row.tPt < 45): return False
         #if (row.m_t_SVfitMass < 100 or row.m_t_SVfitMass > 150): return False # for MSSM
         return selections.signalMuonSelection(row,'m')
 

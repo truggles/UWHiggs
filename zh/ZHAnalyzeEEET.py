@@ -51,7 +51,8 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         #if not (selections.eleID(row, 'e3')): print "failed eleID"
         #if not (selections.elIsoTight(row, 'e3')): print "failed elIsoTight"
         #print getattr(row, 'e3RelPFIsoDB')
-        return row.e3MVAIDH2TauWP and selections.elIsoLoose(row, 'e3') and (row.e3MissingHits==0)##THIS SEEMS too low
+        #return row.e3MVAIDH2TauWP and selections.elIsoLoose(row, 'e3') and (row.e3MissingHits==0)##THIS SEEMS too low
+        return selections.eleIDTight(row, 'e3') and selections.elIsoTight(row, 'e3') and (row.e3MissingHits==0)
 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
@@ -65,10 +66,10 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         if not selections.ZEESelection(row): return False
         if selections.overlap(row, 'e1','e2','e3','t') : return False
         if not selections.signalTauSelection(row,'t'): return False
-        if not bool(row.tAntiMuonLoose): return False
-        if not bool(row.tAntiElectronMVA2Tight): return False
+        if not bool(row.tAntiMuonLoose2): return False
+        if not bool(row.tAntiElectronMVA3Tight): return False
         if not selections.signalElectronSelection(row,'e3'): return False
-        if row.LT < 25: return False
+        if (row.e3Pt + row.tPt < 30): return False
         #if (row.e3_t_SVfitMass < 100 or row.e3_t_SVfitMass > 150): return False # for MSSM
         return True
 
@@ -83,7 +84,7 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.get_electron_corrections(row, 'e1','e2','e3')
 
     def leg3_weight(self, row):
-        return fr_fcn.e_loose_jetpt_fr( row.e3JetPt ) / (1 - fr_fcn.e_loose_jetpt_fr( row.e3JetPt ))
+        return fr_fcn.e_tight_jetpt_fr( row.e3JetPt ) / (1 - fr_fcn.e_tight_jetpt_fr( row.e3JetPt ))
 
     def leg4_weight(self, row):
         return fr_fcn.tau_jetpt_fr( row.tJetPt ) / (1 - fr_fcn.tau_jetpt_fr( row.tJetPt ))

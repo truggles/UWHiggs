@@ -276,7 +276,10 @@ class ZHAnalyzerBase(MegaBase):
         self.book(folder, "nvtx", "Number of vertices", 31, -0.5, 30.5)
         self.book(folder, "kinematicDiscriminant1", "pT(ZH)/(pT(Z) + pT(H))", 10, 0, 1)
         self.book(folder, "kinematicDiscriminant2", "pT(H)/(pT(Tau1) + pT(Tau2))", 10, 0, 1)
-        self.book(folder, "Mass", "A Candidate Mass", 200, 0, 1600) 
+        self.book(folder, "Mass", "A Candidate Mass", 200, 0, 1600)
+        self.book(folder, "LT_Higgs", "scalar PT sum of Higgs candidate legs", 200, 0, 200)
+        self.book(folder, "bjetCSVVeto", "bjetVeto", 10, -1, 2)
+        self.book(folder, "bjetCSVVetoZHLikeNoJetId", "bjetCSVVetoZHLikeNoJetId", 10, -1, 2) 
         return None
 
     def book_kin_histos(self, folder, Id):
@@ -286,8 +289,7 @@ class ZHAnalyzerBase(MegaBase):
         self.book(folder, "%sPt" % Id,     "%s %s Pt" % (IdToName[Id[0]], number),     100, 0, 100)
         self.book(folder, "%sJetPt" % Id,  "%s %s Jet Pt" % (IdToName[Id[0]], number), 100, 0, 200)
         self.book(folder, "%sAbsEta" % Id, "%s %s AbsEta" % (IdToName[Id[0]], number), 100, 0, 2.4)
-        return None        
-
+        return None      
     def book_mass_histos(self, folder, *args):
         
         IdToName = {'m' : 'Muon', 'e' : 'Electron', 't' : 'Tau'}
@@ -315,7 +317,7 @@ class ZHAnalyzerBase(MegaBase):
 
     def book_H_histos(self, folder):
         self.book_resonance_histos(folder, self.H_decay_products(), 'H')
-        #self.book(folder, "%s_%s_SVfitMass"   % self.H_decay_products(), "H candidate SVfit Mass", 200, 0, 200)
+        self.book(folder, "%s_%s_SVfitMass"   % self.H_decay_products(), "H candidate SVfit Mass", 200, 0, 200)
             
     def fill_histos(self, histos, folder, row, weight):
         '''fills histograms'''
@@ -341,6 +343,10 @@ class ZHAnalyzerBase(MegaBase):
                 pt_Tau1 = getattr(row, "%sPt" % self.H_decay_products()[0]) 
                 pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
                 value.Fill(pt_H / (pt_Tau1 + pt_Tau2), weight)
+            elif attr == 'LT_Higgs':
+                pt_Tau1 = getattr(row, "%sPt" % self.H_decay_products()[0])
+                pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
+                value.Fill(pt_Tau1 + pt_Tau2, weight)
             else:
                 # general case, we can just do getattr(row, "variable") i.e. row.variable
                 value.Fill( getattr(row,attr), weight )

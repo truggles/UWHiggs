@@ -48,10 +48,10 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
  
     def leg3_id(self, row):
-        return bool(row.t1LooseIso3Hits) ##THIS SEEMS too low
+        return bool(row.t1MediumIso3Hits) ##THIS SEEMS too low
 
     def leg4_id(self, row):
-        return bool(row.t2LooseIso3Hits) ##SHOULD BE TIGHT!!!
+        return bool(row.t2MediumIso3Hits) ##SHOULD BE TIGHT!!!
 
     def preselection(self, row):
         ''' Preselection applied to events.
@@ -69,7 +69,7 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.t2AntiElectronLoose): return False
         if row.t1Pt < row.t2Pt: return False #Avoid double counting
         #if row.LT < 75: return False
-        if row.t1Pt + row.t2Pt < 70: return False
+        if (row.t1Pt + row.t2Pt < 70): return False
         #if (row.t1_t2_SVfitMass < 100 or row.t1_t2_SVfitMass > 150): return False # for MSSM
         return True
 

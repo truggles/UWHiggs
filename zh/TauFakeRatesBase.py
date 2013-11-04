@@ -15,7 +15,7 @@ class TauFakeRatesBase(MegaBase):
         # Histograms for each category
         self.histograms = {}
         self.is7TeV = '7TeV' in os.environ['jobid']
-        self.numerators = ['LooseIso3Hits', 'MediumIso']
+        self.numerators = ['LooseIso3Hits', 'MediumIso3Hits']
 
     def begin(self):
         # Book histograms
@@ -55,12 +55,12 @@ class TauFakeRatesBase(MegaBase):
             if not self.zSelection(row):     return False
             if not selections.signalTauSelection(row, 't1'): return False
             if not selections.signalTauSelection(row, 't2'): return False
-            if not bool(row.t1AntiMuonLoose2): return False
-            if not bool(row.t1AntiElectronLoose): return False
-            if not bool(row.t2AntiMuonLoose2): return False
-            if not bool(row.t2AntiElectronLoose): return False
+            #if not bool(row.t1AntiMuonLoose2): return False
+            #if not bool(row.t1AntiElectronLoose): return False
+            #if not bool(row.t2AntiMuonLoose2): return False
+            #if not bool(row.t2AntiElectronLoose): return False
             if row.t1Pt < row.t2Pt: return False #Avoid double counting
-            if row.t1Pt + row.t2Pt < 60: return False
+            #if row.t1Pt + row.t2Pt < 60: return False
             if not bool(row.t1_t2_SS):       return False
             return True
 
