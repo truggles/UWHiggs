@@ -51,11 +51,13 @@ def Vetos(row):
     #if bool(row.bjetCSVVeto):      return False
     if bool(row.bjetCSVVetoZHLikeNoJetId_2): return False
     #if bool(row.muGlbIsoVetoPt10): return False
+    #if bool(row.muVetoPt5): return False
     #if bool(row.tauHpsVetoPt20):   return False
     #if bool(row.eVetoMVAIso):      return False
     if bool(row.muVetoZH): return False
+    #if bool(row.muVetoPt15IsoIdVtx): return False
     if bool(row.eVetoZH): return False
-    if bool(row.tauVetoZH): return False
+    #if bool(row.tauVetoZH): return False
     return True
 
 def overlap(row,*args):
@@ -106,6 +108,9 @@ def ZMuMuSelectionNoVetos(row):
     if not muIsoLoose(row,'m2'):                       return False
     if bool(row.m1_m2_SS):                             return False
     if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 :   return False
+    # a bit of a hack in an attempt to sync
+    #if bool(row.m1MatchesMu17Ele8IsoPath > 0): return False
+    #if bool(row.m2MatchesMu17Ele8IsoPath > 0): return False
     return True
 #return MuTriggerMatching(row)
 

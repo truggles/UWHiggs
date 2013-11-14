@@ -127,10 +127,10 @@ if __name__ == "__main__":
         corr_numerator.Write()
         corr_denominator.Write()
 
-     # temporary fix for e/mu fakerates so I can use uncorrected with Rakefile
-    #else:
-    #    uncorr_numerator.SetName('numerator')
-    #    uncorr_denominator.SetName('denominator')
-    #
-    #    uncorr_numerator.Write()
-    #    uncorr_denominator.Write()  
+    # temporary fix for e/mu fakerates so I can use uncorrected with Rakefile
+    else:
+        uncorr_numerator.SetName('numerator')
+        uncorr_denominator.SetName('denominator')
+    
+        uncorr_numerator.Write()
+        uncorr_denominator.Write()  
