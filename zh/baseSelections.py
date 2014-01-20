@@ -85,6 +85,7 @@ def muIDLoose(row, name):
     if not bool(getattr(row, getVar(name, 'IsGlobal'))): return False
     if not bool(getattr(row, getVar(name, 'IsTracker'))): return False
     if not bool(getattr(row, getVar(name, 'IsPFMuon'))): return False
+    #return  bool(getattr(row, getVar(name, 'PFIDTight')))
     return True
 
 
@@ -94,7 +95,7 @@ def ZMuMuSelectionNoVetos(row):
     Z Selection as AN
     '''
     #Z Selection
-    if not (row.doubleMuPass and row.doubleMuTrkPass):  return False
+    if not (row.doubleMuPass > 0 and row.doubleMuTrkPass > 0):  return False
     if row.m1Pt < row.m2Pt:                            return False
     if row.m1Pt < 20:                                  return False
     if row.m2Pt < 10:                                  return False
@@ -111,6 +112,8 @@ def ZMuMuSelectionNoVetos(row):
     # a bit of a hack in an attempt to sync
     #if bool(row.m1MatchesMu17Ele8IsoPath > 0): return False
     #if bool(row.m2MatchesMu17Ele8IsoPath > 0): return False
+    #if bool(row.m1MatchesMu8Ele17IsoPath > 0): return False
+    #if bool(row.m2MatchesMu8Ele17IsoPath > 0): return False
     return True
 #return MuTriggerMatching(row)
 
@@ -121,7 +124,7 @@ def ZEESelectionNoVetos(row):
     '''
     Z Selection as AN
     '''
-    if not row.doubleEPass:                          return False
+    if not row.doubleEPass > 0:                      return False
     if row.e1Pt < row.e2Pt:                          return False
     if row.e1Pt < 20:                                return False
     if row.e2Pt < 10:                                return False

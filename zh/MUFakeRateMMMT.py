@@ -25,7 +25,7 @@ class MUFakeRateMMMT(EMUFakeRatesBase.EMUFakeRatesBase):
         ### return True
         #return selections.signalMuonSelection(row,'m3')
 
-        if not selections.ZMuMuSelection(row): return False
+        if not selections.ZMuMuSelectionNoVetos(row): return False
         if selections.overlap(row, 'm1','m2','m3','t') : return False
         if not selections.signalTauSelection(row,'t',5): return False
         if not bool(row.tAntiMuonTight2): return False

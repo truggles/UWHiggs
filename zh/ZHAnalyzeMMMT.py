@@ -22,7 +22,7 @@ import fake_rate_functions as fr_fcn
 
 class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
     tree = 'mmmt/final/Ntuple'
-    name = 1
+    name = 3
     def __init__(self, tree, outfile, **kwargs):
         super(ZHAnalyzeMMMT, self).__init__(tree, outfile, MuMuMuTauTree, "MT", **kwargs)
         # Hack to use S6 weights for the one 7TeV sample we use in 8TeV
@@ -58,9 +58,16 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
 
     def leg3_id(self, row):
         #return bool(row.m3PFIDTight) and selections.muIsoLoose(row, 'm3') ##THIS SEEMS too low
-        return bool(row.m3PFIDTight) and bool(row.RelPFIsoDB < 0.25 )
+        return selections.muIDLoose(row, 'm3') and bool(row.m3RelPFIsoDB < 0.25 )
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
+
+    def red_shape_cuts(self, row):
+        if not selections.ZMuMuSelection(row): return False
+        if (row.m3Pt + row.tPt < 45): return False
+        if (row.m3RelPFIsoDB > 2.0): return False
+        if (row.tLooseMVA2Iso <= 0.0): return False
+        return True
 
     def preselection(self, row):
         ''' Preselection applied to events.

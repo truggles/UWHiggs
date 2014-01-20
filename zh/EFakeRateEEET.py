@@ -31,7 +31,7 @@ class EFakeRateEEET(EMUFakeRatesBase.EMUFakeRatesBase):
         return True
 
     def lepton_passes_tight_iso(self, row):
-        return selections.elIsoTight(row, 'e3') and selections.eleID(row, 'e3') #bool( row.e3MVAIDH2TauWP ) ##THIS SEEMS too low        
+        return selections.elIsoTight(row, 'e3') and selections.eleIDTight(row, 'e3') #bool( row.e3MVAIDH2TauWP ) ##THIS SEEMS too low        
 
     def lepton_passes_loose_iso(self, row):
         return selections.elIsoLoose(row, 'e3') and selections.eleID(row, 'e3') #bool( row.e3MVAIDH2TauWP ) ##THIS SEEMS too low        

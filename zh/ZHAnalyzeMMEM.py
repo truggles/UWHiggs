@@ -20,7 +20,7 @@ import fake_rate_functions as fr_fcn
 
 class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
     tree = 'emmm/final/Ntuple'
-    name = 2
+    name = 4
     def __init__(self, tree, outfile, **kwargs):
         super(ZHAnalyzeMMEM, self).__init__(tree, outfile, EMuMuMuTree, 'EM', **kwargs)
         # Hack to use S6 weights for the one 7TeV sample we use in 8TeV
@@ -51,6 +51,13 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
 
     def leg4_id(self, row):
         return selections.muIsoLoose(row, 'm3') and selections.muIDLoose(row, 'm3')
+
+    def red_shape_cuts(self, row):
+        if not selections.ZMuMuSelection(row): return False
+        if (row.ePt + row.m3Pt < 25): return False
+        if (row.eRelPFIsoDB > 2.0): return False
+        if (row.m3RelPFIsoDB > 2.0): return False
+        return True
 
     def preselection(self, row):
         ''' Preselection applied to events.

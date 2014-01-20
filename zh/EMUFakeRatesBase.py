@@ -49,7 +49,7 @@ class EMUFakeRatesBase(MegaBase):
         def fill(the_histos, row):
             weight = 1.0
             the_histos[self.lepton+'Pt'].Fill(    getattr( row, self.branchId+'Pt'    ), weight)
-            the_histos[self.lepton+'JetPt'].Fill( getattr( row, max(self.branchId+'JetPt',self.branchId+'Pt') ), weight)
+            the_histos[self.lepton+'JetPt'].Fill( getattr( row, self.branchId+'JetPt'), weight)
             the_histos[self.lepton+'AbsEta'].Fill(getattr( row, self.branchId+'AbsEta'), weight)
 
         def preselection(self, row):

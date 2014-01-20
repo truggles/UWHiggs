@@ -22,7 +22,7 @@ import fake_rate_functions as fr_fcn
 
 class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
     tree = 'eett/final/Ntuple'
-    name = 8
+    name = 5
     def __init__(self, tree, outfile, **kwargs):
         super(ZHAnalyzeEETT, self).__init__(tree, outfile, EETauTauTree, 'TT', **kwargs)
         # Hack to use S6 weights for the one 7TeV sample we use in 8TeV
@@ -52,6 +52,13 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
 
     def leg4_id(self, row):
         return bool(row.t2MediumIso3Hits) ##SHOULD BE TIGHT!!!
+
+    def red_shape_cuts(self, row):
+        if not selections.ZEESelection(row): return False
+        if (row.t1Pt + row.t2Pt < 70): return False
+        if (row.t1LooseMVA2Iso <= 0.0): return False
+        if (row.t2LooseMVA2Iso <= 0.0): return False
+        return True
 
     def preselection(self, row):
         ''' Preselection applied to events.
@@ -84,7 +91,7 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.get_electron_corrections(row, 'e1','e2')
 
     def leg3_weight(self, row):
-        return fr_fcn.tau_jetpt_fr( row.t1JetPt ) / (1 - fr_fcn.tau_jetpt_fr( row.t1JetPt ))
+        return fr_fcn.tau_medium_jetpt_fr( row.t1JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr( row.t1JetPt ))
 
     def leg4_weight(self, row):
-        return fr_fcn.tau_jetpt_fr( row.t2JetPt ) / (1 - fr_fcn.tau_jetpt_fr( row.t2JetPt ))
+        return fr_fcn.tau_medium_jetpt_fr( row.t2JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr( row.t2JetPt ))

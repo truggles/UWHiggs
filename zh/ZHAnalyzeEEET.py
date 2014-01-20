@@ -57,6 +57,13 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
 
+    def red_shape_cuts(self, row):
+        if not selections.ZEESelection(row): return False
+        if (row.e3Pt + row.tPt < 30): return False
+        if (row.e3RelPFIsoDB > 2.0): return False
+        if (row.tLooseMVA2Iso <= 0.0): return False
+        return True
+
     def preselection(self, row):
         ''' Preselection applied to events.
 

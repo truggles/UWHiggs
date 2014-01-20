@@ -22,7 +22,7 @@ import fake_rate_functions as fr_fcn
 
 class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
     tree = 'emmt/final/Ntuple'
-    name = 3
+    name = 2
     def __init__(self, tree, outfile, **kwargs):
         super(ZHAnalyzeMMET, self).__init__(tree, outfile, MuMuETauTree, 'ET', **kwargs)
         # Hack to use S6 weights for the one 7TeV sample we use in 8TeV
@@ -49,10 +49,17 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def leg3_id(self, row):
-        return selections.elIDTight(row,'e') and selections.elIsoTight(row, 'e') and (row.eMissingHits==0)##THIS SEEMS too low
+        return selections.eleIDTight(row,'e') and selections.elIsoTight(row, 'e') and (row.eMissingHits==0)##THIS SEEMS too low
 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
+
+    def red_shape_cuts(self, row):
+        if not selections.ZMuMuSelection(row): return False
+        if (row.ePt + row.tPt < 30): return False
+        if (row.eRelPFIsoDB > 2.0): return False
+        if (row.tLooseMVA2Iso <= 0.0): return False
+        return True
 
     def preselection(self, row):
         ''' Preselection applied to events.
@@ -84,7 +91,7 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.double_muon_trigger(row,'m1','m2')
 
     def leg3_weight(self, row):
-        return fr_fcn.e_tight_jetpt_fr( row.eJetPt ) / (1 - fr_fcn.e_tight_jetpt_fr( row.eJetPt ))
+        return fr_fcn.e_loose_jetpt_fr( row.eJetPt ) / (1 - fr_fcn.e_loose_jetpt_fr( row.eJetPt ))
 
     def leg4_weight(self, row):
         return fr_fcn.tau_jetpt_fr( row.tJetPt ) / (1 - fr_fcn.tau_jetpt_fr( row.tJetPt ))

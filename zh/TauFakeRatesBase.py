@@ -68,6 +68,8 @@ class TauFakeRatesBase(MegaBase):
 
         # Denominator regions (dicts of histograms)
         pt10 = histos[('ztt', 'pt10')]
+        #pt10_lo = histos[('ztt', 'pt10_lo')]
+        #pt10_hi = histos[('ztt', 'pt10_hi')]
         #pt10_antiElMVATight_antiMuLoose = histos[('ztt', 'pt10-antiElMVATight-antiMuLoose')]
         #pt10_antiElMed_antiMuMed = histos[('ztt','pt10-antiElMed-antiMuMed')]
         #pt10_antiElLoose_antiMuTight = histos[('ztt','pt10-antiElLoose-antiMuTight')]
@@ -76,7 +78,7 @@ class TauFakeRatesBase(MegaBase):
         for row in self.tree:
             if not preselection(self, row):
                 continue
-
+            
             fill(pt10, row, 't1')
             fill(pt10, row, 't2')
             for t in ['t1','t2']:
@@ -84,6 +86,22 @@ class TauFakeRatesBase(MegaBase):
                     if bool( getattr(row,t+num) ):
                         fill(histos[('ztt', 'pt10', num)], row, t)
             pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
+
+            #if (row.t1AbsEta < 1.4):
+            #    fill(pt10_lo, row, 't1')
+            #    fill(pt10_lo, row, 't2')
+            #    for t in ['t1','t2']:
+            #      for num in self.numerators:
+            #        if bool( getattr(row, t+num) ):
+            #          fill(histos[('ztt', 'pt10_lo', num)], row, t)
+
+            #if (row.t1AbsEta > 1.4):
+            #    fill(pt10_hi, row, 't1')
+            #    fill(pt10_hi, row, 't2')
+            #    for t in ['t1','t2']:
+            #      for num in self.numerators:
+            #        if bool( getattr(row, t+num) ):
+            #          fill(histos[('ztt', 'pt10_hi', num)], row, t)
 
             # Fill denominator
          #   if row.t1AntiElectronLoose and row.t2AntiElectronLoose and row.t1AntiMuonTight2 and row.t2AntiMuonTight2: 
