@@ -25,7 +25,7 @@ rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
 #rake "make_wrapper[$afile, mmm/final/Ntuple, MuMuMuTree]"
 
 
-#ls *pyx | sed "s|pyx|so|" | xargs rake 
+ls *pyx | sed "s|pyx|so|" | xargs rake 
 
 echo "done?"
 
