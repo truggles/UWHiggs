@@ -32,7 +32,7 @@ samples = Hash[
   #"ewk" => Array['Zjets_M50', 'WplusJets_madgraph', 
     #'ZZJetsTo4L_pythia',
   #  'TTplusJets_madgraph'] + get_sample_names('WZ') + get_sample_names('WWJet') + get_sample_names('ZZ'),
-  "ewk" => Array['Z1jet_M50'] + get_sample_names('WZ') + get_sample_names('ZZ'),
+  "ewk" => Array['Z1jet_M50','TTplusJets_madgraph'] + get_sample_names('WZ') + get_sample_names('ZZ'), 
   "wjets" => Array['WplusJets_madgraph'],
   #"zjets" => Array['Zjets_M50'],
   "zjets" => Array['Z1jet_M50'], 
@@ -41,7 +41,7 @@ samples = Hash[
   "ZZ" => get_sample_names('ZZ'),
   "diboson" => get_sample_names('WZ') + get_sample_names('WWJet') + get_sample_names('ZZ'), #Array['ZZJetsTo4L_pythia'] + 
   #"signal" => get_sample_names('VH') + get_sample_names('WH'),
-  "signal" => get_sample_names('A_ZH_FastSim'),
+  "signal" => get_sample_names('A_ZH_FullSim'),
   #"signal_125" => Array['VH_H2Tau_M-125'],
   # Automagically figure out what data samples we have
   "data_mm" =>  get_sample_names("data_DoubleMu"),
