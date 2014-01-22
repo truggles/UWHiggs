@@ -10,14 +10,14 @@ export afile=`find $datasrc/$jobid | grep root | head -n 1`
 
 echo "Building cython wrappers from file: $afile"
 
-#rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
-#rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
-#rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
-#rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
-#rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
-#rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
-#rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
-#rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
+rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
+rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
+rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
+rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
+rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
+rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
+rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
+rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
 
 #rake "make_wrapper[$afile, eem/final/Ntuple, EEMuTree]"
 #rake "make_wrapper[$afile, eee/final/Ntuple, EEETree]"
