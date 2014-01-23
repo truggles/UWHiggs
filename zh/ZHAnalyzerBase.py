@@ -310,6 +310,7 @@ class ZHAnalyzerBase(MegaBase):
         self.book(folder, "LT_Higgs", "scalar PT sum of Higgs candidate legs", 200, 0, 200)
         self.book(folder, "bjetCSVVeto", "bjetVeto", 10, -1, 2)
         self.book(folder, "bjetCSVVetoZHLikeNoJetId", "bjetCSVVetoZHLikeNoJetId", 10, -1, 2) 
+        self.book(folder, "A_SVfitMass", "A candidate reconstructed sv Mass", 200, 0, 1600) 
         return None
 
     def book_kin_histos(self, folder, Id):
@@ -377,6 +378,8 @@ class ZHAnalyzerBase(MegaBase):
                 pt_Tau1 = getattr(row, "%sPt" % self.H_decay_products()[0])
                 pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
                 value.Fill(pt_Tau1 + pt_Tau2, weight)
+            elif attr == 'A_SVfitMass':
+                value.Fill( GetZHSVMass(row) )
             else:
                 # general case, we can just do getattr(row, "variable") i.e. row.variable
                 value.Fill( getattr(row,attr), weight )
