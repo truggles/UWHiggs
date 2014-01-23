@@ -84,6 +84,27 @@ class ZHAnalyzerBase(MegaBase):
             return bool(abs(getattr(row, '%sGenPdgId' % plabel)) == 13)
         return False
 
+    def getZHSVMass(self, row):
+        # Get pt, eta, phi, mass of sv-fitted di-tau system and build 4-vec
+        sv_pt = getattr(row, "%s_%s_SVfitPt" % self.H_decay_products() )
+        sv_eta = getattr(row, "%s_%s_SVfitEta" % self.H_decay_products() )
+        sv_phi = getattr(row, "%s_%s_SVfitPhi" % self.H_decay_products() )
+        sv_mass = getattr(row, "%s_%s_SVfitMass" % self.H_decay_products() )
+        h_sv = TLorentzVector() # Higgs candidate sv-reconstructed 4-vec
+        h_sv.SetPtEtaPhiM(sv_pt, sv_eta, sv_phi, sv_mass)
+
+        # Get pt, eta, phi, mass of Z candidate and build 4-vec
+        Z_pt = getattr(row, "%s_%s_Pt" % self.Z_decay_products() )
+        Z_eta = getattr(row, "%s_%s_Eta" % self.Z_decay_products() )
+        Z_phi = getattr(row, "%s_%s_Phi" % self.Z_decay_products() )
+        Z_mass = getattr(row, "%s_%s_Mass" % self.Z_decay_products() )
+        Z = TLorentzVector() # Z candidate 4-vec
+        Z.SetPtEtaPhiM(Z_pt, Z_eta, Z_phi, Z_mass)
+        
+        A = Z + H # pseudoscalar candidate 
+        return A.M()
+
+
     def build_zh_folder_structure(self):
         # Build list of folders, and a mapping of
         # (sign, ob1, obj2, ...) => ('the/path', (weights))
