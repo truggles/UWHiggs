@@ -32,7 +32,9 @@ samples = Hash[
   #"ewk" => Array['Zjets_M50', 'WplusJets_madgraph', 
     #'ZZJetsTo4L_pythia',
   #  'TTplusJets_madgraph'] + get_sample_names('WZ') + get_sample_names('WWJet') + get_sample_names('ZZ'),
-  "ewk" => Array['Z1jet_M50','TTplusJets_madgraph'] + get_sample_names('WZ') + get_sample_names('ZZ'), 
+  "ewk" => Array['TTplusJets_madgraph'] + get_sample_names('WZ') + get_sample_names('ZZ'), 
+  #"key_shapes" => Array['WZJetsTo3LNu_pythia', 'ZZJetsTo4L_pythia', 'MSSM_A_ZH_FastSim'],
+  "key_shapes" => Array['A300-Zh-lltt-FullSim'],
   "wjets" => Array['WplusJets_madgraph'],
   #"zjets" => Array['Zjets_M50'],
   "zjets" => Array['Z1jet_M50'], 
@@ -41,7 +43,9 @@ samples = Hash[
   "ZZ" => get_sample_names('ZZ'),
   "diboson" => get_sample_names('WZ') + get_sample_names('WWJet') + get_sample_names('ZZ'), #Array['ZZJetsTo4L_pythia'] + 
   #"signal" => get_sample_names('VH') + get_sample_names('WH'),
-  "signal" => get_sample_names('A_ZH_FullSim'),
+  "signal" => Array['VH_H2Tau_M-125'],
+  "signal_mmtt" => get_sample_names('Zh-mmtt') + Array['VH_H2Tau_M-125'],
+  "signal_eett" => get_sample_names('Zh-eett') + Array['VH_H2Tau_M-125'],
   #"signal_125" => Array['VH_H2Tau_M-125'],
   # Automagically figure out what data samples we have
   "data_mm" =>  get_sample_names("data_DoubleMu"),
@@ -67,12 +71,12 @@ end
 
 # Map which samples need to be analyzed by which analyzer
 fr_analyzer_sample_map = Hash[
-  "EFakeRateEEET.py"    => samples['data_ee'] + samples["diboson"] + samples["zjets"] + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
-  "EFakeRateMMET.py"    => samples['data_mm'] + samples["diboson"] + samples["zjets"] + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
-  "MUFakeRateEEMT.py"   => samples['data_ee'] + samples["diboson"] + samples["zjets"] + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
-  "MUFakeRateMMMT.py"   => samples['data_mm'] + samples["diboson"] + samples["zjets"] + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
-  "TauFakeRatesEETT.py" => samples["diboson"] + samples['data_ee'] + samples["zjets"] + samples["wjets"],# + Array["TTplusJets_madgraph"],
-  "TauFakeRatesMMTT.py" => samples["diboson"] + samples['data_mm'] + samples["zjets"] + samples["wjets"],# + Array["TTplusJets_madgraph"],
+  "EFakeRateEEET.py"    => samples['data_ee'] + samples["ZZ"],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+  "EFakeRateMMET.py"    => samples['data_mm'] + samples["ZZ"],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+  "MUFakeRateEEMT.py"   => samples['data_ee'] + samples["ZZ"],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+  "MUFakeRateMMMT.py"   => samples['data_mm'] + samples["ZZ"],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+  "TauFakeRatesEETT.py" => samples["ZZ"] + samples['data_ee'],# + samples["wjets"],# + Array["TTplusJets_madgraph"],
+  "TauFakeRatesMMTT.py" => samples["ZZ"] + samples['data_mm'],# + samples["wjets"],# + Array["TTplusJets_madgraph"],
  ]
 
 fr_analyzer_dependencies = Hash[
@@ -289,6 +293,7 @@ fr_fits = Hash[
     "analyzer" => "TauFakeRates??TT",
     "function" => exponential,
     "variables" => exponential_vars,
+    "corr"      => "--noCorrection true",
     "rebin" => 5,
     "range" => "15 150",
   ],
@@ -439,14 +444,14 @@ analyzer_dependencies.each do |analyzer, deps|
   end
 end
 
-task :mmmt_signal_only => get_analyzer_results("ZHAnalyzeMMMT", samples['signal'])
-task :eemt_signal_only => get_analyzer_results("ZHAnalyzeEEMT", samples['signal'])
-task :mmet_signal_only => get_analyzer_results("ZHAnalyzeMMET", samples['signal'])
-task :eeet_signal_only => get_analyzer_results("ZHAnalyzeEEET", samples['signal'])
-task :mmem_signal_only => get_analyzer_results("ZHAnalyzeMMEM", samples['signal'])
-task :eeem_signal_only => get_analyzer_results("ZHAnalyzeEEEM", samples['signal'])
-task :mmtt_signal_only => get_analyzer_results("ZHAnalyzeMMTT", samples['signal'])
-task :eett_signal_only => get_analyzer_results("ZHAnalyzeEETT", samples['signal'])
+task :mmmt_signal_only => get_analyzer_results("ZHAnalyzeMMMT", samples['signal_mmtt'])
+task :eemt_signal_only => get_analyzer_results("ZHAnalyzeEEMT", samples['signal_eett'])
+task :mmet_signal_only => get_analyzer_results("ZHAnalyzeMMET", samples['signal_mmtt'])
+task :eeet_signal_only => get_analyzer_results("ZHAnalyzeEEET", samples['signal_eett'])
+task :mmem_signal_only => get_analyzer_results("ZHAnalyzeMMEM", samples['signal_mmtt'])
+task :eeem_signal_only => get_analyzer_results("ZHAnalyzeEEEM", samples['signal_eett'])
+task :mmtt_signal_only => get_analyzer_results("ZHAnalyzeMMTT", samples['signal_mmtt'])
+task :eett_signal_only => get_analyzer_results("ZHAnalyzeEETT", samples['signal_eett'])
 
 task :mmmt_ggzz => get_analyzer_results("ZHAnalyzeMMMT", samples['ggzz2l2l'])
 task :eemt_ggzz => get_analyzer_results("ZHAnalyzeEEMT", samples['ggzz2l2l'])
@@ -457,15 +462,15 @@ task :eeem_ggzz => get_analyzer_results("ZHAnalyzeEEEM", samples['ggzz2l2l'])
 task :mmtt_ggzz => get_analyzer_results("ZHAnalyzeMMTT", samples['ggzz2l2l'])
 task :eett_ggzz => get_analyzer_results("ZHAnalyzeEETT", samples['ggzz2l2l'])
 
-task :mmmt => get_analyzer_results("ZHAnalyzeMMMT.py", samples['ewk'] + samples['data_mm'] + samples['signal'] + samples['ggzz2l2l'])
-task :eemt => get_analyzer_results("ZHAnalyzeEEMT.py", samples['ewk'] + samples['data_ee'] + samples['signal'] + samples['ggzz2l2l'])
-task :mmet => get_analyzer_results("ZHAnalyzeMMET.py", samples['ewk'] + samples['data_mm'] + samples['signal'] + samples['ggzz2l2l'])
-task :eeet => get_analyzer_results("ZHAnalyzeEEET.py", samples['ewk'] + samples['data_ee'] + samples['signal'] + samples['ggzz2l2l'])
+task :mmmt => get_analyzer_results("ZHAnalyzeMMMT.py", samples['ZZ'] + samples['data_mm'] + samples['signal_mmtt'])
+task :eemt => get_analyzer_results("ZHAnalyzeEEMT.py", samples['ZZ'] + samples['data_ee'] + samples['signal_eett'])
+task :mmet => get_analyzer_results("ZHAnalyzeMMET.py", samples['ZZ'] + samples['data_mm'] + samples['signal_mmtt'])
+task :eeet => get_analyzer_results("ZHAnalyzeEEET.py", samples['ZZ'] + samples['data_ee'] + samples['signal_eett'])
           
-task :mmem => get_analyzer_results("ZHAnalyzeMMEM.py", samples['ewk'] + samples['data_mm'] + samples['signal'] + samples['ggzz2l2l'])
-task :eeem => get_analyzer_results("ZHAnalyzeEEEM.py", samples['ewk'] + samples['data_ee'] + samples['signal'] + samples['ggzz2l2l'])
-task :mmtt => get_analyzer_results("ZHAnalyzeMMTT.py", samples['ewk'] + samples['data_mm'] + samples['signal'] + samples['ggzz2l2l'])
-task :eett => get_analyzer_results("ZHAnalyzeEETT.py", samples['ewk'] + samples['data_ee'] + samples['signal'] + samples['ggzz2l2l'])
+task :mmem => get_analyzer_results("ZHAnalyzeMMEM.py", samples['ZZ'] + samples['data_mm'] + samples['signal_mmtt'])
+task :eeem => get_analyzer_results("ZHAnalyzeEEEM.py", samples['ZZ'] + samples['data_ee'] + samples['signal_eett'])
+task :mmtt => get_analyzer_results("ZHAnalyzeMMTT.py", samples['ZZ'] + samples['data_mm'] + samples['signal_mmtt'])
+task :eett => get_analyzer_results("ZHAnalyzeEETT.py", samples['ZZ'] + samples['data_ee'] + samples['signal_eett'])
 
 task :data_only_mmmt => get_analyzer_results("ZHAnalyzeMMMT.py", samples['data_mm'])
 task :data_only_eemt => get_analyzer_results("ZHAnalyzeEEMT.py", samples['data_ee'])
@@ -499,7 +504,7 @@ task :analyzezh_data => [ :data_only_mmmt, :data_only_eemt, :data_only_mmet, :da
   puts "called analyzezh_data task from local rakefile"
 end
 
-task :analyzezh_zz => [:mmmt_zz, :eemt_zz, :mmet_zz, :eeet_zz, :mmem_zz, :eeem_zz, :mmtt_zz, :eett_zz] do
+task :analyzezh_ggzz => [:mmmt_ggzz, :eemt_ggzz, :mmet_ggzz, :eeet_ggzz, :mmem_ggzz, :eeem_ggzz, :mmtt_ggzz, :eett_ggzz] do
   puts "called analyzezh_zz task from local rakefile"
 end
 
@@ -508,6 +513,19 @@ end
 
 task :analyzezh_signal => [:mmmt_signal_only, :eemt_signal_only, :mmet_signal_only, :eeet_signal_only, :mmem_signal_only, :eeem_signal_only, :mmtt_signal_only, :eett_signal_only] do
   puts "called analyzezh_signal task from local rakefile"
+end
+
+task :mmmt_ks => get_analyzer_results("ZHAnalyzeMMMT", samples['key_shapes'])
+task :eemt_ks => get_analyzer_results("ZHAnalyzeEEMT", samples['key_shapes'])
+task :mmet_ks => get_analyzer_results("ZHAnalyzeMMET", samples['key_shapes'])
+task :eeet_ks => get_analyzer_results("ZHAnalyzeEEET", samples['key_shapes'])
+task :mmem_ks => get_analyzer_results("ZHAnalyzeMMEM", samples['key_shapes'])
+task :eeem_ks => get_analyzer_results("ZHAnalyzeEEEM", samples['key_shapes'])
+task :mmtt_ks => get_analyzer_results("ZHAnalyzeMMTT", samples['key_shapes'])
+task :eett_ks => get_analyzer_results("ZHAnalyzeEETT", samples['key_shapes'])
+
+task :analyzezh_ks => [:mmmt_ks, :eemt_ks, :mmet_ks, :eeet_ks, :mmem_ks, :eeem_ks, :mmtt_ks, :eett_ks] do
+  puts "called analyzezh_ks task from local rakefile"
 end
 
 ################################################################################
@@ -532,7 +550,8 @@ channels.each do |channel|
   outFiles << outf
   # puts "results/#{$jobid}/ZHAnalyze#{channel.upcase}/*" + '.root'
   # puts Dir.glob("results/#{$jobid}/ZHAnalyze#{channel.upcase}/*" + '.root').inspect
-  file outf => ['ZHPlotterBase.py'] + Dir.glob("results/#{$jobid}/ZHAnalyze#{channel.upcase}/*" + '.root') do |t|
+  #file outf => ['ZHPlotterBase.py'] + Dir.glob("results/#{$jobid}/ZHAnalyze#{channel.upcase}/*" + '.root') do |t|
+  file outf => ['ZHPlotterBase.py'] do |t|
     chToRun << channel.upcase 
   end
 end
@@ -559,7 +578,7 @@ end
 
 $carddir = "results/#{$jobid}/cards"
 # 
-# Combine all category shape files into the datacard project
+## Combine all category shape files into the datacard project
 file "#{$carddir}/shapes_unmorphed.root" => Dir.glob("results/#{$jobid}/plots/????/????_shapes_#{$period}.root") do |t|
   sh "mkdir -p #{$carddir}"
   sh "hadd -f #{t.name} #{t.prerequisites.join(' ')}"
@@ -567,15 +586,18 @@ end
 
 # Masses where actually have signal samples
 pivot_masses = []
-Dir.glob("inputs/#{$jobid}/VH_H2Tau_M-???.meta.json").each do |name|
-  pivot_masses << name.split("/")[-1].split('-')[-1].split('.')[0]
-end
+#Dir.glob("inputs/#{$jobid}/VH_H2Tau_M-???.meta.json").each do |name|
+#  pivot_masses << name.split("/")[-1].split('-')[-1].split('.')[0]
+#end
+
+pivot_masses = [260,270,280,290,300,310,320,330,340] # mA for MSSM
 
 # Now do the horizontal morphing
 file "#{$carddir}/shapes.root" => ["#{$carddir}/shapes_unmorphed.root"] do |t|
   puts "Doing horizontal morphing"
   sh "cp #{t.prerequisites[0]} #{t.name}"
-  sh "horizontal-morphing.py --categories='#{channels.join('_zh,')}_zh' --samples='ZH_htt{MASS},ZH_hww{MASS}' --uncerts='' --masses='#{pivot_masses.join(',')}' --step-size=1 -i #{t.name}" #FIXME ,ZH_hww{MASS}
+  #sh "horizontal-morphing.py --categories='#{channels.join('_zh,')}_zh' --samples='ZH_htt{MASS},ZH_hww{MASS}' --uncerts='' --masses='#{pivot_masses.join(',')}' --step-size=1 -i #{t.name}" #FIXME ,ZH_hww{MASS}
+  sh "horizontal-morphing.py --categories='#{channels.join('_zh,')}_zh' --samples='AHttZll{MASS}' --uncerts='' --masses='#{pivot_masses.join(',')}' --step-size=1 -i #{t.name}" #FIXME ,ZH_hww{MASS}
 end
 
 stat_shape_lists = [] #Dir.glob("results/#{$jobid}/plots/*/*_statshapes.txt")
@@ -635,7 +657,7 @@ end
 
 task :cards => []
 
-cardmasses = Array[110, 115, 120, 125, 130, 135, 140]
+cardmasses = Array[260,270,280,290,300,310,320,330,340]
 
 cardmasses.each do |mass|
   task :cards => make_datacard_task(mass, '4l', '')
@@ -664,7 +686,9 @@ tagetsByChannel = Hash[]
     file target => ["#{$carddir}/#{mass}/vhtt_#{channel}.txt"] do |t|
       sh "mkdir -p #{$limitdir}/#{channel}"
       chdir("#{$limitdir}/#{channel}") do
-        sh "limit.py --asymptotic #{mass}"
+        #sh "limit.py --asymptotic #{mass}"
+         sh "limit.py --tanb+ #{mass}" # mssm mA vs. tanb plane
+         sh "lxb-xsec2tanb.py --condor #{mass}"
       end
     end
   end

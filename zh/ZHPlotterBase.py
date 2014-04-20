@@ -25,7 +25,7 @@ from FinalStateAnalysis.MetaData.data_styles import data_styles
 import sys
 import os
 import glob
-from THBin import zipBins
+from FinalStateAnalysis.PlotTools.THBin import zipBins
 import pprint
 import ROOT
 
@@ -118,7 +118,8 @@ var_map = {
 
 class ZHPlotterBase(Plotter):
     def __init__(self, channel, blind=False):
-        self.samples = [ 'Zjets_M50', 'WplusJets_madgraph', 'WZ*', 'ZZ*', 'WW*', 'VH*', 'TTplusJets_madgraph']#'WH*',
+        #self.samples = [ 'Zjets_M50', 'WplusJets_madgraph', 'WZ*', 'ZZ*', 'WW*', 'VH*', 'TTplusJets_madgraph','*A*Zh*']#'WH*',
+        self.samples = ['ZZ*','VH_H2Tau_M-125','*A*Zh*']
         self.samples += ['data_DoubleMu*'] if channel[:2] == 'MM' else ['data_DoubleElectron*']
         self.jobid = os.environ['jobid']
         self.channel = channel
@@ -135,13 +136,13 @@ class ZHPlotterBase(Plotter):
         blinder = None
         if blind:
             # Don't look at the SS all pass region
-            blinder = lambda x: BlindView(x, "ss/p1p2p3/.*")
+            blinder = lambda x: BlindView(x, "ss/All_Passed/.*")
         super(ZHPlotterBase, self).__init__(files, lumifiles, self.outputdir, blinder)
         self.general_histos = ["nTruePU", "weight", "rho", "nvtx"]
         self.general_histos += ['doubleMuPrescale'] if channel[:2] == 'MM' else []
         self.kin_histos     = ["%sPt", "%sJetPt", "%sAbsEta"]
         self.mass_histos    = [h for h in get_mass_histos(channel)]
-        #pprint.pprint(self.views)
+        pprint.pprint(self.views)
 
     def plot_mc_vs_data(self, folder, variable, rebin=1, xaxis='', leftside=True, xrange=None):
         super(ZHPlotterBase, self).plot_mc_vs_data(folder, variable, rebin, xaxis, leftside, xrange)
@@ -150,10 +151,10 @@ class ZHPlotterBase(Plotter):
     def make_signal_views(self, rebin, unblinded=True):
         ''' Make signal views with FR background estimation '''
 
-        wz_view = views.SubdirectoryView(
-            self.rebin_view(self.get_view('WZ*'), rebin),
-            'os/All_Passed/'
-        )
+        #wz_view = views.SubdirectoryView(
+        #    self.rebin_view(self.get_view('WZ*'), rebin),
+        #    'os/All_Passed/'
+        #)
         zz_view = views.SubdirectoryView(
             self.rebin_view(self.get_view('ZZ*'), rebin),
             'os/All_Passed/'
@@ -164,11 +165,11 @@ class ZHPlotterBase(Plotter):
                 self.get_view('data', 'unblinded_view'), rebin)
             
         data_view = views.SubdirectoryView(all_data_view, 'os/All_Passed/')
-        #Categories (to match Abdollah's naming convention)
-        probes = [p+'IsoFailed' for p in products_map[self.channel][1]]
-        cat0   = 'os/'+ '_'.join(probes) + '/all_weights_applied/'
-        cat1   = 'os/'+ probes[0] + '/obj1_weight/'
-        cat2   = 'os/'+ probes[1] + '/obj2_weight/'
+        #Categories (to match Abdollah's naming convention) (not anymore!! :) )
+        #probes = [p+'IsoFailed' for p in products_map[self.channel][1]]
+        cat0   = 'os/Leg3Failed_Leg4Failed/all_weights_applied/'
+        cat1   = 'os/Leg3Failed/leg3_weight/'
+        cat2   = 'os/Leg4Failed/leg4_weight/'
 
         # View of weighted obj1-fails data
         cat1_view = views.SubdirectoryView(all_data_view, cat1)
@@ -180,8 +181,8 @@ class ZHPlotterBase(Plotter):
         subtract_cat0_view = views.ScaleView(cat0_view, -1)
         # Corrected fake view
         Zjets_view = views.SumView(cat1_view, cat2_view, subtract_cat0_view)
-        Zjets_view = views.TitleView(
-            views.StyleView(Zjets_view, **data_styles['Zjets*']), 'Non-prompt')
+        #Zjets_view = views.TitleView(
+        #    views.StyleView(Zjets_view, **data_styles['Zjets*']), 'Non-prompt')
 
         charge_fakes = views.TitleView(
             views.StyleView(
@@ -189,58 +190,90 @@ class ZHPlotterBase(Plotter):
                 **data_styles['TT*']), 'Charge mis-id')
 
         output = {
-            'wz' : wz_view,
+           # 'wz' : wz_view,
             'zz' : zz_view,
             'data' : data_view,
             'cat1' : cat1_view,
             'cat2' : cat2_view,
             'Zjets' : Zjets_view,
-            'charge_fakes' : charge_fakes,
+            #'charge_fakes' : charge_fakes,
         }
 
-        # Add signal
-        for mass in [110, 120, 130, 140]:
-            vh_view = views.SubdirectoryView(
-               self.rebin_view(self.get_view('VH_H2Tau_M-%i' % mass), rebin),
-                'os/All_Passed/'
-            )
-            output['vh%i' % mass] = vh_view
-            ww_view = views.SubdirectoryView(
-               self.rebin_view(self.get_view('VH_%i_HWW' % mass), rebin),
-                'os/All_Passed/'
-            )
-            output['vh%i_hww' % mass] = ww_view
-            output['signal%i' % mass] = views.SumView(ww_view, vh_view)
+        ## Add signal 
+        # Not for MSSM!
+        #for mass in [110, 120, 130, 140]:
+        #    vh_view = views.SubdirectoryView(
+        #       self.rebin_view(self.get_view('VH_H2Tau_M-%i' % mass), rebin),
+        #        'os/All_Passed/'
+        #    )
+        #    output['vh%i' % mass] = vh_view
+        #    ww_view = views.SubdirectoryView(
+        #       self.rebin_view(self.get_view('VH_%i_HWW' % mass), rebin),
+        #        'os/All_Passed/'
+        #    )
+        #    output['vh%i_hww' % mass] = ww_view
+        #    output['signal%i' % mass] = views.SumView(ww_view, vh_view)
 
+        # Add SM VHtt as background
+        htt_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('VH_H2Tau_M-125'), rebin),
+            'os/All_Passed/'
+        )
+        output['VH_H2Tau_M-125'] = htt_view
+        
+        for mass in [260, 270, 280, 290, 300, 310, 320, 330, 340]:
+            if channel[:2] == 'MM':
+                AZh_view = views.SubdirectoryView(
+                  self.rebin_view(self.get_view('A%i-Zh-mmtt*' % mass), rebin),
+                  'os/All_Passed/'
+                )
+            else:
+                AZh_view = views.SubdirectoryView(
+                  self.rebin_view(self.get_view('A%i-Zh-eett*' % mass), rebin),
+                  'os/All_Passed/'
+                )
+
+            output['AZhtt%i' % mass] = AZh_view 
+       
+        
         return output
 
     def write_shapes(self, variable, rebin, outdir, unblinded=False):
         ''' Write final shape histos for [variable] into a TDirectory [outputdir] '''
         sig_view = self.make_signal_views(rebin, unblinded)
         outdir.cd()
-        wz = sig_view['wz'].Get(variable)
+       
+        #wz = sig_view['wz'].Get(variable)
         zz = sig_view['zz'].Get(variable)
         obs = sig_view['data'].Get(variable)
         Zjets = sig_view['Zjets'].Get(variable)
+        vhtt = sig_view['VH_H2Tau_M-125'].Get(variable)
 
-        wz.SetName('WZ')
+        #wz.SetName('WZ')
         zz.SetName('ZZ')
         obs.SetName('data_obs')
         Zjets.SetName('Zjets')
+        vhtt.SetName('VH')
 
         #print sig_view.keys()
-        for mass in [110, 120, 130, 140]:
-            vh = sig_view['vh%i' % mass].Get(variable)
-            vh.SetName('ZH_htt%i' % mass)
-            vh.Write()
-            ww = sig_view['vh%i_hww' % mass].Get(variable)
-            ww.SetName('ZH_hww%i' % mass)
-            ww.Write()
+        #for mass in [110, 120, 130, 140]:
+        #    vh = sig_view['vh%i' % mass].Get(variable)
+        #    vh.SetName('ZH_htt%i' % mass)
+        #    vh.Write()
+        #    ww = sig_view['vh%i_hww' % mass].Get(variable)
+        #    ww.SetName('ZH_hww%i' % mass)
+        #    ww.Write()
+ 
+        for mass in [260,270,280,290,300,310,320,330,340]:
+            signal = sig_view['AZhtt%i' % mass].Get(variable)
+            signal.SetName('AHttZll%i' % mass)
+            signal.Write()
 
-        wz.Write()
+        #wz.Write()
         zz.Write()
         obs.Write()
         Zjets.Write()
+        vhtt.Write()
 
     def write_cut_and_count(self, variable, outdir, unblinded=False):
         ''' Version of write_shapes(...) with only one bin.
@@ -253,13 +286,13 @@ class ZHPlotterBase(Plotter):
 
     def get_yield(self, variable, unblinded=False):
         sig_view = self.make_signal_views(1, unblinded)
-        wz = sig_view['wz'].Get(variable)
+        #wz = sig_view['wz'].Get(variable)
         zz = sig_view['zz'].Get(variable)
         obs = sig_view['data'].Get(variable)
         Zjets = sig_view['Zjets'].Get(variable)
 
         return {
-            'wz'    : wz.Integral(),   
+            #'wz'    : wz.Integral(),   
             'zz'    : zz.Integral(),
             'obs'   : obs.Integral(),
             'Zjets' : Zjets.Integral(),
@@ -352,29 +385,29 @@ class ZHPlotterBase(Plotter):
 
     def draw_closure_frobj1(self, var, rebin=1, xaxis=''):
         Zprod, Hprod = products_map[self.channel]
-        self.make_closure_plots( var, 'os/%sIsoFailed_%sIsoFailed/obj1_weight' % Hprod, 'os/%sIsoFailed/' % Hprod[1], rebin, xaxis)
+        self.make_closure_plots( var, 'os/Leg3Failed_Leg4Failed/leg3_weight', 'os/Leg4Failed/', rebin, xaxis)
 
     def draw_closure_frobj2(self, var, rebin=1, xaxis=''):
         Zprod, Hprod = products_map[self.channel]
-        self.make_closure_plots( var, 'os/%sIsoFailed_%sIsoFailed/obj2_weight' % Hprod, 'os/%sIsoFailed/' % Hprod[0], rebin, xaxis)
+        self.make_closure_plots( var, 'os/Leg3Failed_Leg4Failed/leg4_weight', 'os/Leg3Failed/', rebin, xaxis)
 
     def plot_final(self, variable, rebin=1, xaxis='', maxy=10, show_error=False, magnifyHiggs=5 ):
         ''' Plot the final output - with bkg. estimation '''
         
         sig_view = self.make_signal_views(rebin)
-        vh_nx = views.TitleView(
-            views.StyleView(
-                views.ScaleView(sig_view['signal120'], magnifyHiggs),
-                **data_styles['VH*']
-            ),
-            "(%s#times) m_{H} = 120" % magnifyHiggs
-        )
+        #vh_nx = views.TitleView(
+        #    views.StyleView(
+        #        views.ScaleView(sig_view['signal120'], magnifyHiggs),
+        #        **data_styles['VH*']
+        #    ),
+        #    "(%s#times) m_{H} = 120" % magnifyHiggs
+        #)
 
         stack = views.StackView(
             sig_view['wz'],
             sig_view['zz'],
             sig_view['fakes'],
-            vh_10x,
+         #   vh_10x,
         )
         histo = stack.Get(variable)
         histo.Draw()
@@ -424,52 +457,52 @@ for channel in channels:
     ###########################################################################
     ##  Z control plots #####################################################
     ###########################################################################
-    plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Pt' % Zprod, rebin=10, xaxis='p_{T%s%s} (GeV)' % texZprod, leftside=False)
-    plotter.save('%s_mcdata-os-all_passed_ZPt' % channel.lower() )
+    #plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Pt' % Zprod, rebin=10, xaxis='p_{T%s%s} (GeV)' % texZprod, leftside=False)
+    #plotter.save('%s_mcdata-os-all_passed_ZPt' % channel.lower() )
 
-    plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Mass' % Zprod, rebin=10, xaxis='M_{%s%s} (GeV)' % texZprod, leftside=False)
-    plotter.save('%s_mcdata-os-all_passed_ZMass' % channel.lower() )
+    #plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Mass' % Zprod, rebin=10, xaxis='M_{%s%s} (GeV)' % texZprod, leftside=False)
+    #plotter.save('%s_mcdata-os-all_passed_ZMass' % channel.lower() )
 
-    plotter.plot_mc_vs_data('os/%sIsoFailed_%sIsoFailed' % Hprod, '%s_%s_Mass' % Zprod, rebin=10, xaxis='M_{%s%s} (GeV)' % texZprod, leftside=False)
-    plotter.save('%s_mcdata-os-all_failed_ZMass' % channel.lower() )
+    #plotter.plot_mc_vs_data('os/Leg3Failed_Leg4Failed', '%s_%s_Mass' % Zprod, rebin=10, xaxis='M_{%s%s} (GeV)' % texZprod, leftside=False)
+    #plotter.save('%s_mcdata-os-all_failed_ZMass' % channel.lower() )
 
     ###########################################################################
     ##  Objects Control plots                                                ##
     ###########################################################################
 
-    plotter.simple_draw('os/%sIsoFailed_%sIsoFailed/%sPt' % (Hprod[0], Hprod[1], Hprod[0],), rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[0])
-    plotter.save('%s_os-all_failed-%s_Pt' % (channel.lower(),Hprod[0]) )
+    #plotter.simple_draw('os/Leg3Failed_Leg4Failed/%sPt' %  Hprod[0], rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[0])
+    #plotter.save('%s_os-all_failed-%s_Pt' % (channel.lower(),Hprod[0]) )
 
-    plotter.simple_draw('os/%sIsoFailed_%sIsoFailed/%sPt' % (Hprod[0], Hprod[1], Hprod[1],), rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[1])
-    plotter.save('%s_os-all_failed-%s_Pt' % (channel.lower(),Hprod[1]) )
+    #plotter.simple_draw('os/Leg3Failed_Leg4Failed/%sPt' %  Hprod[1], rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[1])
+    #plotter.save('%s_os-all_failed-%s_Pt' % (channel.lower(),Hprod[1]) )
 
-    plotter.simple_draw('os/%sIsoFailed/%sPt' % (Hprod[0],Hprod[0]), rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[0])
-    plotter.save('%s_os-%s_failed-%s_Pt' % (channel.lower(), Hprod[0], Hprod[0]) )
+    #plotter.simple_draw('os/Leg3Failed/%sPt' % Hprod[0], rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[0])
+    #plotter.save('%s_os-%s_failed-%s_Pt' % (channel.lower(), Hprod[0], Hprod[0]) )
 
-    plotter.simple_draw('os/%sIsoFailed/%sPt' % (Hprod[1],Hprod[1]), rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[1])
-    plotter.save('%s_os-%s_failed-%s_Pt' % (channel.lower(), Hprod[1], Hprod[1]) )
+    #plotter.simple_draw('os/Leg4Failed/%sPt' % Hprod[1], rebin=10, xaxis='p_{T %s} (GeV)' % texHprod[1])
+    #plotter.save('%s_os-%s_failed-%s_Pt' % (channel.lower(), Hprod[1], Hprod[1]) )
 
     ###########################################################################
     ##  Fake rates control plots                                             ##
     ###########################################################################
 
-    plotter.draw_closure_frobj1('%s_%s_Pt' % Hprod, rebin=25, xaxis='p_{T%s%s} (GeV)' % texHprod)
-    plotter.save('%s_frclosureobj1-os-failed2-HPt' % channel.lower() )
+    #plotter.draw_closure_frobj1('%s_%s_Pt' % Hprod, rebin=25, xaxis='p_{T%s%s} (GeV)' % texHprod)
+    #plotter.save('%s_frclosureobj1-os-failed2-HPt' % channel.lower() )
 
-    plotter.draw_closure_frobj1('%s_%s_Mass' % Hprod, rebin=25, xaxis='M_{%s%s} (GeV)' % texHprod)
-    plotter.save('%s_frclosureobj1-os-failed2-HMass' % channel.lower() )
+    #plotter.draw_closure_frobj1('%s_%s_Mass' % Hprod, rebin=25, xaxis='M_{%s%s} (GeV)' % texHprod)
+    #plotter.save('%s_frclosureobj1-os-failed2-HMass' % channel.lower() )
 
-    plotter.draw_closure_frobj1('%sPt' % Hprod[0], rebin=25, xaxis='p_{T%s} (GeV)' % texHprod[0])
-    plotter.save('%s_frclosureobj1-os-failed2-obj1Pt' % channel.lower() )
+    #plotter.draw_closure_frobj1('%sPt' % Hprod[0], rebin=25, xaxis='p_{T%s} (GeV)' % texHprod[0])
+    #plotter.save('%s_frclosureobj1-os-failed2-obj1Pt' % channel.lower() )
 
-    plotter.draw_closure_frobj2('%s_%s_Pt' % Hprod, rebin=25, xaxis='p_{T%s%s} (GeV)' % texHprod)
-    plotter.save('%s_frclosureobj2-os-failed1-HPt' % channel.lower() )
+    #plotter.draw_closure_frobj2('%s_%s_Pt' % Hprod, rebin=25, xaxis='p_{T%s%s} (GeV)' % texHprod)
+    #plotter.save('%s_frclosureobj2-os-failed1-HPt' % channel.lower() )
 
-    plotter.draw_closure_frobj2('%s_%s_Mass' % Hprod, rebin=25, xaxis='M_{%s%s} (GeV)' % texHprod)
-    plotter.save('%s_frclosureobj2-os-failed1-HMass' % channel.lower() )
+    #plotter.draw_closure_frobj2('%s_%s_Mass' % Hprod, rebin=25, xaxis='M_{%s%s} (GeV)' % texHprod)
+    #plotter.save('%s_frclosureobj2-os-failed1-HMass' % channel.lower() )
 
-    plotter.draw_closure_frobj2('%sPt' % Hprod[1], rebin=25, xaxis='p_{T%s} (GeV)' % texHprod[1])
-    plotter.save('%s_frclosureobj2-os-failed1-obj2Pt' % channel.lower() )
+    #plotter.draw_closure_frobj2('%sPt' % Hprod[1], rebin=25, xaxis='p_{T%s} (GeV)' % texHprod[1])
+    #plotter.save('%s_frclosureobj2-os-failed1-obj2Pt' % channel.lower() )
 
     ###########################################################################
     ##  H control plots #####################################################
@@ -477,14 +510,14 @@ for channel in channels:
     plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Pt' % Hprod, rebin=10, xaxis='p_{T%s%s} (GeV)' % texHprod, leftside=False)
     plotter.save('%s_mcdata-os-all_passed_HPt' % channel.lower() )
 
-    plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Mass' % Hprod, rebin=10, xaxis='M_{%s%s} (GeV)' % texHprod, leftside=False)
-    plotter.save('%s_mcdata-os-all_passed_HMass' % channel.lower() )
+    #plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Mass' % Hprod, rebin=10, xaxis='M_{%s%s} (GeV)' % texHprod, leftside=False)
+    #plotter.save('%s_mcdata-os-all_passed_HMass' % channel.lower() )
 
     ###########################################################################
     ##  Yields                #################################################
     ###########################################################################
 
-    yields[channel] = plotter.get_yield('%s_%s_Mass' % Hprod)
+    yields[channel] = plotter.get_yield('A_SVfitMass')
     plotter.print_passing_events('passing_events.txt')
 
     ###########################################################################
@@ -493,7 +526,8 @@ for channel in channels:
 
     shape_file = ROOT.TFile( os.path.join(plotter.outputdir, '%s_shapes_%s.root' % (channel.lower(), plotter.period)), 'RECREATE')
     shape_dir  = shape_file.mkdir( channel.lower()+'_zh' )
-    plotter.write_shapes('%s_%s_Mass' % Hprod, 15, shape_dir, unblinded=True)
+    #plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 15, shape_dir, unblinded=True)
+    plotter.write_shapes('A_SVfitMass', 15, shape_dir, unblinded=True)
     #plotter.write_cut_and_count('subMass', shape_dir, unblinded=True)
     shape_file.Close()
 
@@ -506,15 +540,15 @@ if os.path.isfile(filename):
         lines = [line for line in yfile.readlines()]
 
 #understand the file
-oldYields = dict( [ (line.split(' ')[0], line) for line in lines if line.split(' ')[0] in channels] )
-form      =  '%10s %8s %8s %8s %8s\n'
-output    = form % ( 'channel', 'obs', 'wz', 'zz', 'Zjets' )
-for channel in channels:
-    if channel in yields:
-        chyield = yields[channel]
-        output += form[::-1].replace('s','.3f'[::-1],4)[::-1] % (channel, chyield['obs'], chyield['wz'], chyield['zz'], chyield['Zjets'])
-    else:
-        output += oldYields[channel]
-
-with open(filename,'w') as yfile:
-    yfile.write(output)
+#oldYields = dict( [ (line.split(' ')[0], line) for line in lines if line.split(' ')[0] in channels] )
+#form      =  '%10s %8s %8s %8s %8s\n'
+#output    = form % ( 'channel', 'obs', 'wz', 'zz', 'Zjets' )
+#for channel in channels:
+#    if channel in yields:
+#        chyield = yields[channel]
+#        output += form[::-1].replace('s','.3f'[::-1],4)[::-1] % (channel, chyield['obs'], chyield['zz'], chyield['Zjets'])
+#    else:
+#        output += oldYields[channel]
+#
+#with open(filename,'w') as yfile:
+#    yfile.write(output)
