@@ -29,6 +29,7 @@ import array
 import os
 import pprint
 import baseSelections as selections
+
 #import debug
 #from debug import debugRow
 
@@ -90,7 +91,7 @@ class ZHAnalyzerBase(MegaBase):
         sv_eta = getattr(row, "%s_%s_SVfitEta" % self.H_decay_products() )
         sv_phi = getattr(row, "%s_%s_SVfitPhi" % self.H_decay_products() )
         sv_mass = getattr(row, "%s_%s_SVfitMass" % self.H_decay_products() )
-        h_sv = TLorentzVector() # Higgs candidate sv-reconstructed 4-vec
+        h_sv = ROOT.TLorentzVector() # Higgs candidate sv-reconstructed 4-vec
         h_sv.SetPtEtaPhiM(sv_pt, sv_eta, sv_phi, sv_mass)
 
         # Get pt, eta, phi, mass of Z candidate and build 4-vec
@@ -98,10 +99,10 @@ class ZHAnalyzerBase(MegaBase):
         Z_eta = getattr(row, "%s_%s_Eta" % self.Z_decay_products() )
         Z_phi = getattr(row, "%s_%s_Phi" % self.Z_decay_products() )
         Z_mass = getattr(row, "%s_%s_Mass" % self.Z_decay_products() )
-        Z = TLorentzVector() # Z candidate 4-vec
+        Z = ROOT.TLorentzVector() # Z candidate 4-vec
         Z.SetPtEtaPhiM(Z_pt, Z_eta, Z_phi, Z_mass)
         
-        A = Z + H # pseudoscalar candidate 
+        A = Z + h_sv # pseudoscalar candidate 
         return A.M()
 
 
@@ -320,6 +321,7 @@ class ZHAnalyzerBase(MegaBase):
         self.book(folder, "%sPt" % Id,     "%s %s Pt" % (IdToName[Id[0]], number),     100, 0, 100)
         self.book(folder, "%sJetPt" % Id,  "%s %s Jet Pt" % (IdToName[Id[0]], number), 100, 0, 200)
         self.book(folder, "%sAbsEta" % Id, "%s %s AbsEta" % (IdToName[Id[0]], number), 100, 0, 2.4)
+        self.book(folder, "%sEta" % Id, "%s %s Eta" % (IdToName[Id[0]], number), 200, -2.4, 2.4)
         return None      
     def book_mass_histos(self, folder, *args):
         
@@ -332,12 +334,12 @@ class ZHAnalyzerBase(MegaBase):
             for obj2 in args[pos+1:]:
                 self.book(folder, "%s_%s_Mass" % (obj1, obj2), "%s %s - %s %s Mass" % (get_name(obj1) + get_name(obj2) ), 150, 0, 150)
 
-        self.book(folder, "Mass", "ZH Mass", 200, 0, 200)
+        #self.book(folder, "Mass", "ZH Mass", 200, 0, 200)
         self.book(folder, "%s_%s_SVfitMass" % self.H_decay_products(), "H candidate SVMass", 300, 0, 300)
 
     def book_resonance_histos(self, folder, products, name):
         self.book(folder, "%s_%s_Pt"     % products, "%s candidate Pt"              % name, 100, 0, 100)
-        #self.book(folder, "%s_%s_AbsEta" % products, "%s candidate AbsEta"          % name, 100, 0, 2.4)
+        self.book(folder, "%s_%s_Eta" % products, "%s candidate Eta"          % name, 100, 0, 2.4)
         #self.book(folder, "%s_%s_SVfitMass"   % products, "%s candidate SVfit Mass"            % name, 10, 0, 150)
         self.book(folder, "%s_%s_Mass"   % products, "%s candidate Mass"            % name, 200, 0, 200)
         self.book(folder, "%s_%s_DR"     % products, "%s decay products #DeltaR"    % name, 100, 0, 10)
@@ -379,7 +381,7 @@ class ZHAnalyzerBase(MegaBase):
                 pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
                 value.Fill(pt_Tau1 + pt_Tau2, weight)
             elif attr == 'A_SVfitMass':
-                value.Fill( GetZHSVMass(row) )
+                value.Fill( self.getZHSVMass(row), weight )
             else:
                 # general case, we can just do getattr(row, "variable") i.e. row.variable
                 value.Fill( getattr(row,attr), weight )
