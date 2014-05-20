@@ -29,7 +29,7 @@ class MUFakeRateMMMT(EMUFakeRatesBase.EMUFakeRatesBase):
         if selections.overlap(row, 'm1','m2','m3','t') : return False
         if not selections.signalTauSelection(row,'t',5): return False
         if not bool(row.tAntiMuonTight2): return False
-        if not bool(row.tAntiElectronLoose): return False
+        #if not bool(row.tAntiElectronLoose): return False
         return selections.signalMuonSelection(row,'m3')
 
     def lepton_passes_tight_iso(self, row):

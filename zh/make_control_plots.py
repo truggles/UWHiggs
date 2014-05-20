@@ -20,6 +20,11 @@ def get_lumi(filename):
 #mass = sys.argv[1]
 mass = 300
 print mass
+
+
+channels = ["MMMT", "MMET", "MMEM", "MMTT", "EEMT", "EEET", "EEEM", "EETT"]
+if (len(sys.argv) == 2):
+  channels = [sys.argv[1]]
 #jobid = "2013-10-02-8TeV-v2-MSSM_A_ZH_mmtt"
 
 #ofile = ROOT.TFile("plots.root", "RECREATE")
@@ -29,6 +34,8 @@ data_lumi = 39425.0/2
 zz_lumi = get_lumi("ZZJetsTo4L_pythia.root")
 signal_lumi = get_lumi("A%s-Zh-mmtt-PU025" % mass)
 signal_lumi += get_lumi("A%s-Zh-eett-PU025" % mass)
+fullsim_lumi = get_lumi("A300-Zh-lltt-FullSim")
+vh_lumi = get_lumi("VH_H2Tau_M-125")
 #wz_lumi = get_lumi("WZJetsTo3LNu_pythia.root")
 
 #nbins = 200
@@ -53,6 +60,7 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
   signal = ROOT.TH1F("signal", "signal", nbins, xlow, xhigh)
   #wz = ROOT.TH1F("wz", "wz", nbins, xlow, xhigh)
   fullsim = ROOT.TH1F("fullsim", "fullsim", nbins, xlow, xhigh)
+  vh = ROOT.TH1F("vh", "vh", nbins, xlow, xhigh)
 
   # reducible background components
   data_1 = ROOT.TH1F("data_1", "data_1", nbins, xlow, xhigh)
@@ -93,7 +101,7 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
 
 ## ZH system mass (A candidate)
 #for channel, label in [("MMTT", "A_SVfitMass")]:
-  for channel in ["MMMT", "MMET", "MMEM", "MMTT", "EEMT", "EEET", "EEEM", "EETT"]:
+  for channel in channels:
     
     label = ""
     prods_avail = dict_prods[channel]
@@ -114,8 +122,12 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
     #wz_file = ROOT.TFile("results/%s/ZHAnalyze%s/WZJetsTo3LNu_pythia.root" % (jobid,channel), "READ")
 
     fullsim_file = ROOT.TFile("results/%s/ZHAnalyze%s/A300-Zh-lltt-FullSim.root" % (jobid, channel), "READ")
-    fullsim_tmp = data_tmp = data_file.Get("os/All_Passed/%s" % label)
+    fullsim_tmp = fullsim_file.Get("os/All_Passed/%s" % label)
     fullsim.Add(fullsim_tmp)
+
+    vh_file = ROOT.TFile("results/%s/ZHAnalyze%s/VH_H2Tau_M-125.root" % (jobid, channel), "READ")
+    vh_tmp = vh_file.Get("os/All_Passed/%s" % label)
+    vh.Add(vh_tmp)
  
     data_tmp = data_file.Get("os/All_Passed/%s" % label)
     data.Add(data_tmp)
@@ -148,15 +160,22 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
   red_bkgrd.Add(data_2)
   red_bkgrd.Add(data_0, -1)
 
-  #zz.Scale(data_lumi/zz_lumi)
-  #signal.Scale(data_lumi/signal_lumi)
-  #wz.Scale(data_lumi/wz_lumi)
+  ## Scale to data lumi
+  zz.Scale(data_lumi/zz_lumi)
+  signal.Scale(data_lumi/signal_lumi)
+  fullsim.Scale(data_lumi/fullsim_lumi)
+  vh.Scale(data_lumi/vh_lumi)
+
+  # Add uncertainty on the reducible background of 30%
+  uncert = red_bkgrd.Clone()
+  uncert.Scale(0.3)
 
   ## Area normalize
-  zz.Scale(1/zz.Integral())
-  signal.Scale(1/signal.Integral())
-  red_bkgrd.Scale(1/red_bkgrd.Integral())
-  fullsim.Scale(1/fullsim.Integral())
+  #zz.Scale(1/zz.Integral())
+  #signal.Scale(1/signal.Integral())
+  #red_bkgrd.Scale(1/red_bkgrd.Integral())
+  #fullsim.Scale(1/fullsim.Integral())
+  #vh.Scale(1/vh.Integral())
 
   #ofile = ROOT.TFile("plots.root", "RECREATE")
   canvas = ROOT.TCanvas("canvas", "canvas")
@@ -177,24 +196,31 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
   red_bkgrd.SetFillColor(ROOT.kGreen +2)
   red_bkgrd.SetFillStyle(3005)
 
+  uncert.SetFillColor(ROOT.kBlack)
+  uncert.SetFillStyle(3005)
+
   signal.SetLineWidth(3)
   zz.SetLineWidth(3)
   red_bkgrd.SetLineWidth(3)
   #red_bkgrd.SetLineWidth(3)
+  #vh.SetLineWidth(3)
 
   # rebin histograms
   #reducible_background.Rebin(20)
   #rbin = 1
   data.Rebin(rbin)
   zz.Rebin(rbin)
-  #red_bkgrd.Rebin(rbin)
   signal.Rebin(rbin)
   red_bkgrd.Rebin(rbin)
   fullsim.Rebin(rbin)  
+  vh.Rebin(rbin)
+  uncert.Rebin(rbin)
 
   hstack = ROOT.THStack("MC", "MC")
   hstack.Add(red_bkgrd)
   hstack.Add(zz)
+  hstack.Add(vh)
+  hstack.Add(uncert)
   #hstack.Add(signal)
   hstack.Draw("hist")
 
@@ -205,13 +231,13 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
   hstack.SetMaximum(hstack.GetMaximum()*1.8)
   #signal.SetMaximum(maxval*1.8);
 
-  signal.GetXaxis().SetRangeUser(0, 500)
+  hstack.GetXaxis().SetRangeUser(0, 800)
   #signal.GetYaxis().SetRangeUser(0, 0.24)
   #red_bkgrd.GetXaxis().SetLimits(0, 200)
   #zz.GetXaxis().SetLimits(0, 200)
 
   hstack.GetXaxis().SetTitle(xaxis_title)
-  hstack.GetYaxis().SetTitle("Events / %i GeV" % ( (xhigh - xlow)/nbins * rbin) )
+  hstack.GetYaxis().SetTitle("Events / %0.1f GeV" % ( (1.0*xhigh - xlow)/nbins * rbin) )
     
 
   #zz.Fit("gaus")
@@ -238,24 +264,26 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
   if not blinded:
     data.Draw("same")
   #fullsim.Draw("hist")
-  signal.Draw("hist")
-  zz.Draw("hist same")
-  red_bkgrd.Draw("hist same")
+  #signal.Draw("hist")
+  #zz.Draw("hist same")
+  #red_bkgrd.Draw("hist same")
   #wz.GetFunction("gaus").Draw("same")
   #signal.Draw("hist same")
   #data.Draw("hist same")
 
-  l1 = ROOT.TLegend(0.50,0.63,0.70,0.93,"")
+  l1 = ROOT.TLegend(0.60,0.73,0.70,0.93,"")
   l1.AddEntry(red_bkgrd,"REDUCIBLE BKG","l")
   #l1.AddEntry(wz, "WZ", "l")
   l1.AddEntry(zz, "ZZ", "l")
+  l1.AddEntry(vh, "SM Zh (m_{H} = 125 GeV)", "l")
+  l1.AddEntry(uncert, "Red Bkgrd Uncert", "f")
   #l1.AddEntry(signal, "A->Zh (mA=%s GeV)" % mass,"l")
   l1.SetBorderSize(0)
   l1.SetFillColor(0)
   l1.SetTextSize(0.03)
   l1.Draw()
 
-  os.system("sleep 6")
+  #os.system("sleep 10")
 
   prod_label = ""
   for p in prods:
@@ -263,32 +291,34 @@ def make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh,bli
   #canvas.SetTitle("Reconstructed Z Mass")
   ofile.cd()
   canvas.Write()
-  canvas.SaveAs("control_plots/%s%s.png" % (prod_label, variable) )
+  if (len(sys.argv) == 2):
+    canvas.SaveAs("control_plots/%s/%s%s.png" % (channel, prod_label, variable) )
+  else: canvas.SaveAs("control_plots/combined/%s%s.png" % (prod_label, variable) )
   canvas.Close()
   ofile.Close()
 
 #make_control_plot(prods, variable, xaxis_title, rbin, nbins, xlow, xhigh, blinded=False, stripped=False)
 
 # ZH system plots
-make_control_plot((), 'Mass', "A Visible Mass", 2, 200, 0, 1600,True)
-make_control_plot((), 'A_SVfitMass', "A SV-fit Mass", 2, 200, 0, 1600,True)
+make_control_plot((), 'Mass', "A Visible Mass", 5, 200, 0, 1600,True)
+make_control_plot((), 'A_SVfitMass', "A SV-fit Mass", 5, 200, 0, 1600,True)
 
 # di-tau plots
-make_control_plot((3,4), 'Mass', "#tau#tau Visible Mass", 10, 200, 0, 200,True)
-make_control_plot((3,4), 'SVfitMass', "#tau#tau SV-fit Mass", 10, 300, 0, 300,True)
-make_control_plot((3,4), 'Eta', "#tau#tau Eta", 10, 100, 0, 2.4)
-make_control_plot((3,4), 'DR', "#tau#tau DR", 10, 100, 0, 10)
-make_control_plot((3,4), 'DPhi', "#tau#tau DPhi", 10, 180, 0, 180)
-make_control_plot((3,4), 'Pt', "#tau#tau Pt", 10, 100, 0, 100)
+#make_control_plot((3,4), 'Mass', "#tau#tau Visible Mass", 10, 200, 0, 200, True)
+#make_control_plot((3,4), 'SVfitMass', "#tau#tau SV-fit Mass", 10, 300, 0, 300,True)
+#make_control_plot((3,4), 'Eta', "#tau#tau #eta", 10, 100, -2.4, 2.4)
+#make_control_plot((3,4), 'DR', "#tau#tau #deltaR", 10, 100, 0, 10)
+#make_control_plot((3,4), 'DPhi', "#tau#tau #delta#phi", 10, 180, 0, 7)
+#make_control_plot((3,4), 'Pt', "#tau#tau p_{T}", 10, 100, 0, 100)
 
 # Z plots
-make_control_plot((1,2), 'Pt', 'Z Pt', 10, 100, 0, 100)
-make_control_plot((1,2), 'Mass', 'Z Mass', 10, 200, 0, 200)
-make_control_plot((1,2), 'DR', "Z products DR", 10, 100, 0, 10)
-make_control_plot((1,2), 'DPhi', "Z products DPhi", 10, 180, 0, 180) 
+#make_control_plot((1,2), 'Pt', 'Z p_{T}', 10, 100, 0, 100)
+#make_control_plot((1,2), 'Mass', 'Z Mass', 10, 200, 0, 200,True)
+#make_control_plot((1,2), 'DR', "Z products #deltaR", 10, 100, 0, 10)
+#make_control_plot((1,2), 'DPhi', "Z products #delta#phi", 10, 180, 0, 7) 
 
 # tau 1, tau 2 plots
-make_control_plot((3,), 'AbsEta', 'Tau1 Eta', 10, 100, 0, 2.4,False,True)
-make_control_plot((4,), 'AbsEta', 'Tau2 Eta', 10, 100, 0, 2.4,False,True)
-make_control_plot((3,), 'Pt', 'Tau1 Pt', 10, 100, 0, 100,False,True)
-make_control_plot((4,), 'Pt', 'Tau2 Pt', 10, 100, 0, 100,False,True)
+#make_control_plot((3,), 'AbsEta', '#tau_{1} Abs(#eta)', 10, 100, 0, 2.4,False,True)
+#make_control_plot((4,), 'AbsEta', '#tau_{2} Abs(#eta)', 10, 100, 0, 2.4,False,True)
+#make_control_plot((3,), 'Pt', '#tau_{1} p_{T}', 10, 100, 0, 100,False,True)
+#make_control_plot((4,), 'Pt', '#tau_{2} p_{T}', 10, 100, 0, 100,False,True)

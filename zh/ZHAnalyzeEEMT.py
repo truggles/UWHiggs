@@ -49,7 +49,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
 
     def leg3_id(self, row):
        # return bool(row.mPFIDTight) and selections.muIsoLoose(row, 'm') 
-         return bool(row.mPFIDTight) and bool( row.mRelPFIsoDB < 0.25 )
+         return bool(row.mPFIDTight) and selections.muIsoLoose(row, 'm')
 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso

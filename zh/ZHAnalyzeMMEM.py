@@ -47,7 +47,7 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def leg3_id(self, row):
-        return selections.elIsoLoose(row, 'e') and selections.eleID(row, 'e') and bool(row.eMissingHits <= 1)
+        return selections.elIsoLoose(row, 'e') and selections.eleID(row, 'e')# and bool(row.eMissingHits <= 1)
 
     def leg4_id(self, row):
         return selections.muIsoLoose(row, 'm3') and selections.muIDLoose(row, 'm3')
@@ -70,7 +70,7 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
         if not selections.signalElectronSelection(row,'e'): return False
         #if row.LT < 25: return False
         if (row.ePt + row.m3Pt < 25): return False
-        if row.eMissingHits > 1: return False
+        #if row.eMissingHits > 1: return False
         #if (row.e_m3_SVfitMass < 100 or row.e_m3_SVfitMass > 150): return False # for MSSM
         return True
 

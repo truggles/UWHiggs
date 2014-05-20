@@ -23,7 +23,7 @@ def muIsoLoose(row,muon):
     return objIsolation(row,muon) < 0.30
 
 def elIsoTight(row,el):
-    return objIsolation(row,el) < 0.15
+    return objIsolation(row,el) < 0.20 # used to be < 0.15
 
 def elIsoLoose(row,el):
     return objIsolation(row,el) < 0.30
@@ -65,13 +65,14 @@ def overlap(row,*args):
 
 def eleID(row, name):
     if getattr(row, getVar(name, 'Pt') )   < 10: return False
+    if getattr(row, getVar(name, 'MissingHits') ) >= 2: return False
     if getattr(row, getVar(name, 'AbsEta') ) < 0.8    and getattr(row, getVar(name, 'MVANonTrig')) > 0.5: return True
     if getattr(row, getVar(name, 'AbsEta') ) >= 0.8   and getattr(row, getVar(name, 'AbsEta')) < 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.12: return True
     if getattr(row, getVar(name, 'AbsEta') ) >= 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.6: return True
     return False
 
 def eleIDTight(row, name):
-    if (getattr(row, getVar(name, 'MissingHits') ) > 1 ): return False
+    if (getattr(row, getVar(name, 'MissingHits') ) >= 2 ): return False
     if (getattr(row, getVar(name, 'Pt') ) < 20. and  getattr(row, getVar(name, 'AbsEta') ) < 0.8 and getattr(row, getVar(name, 'MVANonTrig')) > 0.925): return True
     if (getattr(row, getVar(name, 'Pt') ) < 20. and getattr(row, getVar(name, 'AbsEta') ) >= 0.8 and getattr(row, getVar(name, 'AbsEta') ) < 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.915): return True
     if (getattr(row, getVar(name, 'Pt') ) < 20. and getattr(row, getVar(name, 'AbsEta') ) >= 1.479 and getattr(row, getVar(name, 'MVANonTrig')) > 0.965): return True

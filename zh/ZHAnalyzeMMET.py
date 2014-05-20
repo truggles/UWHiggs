@@ -49,7 +49,7 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def leg3_id(self, row):
-        return selections.eleIDTight(row,'e') and selections.elIsoTight(row, 'e') and (row.eMissingHits==0)##THIS SEEMS too low
+        return selections.eleIDTight(row,'e') and selections.elIsoTight(row, 'e')# and (row.eMissingHits==0)##THIS SEEMS too low
 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso

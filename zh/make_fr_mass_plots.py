@@ -1,18 +1,20 @@
 import ROOT
 import os
 
-jobid = "2013-07-17-8TeV-v1-ZH_light"
+#jobid = "2013-07-17-8TeV-v1-ZH_light"
+jobid = "2013-11-02-8TeV-v1-ZH"
 
-data_lumi = 19500.0
+data_lumi = 39425/2
 #wz_lumi = 1690320.0
-wz_lumi = 760148.520414
+wz_lumi = 1888432
 
 
-for channel, label in [("MMTT", "t1_t2_Mass"), ("EETT", "t1_t2_Mass"), ("MMMT", "m3_t_Mass"),
-	("EEMT", "m_t_Mass"), ("MMET", "e_t_Mass"), ("EEET", "e3_t_Mass")]:
+#for channel, label, realLeg in [("MMTT", "t1_t2_SVfitMass", 4), ("EETT", "t1_t2_SVfitMass", 4), ("MMMT", "m3_t_SVfitMass", 4),
+#	("EEMT", "m_t_SVfitMass", 4), ("MMET", "e_t_SVfitMass", 3), ("EEET", "e3_t_SVfitMass", 4), ("EEEM", "e3_m_SVfitMass", 3),
+#        ("MMEM", "e_m3_SVfitMass", 3)]:
 
 
-#for channel, label in [("MMEM", "e_m3_Mass"),("EEEM", "e3_m_Mass")]:
+for channel, label, realLeg in [("MMEM", "e_m3_SVfitMass", 3)]:
 
 #for channel, label in [("MMTT", "t1_t2_Mass"), ("EETT", "t1_t2_Mass"), ("MMMT", "m3_t_Mass"),
 #	("EEMT", "m_t_Mass"), ("EEET", "e3_t_Mass"), 
@@ -27,14 +29,16 @@ for channel, label in [("MMTT", "t1_t2_Mass"), ("EETT", "t1_t2_Mass"), ("MMMT", 
     # data same sign, background categories 0,1,2 and WZ with 4th leg real
     data_ss = data_file.Get("ss/All_Passed/%s" % label)
 
-    data_0 = data_file.Get("os/Leg3Failed_Leg4Failed/all_weights_applied/%s" % label)
+    data_0 = data_file.Get("ss/Leg3Failed_Leg4Failed/all_weights_applied/%s" % label)
 
-    data_1 = data_file.Get("os/Leg3Failed/leg3_weight/%s" % label)
+    data_1 = data_file.Get("ss/Leg3Failed/leg3_weight/%s" % label)
 
-    data_2 = data_file.Get("os/Leg4Failed/leg4_weight/%s" % label)
+    data_2 = data_file.Get("ss/Leg4Failed/leg4_weight/%s" % label)
+
+    data_oneleg = data_file.Get("ss/Leg%sFailed/leg%s_weight/%s" % (realLeg, realLeg, label))
   
-    wz_4R = wz_file.Get("os/All_Passed_Leg4Real/%s" % label)
-    print "os/All_Passed_Leg4Real/%s" % label
+    wz_4R = wz_file.Get("ss/All_Passed_Leg%sReal/%s" % (realLeg, label))
+    
     #scale to 19.5 fb^-1
     wz_4R.Scale(data_lumi/wz_lumi)
 
@@ -46,9 +50,10 @@ for channel, label in [("MMTT", "t1_t2_Mass"), ("EETT", "t1_t2_Mass"), ("MMMT", 
     fr_m1 = ROOT.TH1F(data_1)
     fr_m1.Add(data_2)
     fr_m1.Add(data_0, -1)
+   
 
     # 2 + WZ-4R
-    fr_m2 = ROOT.TH1F(data_2) # should be data_2
+    fr_m2 = ROOT.TH1F(data_oneleg) # should be data_2
     fr_m2.Add(wz_4R)
 
     # rebin histograms
@@ -63,7 +68,8 @@ for channel, label in [("MMTT", "t1_t2_Mass"), ("EETT", "t1_t2_Mass"), ("MMMT", 
     fr_m2.SetLineColor(38)
 
     fr_m1.GetXaxis().SetTitle(" \\tau\\tau SVMass (GeV), %s" % channel)
-
+    fr_m1.GetYaxis().SetTitle("nEvents per 20 GeV")
+    fr_m1.Sumw2()
     #fr_m2.Draw()
     #data_ss.Draw("same")
     #fr_m2.Draw("same")

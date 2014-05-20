@@ -57,8 +57,8 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book(folder, "doubleMuPrescale", "HLT prescale", 26, -5.5, 20.5)
 
     def leg3_id(self, row):
-        #return bool(row.m3PFIDTight) and selections.muIsoLoose(row, 'm3') ##THIS SEEMS too low
-        return selections.muIDLoose(row, 'm3') and bool(row.m3RelPFIsoDB < 0.25 )
+        return bool(row.m3PFIDTight) and selections.muIsoLoose(row, 'm3') ##THIS SEEMS too low
+        #return selections.muIDLoose(row, 'm3') and selections.muIsoLoose(row, 'm3') 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
 

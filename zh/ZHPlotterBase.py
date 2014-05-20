@@ -527,7 +527,7 @@ for channel in channels:
     shape_file = ROOT.TFile( os.path.join(plotter.outputdir, '%s_shapes_%s.root' % (channel.lower(), plotter.period)), 'RECREATE')
     shape_dir  = shape_file.mkdir( channel.lower()+'_zh' )
     #plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 15, shape_dir, unblinded=True)
-    plotter.write_shapes('A_SVfitMass', 15, shape_dir, unblinded=True)
+    plotter.write_shapes('A_SVfitMass', 20, shape_dir, unblinded=True)
     #plotter.write_cut_and_count('subMass', shape_dir, unblinded=True)
     shape_file.Close()
 

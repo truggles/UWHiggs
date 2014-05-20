@@ -64,6 +64,9 @@ class ZHAnalyzerBase(MegaBase):
     ## def get_channel(self):
     ##     return 'LL'
 
+    ## the 'isReal' methods were used for an alternative fake rate
+    ## estimation method which was used for validation purposes (AN-13-187
+    ## appendix)
     #@classmethod #staticmethod
     def leg4IsReal(self,row):
         plabel = self.H_decay_products()[1] # label of fourth leg 
@@ -85,6 +88,8 @@ class ZHAnalyzerBase(MegaBase):
             return bool(abs(getattr(row, '%sGenPdgId' % plabel)) == 13)
         return False
 
+    ## Calculate the mass of the 4-vector sum of the SV-fitted di-tau system
+    ## and the reconstructed Z boson (new for A -> Zh)
     def getZHSVMass(self, row):
         # Get pt, eta, phi, mass of sv-fitted di-tau system and build 4-vec
         sv_pt = getattr(row, "%s_%s_SVfitPt" % self.H_decay_products() )
@@ -307,11 +312,11 @@ class ZHAnalyzerBase(MegaBase):
         self.book(folder, "nvtx", "Number of vertices", 31, -0.5, 30.5)
         self.book(folder, "kinematicDiscriminant1", "pT(ZH)/(pT(Z) + pT(H))", 10, 0, 1)
         self.book(folder, "kinematicDiscriminant2", "pT(H)/(pT(Tau1) + pT(Tau2))", 10, 0, 1)
-        self.book(folder, "Mass", "A Candidate Mass", 200, 0, 1600)
+        self.book(folder, "Mass", "A Candidate Mass", 800, 0, 800)
         self.book(folder, "LT_Higgs", "scalar PT sum of Higgs candidate legs", 200, 0, 200)
         self.book(folder, "bjetCSVVeto", "bjetVeto", 10, -1, 2)
         self.book(folder, "bjetCSVVetoZHLikeNoJetId", "bjetCSVVetoZHLikeNoJetId", 10, -1, 2) 
-        self.book(folder, "A_SVfitMass", "A candidate reconstructed sv Mass", 200, 0, 1600) 
+        self.book(folder, "A_SVfitMass", "A candidate reconstructed sv Mass", 800, 0, 800) 
         return None
 
     def book_kin_histos(self, folder, Id):
@@ -339,11 +344,11 @@ class ZHAnalyzerBase(MegaBase):
 
     def book_resonance_histos(self, folder, products, name):
         self.book(folder, "%s_%s_Pt"     % products, "%s candidate Pt"              % name, 100, 0, 100)
-        self.book(folder, "%s_%s_Eta" % products, "%s candidate Eta"          % name, 100, 0, 2.4)
+        self.book(folder, "%s_%s_Eta" % products, "%s candidate Eta"          % name, 100, -2.4, 2.4)
         #self.book(folder, "%s_%s_SVfitMass"   % products, "%s candidate SVfit Mass"            % name, 10, 0, 150)
         self.book(folder, "%s_%s_Mass"   % products, "%s candidate Mass"            % name, 200, 0, 200)
         self.book(folder, "%s_%s_DR"     % products, "%s decay products #DeltaR"    % name, 100, 0, 10)
-        self.book(folder, "%s_%s_DPhi"   % products, "%s decay products #Delta#phi" % name, 180, 0, 180)
+        self.book(folder, "%s_%s_DPhi"   % products, "%s decay products #Delta#phi" % name, 180, 0, 7)
 
     def book_Z_histos(self, folder):
         self.book_resonance_histos(folder, self.Z_decay_products(), 'Z')

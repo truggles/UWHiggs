@@ -1,29 +1,30 @@
 import ROOT
 import os
 
-jobid = "2013-07-17-8TeV-v1-ZH_light"
+#jobid = "2013-07-17-8TeV-v1-ZH_light"
+jobid = "2013-11-02-8TeV-v1-ZH"
 
-data_lumi = 19500.0
-#data_lumi = 27
+data_lumi = 39425/2
 #wz_lumi = 1690320.0
-wz_lumi = 760148.520414
+wz_lumi = 1888432
 
 data_file = ROOT.TFile("results/%s/ZHAnalyzeCOMB/data.root" % jobid, "READ")
 wz_file = ROOT.TFile("results/%s/ZHAnalyzeCOMB/WZJetsTo3LNu_pythia.root" % jobid, "READ")
 
 # data same sign, background categories 0,1,2 and WZ with 4th leg real
-data_ss = ROOT.TH1F("data", "data", 200, 0, 200)
-data_0 = ROOT.TH1F("data_0", "data_0", 200, 0, 200)
-data_1 = ROOT.TH1F("data_1", "data_1", 200, 0, 200)
-data_2 = ROOT.TH1F("data_2", "data_2", 200, 0, 200)
-wz_4R = ROOT.TH1F("wz", "wz", 200, 0, 200)
-data_2s = ROOT.TH1F("wz", "wz", 200, 0, 200) # just because in xxEM channels we want e to fail, which is technically the third leg
+data_ss = ROOT.TH1F("data", "data", 300, 0, 300)
+data_0 = ROOT.TH1F("data_0", "data_0", 300, 0, 300)
+data_1 = ROOT.TH1F("data_1", "data_1", 300, 0, 300)
+data_2 = ROOT.TH1F("data_2", "data_2", 300, 0, 300)
+wz_4R = ROOT.TH1F("wz", "wz", 300, 0, 200)
+data_2s = ROOT.TH1F("wz", "wz", 300, 0, 300) # just because in xxEM channels we want e to fail, which is technically the third leg
 
+#for channel, label, realLeg in [("EEEM", "e3_m_SVfitMass",3), ("MMEM", "e_m3_SVfitMass",3)]:
 for channel, label, realLeg in [("MMTT", "t1_t2_SVfitMass",4), ("MMMT", "m3_t_SVfitMass",4),
 	("EEMT", "m_t_SVfitMass",4), ("MMET", "e_t_SVfitMass",4), ("EEET", "e3_t_SVfitMass",4),
         ("EEEM", "e3_m_SVfitMass",3), ("MMEM", "e_m3_SVfitMass",3)]:
-#for channel, label in [("MMTT", "t1_t2_SVfitMass"), ("MMMT", "m3_t_SVfitMass"),
-#       ("EEMT", "m_t_SVfitMass"), ("EEET", "e3_t_SVfitMass")]:
+#for channel, label, realLeg in [("MMTT", "t1_t2_SVfitMass",4)]:
+#for channel, label, realLeg in  [("EEET", "e3_t_SVfitMass", 4), ("MMET", "e_t_SVfitMass", 4)]:
 
 
     print "ss/All_Passed/%s" % label
@@ -80,6 +81,7 @@ fr_m2.SetLineColor(38)
 
 fr_m1.GetXaxis().SetTitle(" \\tau\\tau SVMass (GeV)")
 
+#data_ss.Draw()
 fr_m1.Draw()
 fr_m2.Draw("same")
 #data_ss.Draw("same")
@@ -113,7 +115,8 @@ p.SetTextSize(0.90 * top_margin)
 right_margin = pad.GetRightMargin()
 p.DrawLatex(1 - right_margin, ypos, "#sqrt{s}=%iTeV" % sqrts)
  
-canvas.SaveAs("frmass_plots/Validation_AltMethod.png")
+#canvas.SaveAs("frmass_plots/Validation_AltMethod.png")
+canvas.SaveAs("frmass_plots/frmass_comb.png")
 
-os.system("sleep 10")
+os.system("sleep 5")
 pad.Close()

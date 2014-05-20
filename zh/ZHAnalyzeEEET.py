@@ -52,7 +52,7 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         #if not (selections.elIsoTight(row, 'e3')): print "failed elIsoTight"
         #print getattr(row, 'e3RelPFIsoDB')
         #return row.e3MVAIDH2TauWP and selections.elIsoLoose(row, 'e3') and (row.e3MissingHits==0)##THIS SEEMS too low
-        return selections.eleIDTight(row, 'e3') and selections.elIsoTight(row, 'e3') and (row.e3MissingHits==0)
+        return selections.eleIDTight(row, 'e3') and selections.elIsoTight(row, 'e3')# and (row.e3MissingHits==0)
 
     def leg4_id(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
