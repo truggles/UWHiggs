@@ -26,16 +26,16 @@ class EFakeRateMMET(EMUFakeRatesBase.EMUFakeRatesBase):
         #return selections.signalElectronSelection(row,'e')
 
         if not selections.ZMuMuSelection(row): return False
-        if selections.overlap(row, 'm1','m2','e','t') : return False
-        if not selections.signalTauSelection(row,'t',5): return False
-        #if not bool(row.tAntiMuonLoose2): return False
+        if selections.generalCuts(row, 'm1','m2','e','t') : return False
+        if not selections.looseTauSelection(row,'t',5): return False
+        if not bool(row.tAntiMuonLoose2): return False
         if not bool(row.tAntiElectronMVA3Tight): return False
         #if not bool(row.tAntiElectronTight): return False
         #if row.LT < 45: return False
-        return selections.signalElectronSelection(row,'e')
+        return selections.looseElectronSelection(row,'e')
     
     def lepton_passes_tight_iso(self, row):
         return selections.elIsoTight(row, 'e') and selections.eleIDTight(row, 'e') #bool( row.eMVAIDH2TauWP ) ##THIS SEEMS too low        
 
     def lepton_passes_loose_iso(self, row):
-        return selections.elIsoLoose(row, 'e')  and selections.eleID(row, 'e') ##THIS SEEMS too low        
+        return selections.elIsoLoose(row, 'e')  and selections.eleIDLoose(row, 'e') ##THIS SEEMS too low        

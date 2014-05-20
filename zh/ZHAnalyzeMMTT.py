@@ -50,17 +50,15 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_Z_histos(folder)
         self.book_H_histos(folder)
 
-    def leg3_id(self, row):
+    def tau1Selection(self, row):
         return bool(row.t1MediumIso3Hits)
        # return bool(row.t1MediumIso) 
 
-    def leg4_id(self, row):
+    def tau2Selection(self, row):
         return bool(row.t2MediumIso3Hits)
       #  return bool(row.t2MediumIso)
 
     def red_shape_cuts(self, row):
-        if not selections.ZMuMuSelection(row): return False
-        if (row.t1Pt + row.t2Pt < 70): return False
         if (row.t1LooseMVA2Iso <= 0.0): return False
         if (row.t2LooseMVA2Iso <= 0.0): return False
         return True
@@ -71,17 +69,15 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         Excludes FR object IDs and sign cut.
         '''
         if not selections.ZMuMuSelection(row): return False
-        if selections.overlap(row, 'm1','m2','t1','t2') : return False
-        if not selections.signalTauSelection(row,'t1'): return False
-        if not selections.signalTauSelection(row,'t2'): return False
+        if selections.generalCuts(row, 'm1','m2','t1','t2') : return False
+        if not selections.looseTauSelection(row,'t1'): return False
+        if not selections.looseTauSelection(row,'t2'): return False
         if not bool(row.t1AntiMuonLoose2): return False
         if not bool(row.t1AntiElectronLoose): return False
         if not bool(row.t2AntiMuonLoose2): return False
         if not bool(row.t2AntiElectronLoose): return False
         if row.t1Pt < row.t2Pt: return False #Avoid double counting
-        #if row.LT < 75: return False
         if (row.t1Pt + row.t2Pt < 70): return False
-        #if (row.t1_t2_SVfitMass < 100 or row.t1_t2_SVfitMass > 150): return False # for MSSM
         return True
 
     def sign_cut(self, row):

@@ -46,33 +46,36 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_Z_histos(folder)
         self.book_H_histos(folder)
 
-    def leg3_id(self, row):
-        return selections.elIsoLoose(row, 'e') and selections.eleID(row, 'e')# and bool(row.eMissingHits <= 1)
+    def tau1Selection(self, row):
+        return selections.elIsoLoose(row, 'e') and selections.eleIDLoose(row, 'e')# and bool(row.eMissingHits <= 1)
 
-    def leg4_id(self, row):
+    def tau2Selection(self, row):
         return selections.muIsoLoose(row, 'm3') and selections.muIDLoose(row, 'm3')
 
     def red_shape_cuts(self, row):
-        if not selections.ZMuMuSelection(row): return False
-        if (row.ePt + row.m3Pt < 25): return False
+        # looser final selections after preselection, used for reducible shape region
         if (row.eRelPFIsoDB > 2.0): return False
         if (row.m3RelPFIsoDB > 2.0): return False
         return True
 
     def preselection(self, row):
-        ''' Preselection applied to events.
-
-        Excludes FR object IDs and sign cut.
-        '''
+          
+        if not selections.generalCuts(row, 'm1','m2','e','m3') : return False
         if not selections.ZMuMuSelection(row): return False
-        if selections.overlap(row, 'm1','m2','e','m3') : return False
-        if not selections.signalMuonSelection(row,'m3'): return False
-        if not selections.signalElectronSelection(row,'e'): return False
-        #if row.LT < 25: return False
+        if not selections.looseElectronSelection(row, 'e'): return False
+        if not selections.looseMuonSelection(row, 'm3'): return False
         if (row.ePt + row.m3Pt < 25): return False
+
+        #if not selections.ZMuMuSelection(row): return False
+        #if selections.overlap(row, 'm1','m2','e','m3') : return False
+        #if not selections.signalMuonSelection(row,'m3'): return False
+        #if not selections.signalElectronSelection(row,'e'): return False
+        #if row.LT < 25: return False
+        #if (row.ePt + row.m3Pt < 25): return False
         #if row.eMissingHits > 1: return False
         #if (row.e_m3_SVfitMass < 100 or row.e_m3_SVfitMass > 150): return False # for MSSM
-        return True
+        #return True
+        
 
     def sign_cut(self, row):
         ''' Returns true if e and mu are OS '''

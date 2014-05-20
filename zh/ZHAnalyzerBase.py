@@ -124,8 +124,8 @@ class ZHAnalyzerBase(MegaBase):
         for sign in ['ss', 'os']:
              #for failing_objs in [(), (1,2), (1,), (2,), (3,), (4,), (3,4), (1,2,3,4)]:
              
-             for failing_objs in [(), (3,), (4,), (3,4), (0,), (10,)]: # 0 special case for real4 check, 10 for real3 check
-             #for failing_objs in [(), (3,), (4,), (3,4)]:
+             #for failing_objs in [(), (3,), (4,), (3,4), (0,), (10,)]: # 0 special case for real4 check, 10 for real3 check
+             for failing_objs in [(), (3,), (4,), (3,4)]:
                 region_label = '_'.join(['Leg%iFailed' % obj for obj in failing_objs]) if len(failing_objs) else 'All_Passed'
                 if 0 in failing_objs:
                     region_label = 'All_Passed_Leg4Real'
@@ -134,26 +134,25 @@ class ZHAnalyzerBase(MegaBase):
                 flag_map[(sign,region_label)] = {
                     'selection' : {
                         self.sign_cut  : (sign == 'os'), 
-                        self.leg3_id : (not (3 in failing_objs) ),
-                        self.leg4_id : (not (4 in failing_objs) ),
+                        self.tau1Selection : (not (3 in failing_objs) ),
+                        self.tau2Selection : (not (4 in failing_objs) ),
                         },
                     'weights'   : [weightsAvail[i] for i in failing_objs if not (0 in failing_objs or 10 in failing_objs)] 
                     }
-        # make special directories for reducible background shape
-        for failed_objects in [(3,), (4,), (3,4)]:
-            
-            region_label = '_'.join(["%i_failed_red_shape" % obj for obj in failed_objects])
-            flag_map[('ss', region_label)] = {
-                'selection' : {
-                    self.sign_cut : False, # same sign
-                    self.red_shape_cuts : True,
-                    self.leg3_id : (not (3 in failed_objects) ),
-                    self.leg4_id : (not (4 in failed_objects) ), 
-                 },
-                 'weights' : [ weightsAvail[i] for i in failed_objects]
-            }
 
-        #print flag_map.keys()
+        # make special directory for reducible background shape
+        # looser selections for the sake of
+        # better statistics. These shapes will be normalized to the 1+2-0 yield.      
+        region_label = 'All_Passed_red_shape'
+        flag_map[('ss', region_label)] = {
+            'selection' : {
+                self.sign_cut : False, # same sign
+                self.red_shape_cuts : True, 
+             },
+             'weights' : [ weightsAvail[i] for i in ()]
+        }
+
+      
         return flag_map
 
     def begin(self): 
@@ -271,8 +270,10 @@ class ZHAnalyzerBase(MegaBase):
 
             # Figure out which folder/region we are in, multiple regions allowed
             for folder, region_info in cut_region_map.iteritems():
-                if not (preselection(row) or 'red_shape' in folder[1] ):
-                    continue
+                #if not (preselection(row) or 'red_shape' in folder[1] ):
+                #    continue
+                if not preselection(row): continue
+                
            
                 selection = region_info['selection']
                 #if counter < 200:

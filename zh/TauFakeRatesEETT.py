@@ -13,12 +13,13 @@ class TauFakeRatesEETT(TauFakeRatesBase.TauFakeRatesBase):
         
     def zSelection(self, row):
         if not selections.ZEESelection(row): return False
+        if not selections.generalCuts(row, 'e1','e2','t1','t2')
         if (row.t1Pt + row.t2Pt < 50): return False
         if not bool(row.t1AntiMuonLoose2): return False
-        if not bool(row.t1AntiElectronMVA3Tight): return False
+        if not bool(row.t1AntiElectronLoose): return False
         if not bool(row.t2AntiMuonLoose2): return False
-        if not bool(row.t2AntiElectronMVA3Tight): return False
-        return (not selections.overlap(row, 'e1','e2','t1','t2'))
+        if not bool(row.t2AntiElectronLoose): return False
+        return True
 
 
         

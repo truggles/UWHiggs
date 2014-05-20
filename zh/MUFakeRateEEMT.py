@@ -25,16 +25,16 @@ class MUFakeRateEEMT(EMUFakeRatesBase.EMUFakeRatesBase):
         ## return True
         #return selections.signalMuonSelection(row,'m')
 
-        if not selections.ZEESelectionNoVetos(row): return False
-        if selections.overlap(row, 'e1','e2','m','t') : return False
-        if not selections.signalTauSelection(row,'t',5): return False
+        if not selections.ZEESelection(row): return False
+        if selections.generalCuts(row, 'e1','e2','m','t') : return False
+        if not selections.looseTauSelection(row,'t',5): return False
         if not bool(row.tAntiMuonTight2): return False
-        #if not bool(row.tAntiElectronLoose): return False
-        return selections.signalMuonSelection(row,'m')
+        if not bool(row.tAntiElectronLoose): return False
+        return selections.looseMuonSelection(row,'m')
 
     def lepton_passes_tight_iso(self, row):
-        return selections.muIsoTight(row, 'm') and bool(getattr(row, 'mPFIDTight') ) ##THIS SEEMS too low        
+        return selections.muIsoTight(row, 'm') and selections.muIDTight(row, 'm')
 
     def lepton_passes_loose_iso(self, row):
-        return selections.muIsoLoose(row, 'm') and selections.muIDLoose(row, 'm') ##THIS SEEMS too low        
+        return selections.muIsoLoose(row, 'm') and selections.muIDLoose(row, 'm')        
     

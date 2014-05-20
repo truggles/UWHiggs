@@ -53,8 +53,8 @@ class TauFakeRatesBase(MegaBase):
 
         def preselection(self, row):
             if not self.zSelection(row):     return False
-            if not selections.signalTauSelection(row, 't1'): return False
-            if not selections.signalTauSelection(row, 't2'): return False
+            if not selections.looseTauSelection(row, 't1'): return False
+            if not selections.looseTauSelection(row, 't2'): return False
             #if not bool(row.t1AntiMuonLoose2): return False
             #if not bool(row.t1AntiElectronLoose): return False
             #if not bool(row.t2AntiMuonLoose2): return False

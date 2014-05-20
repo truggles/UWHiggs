@@ -48,15 +48,13 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_Z_histos(folder)
         self.book_H_histos(folder)
 
-    def leg3_id(self, row):
+    def tau1Selection(self, row):
         return selections.eleIDTight(row,'e') and selections.elIsoTight(row, 'e')# and (row.eMissingHits==0)##THIS SEEMS too low
 
-    def leg4_id(self, row):
+    def tau2Selection(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
 
     def red_shape_cuts(self, row):
-        if not selections.ZMuMuSelection(row): return False
-        if (row.ePt + row.tPt < 30): return False
         if (row.eRelPFIsoDB > 2.0): return False
         if (row.tLooseMVA2Iso <= 0.0): return False
         return True
@@ -68,15 +66,12 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         '''
         #Z Selection
         if not selections.ZMuMuSelection(row): return False
-        if selections.overlap(row, 'm1','m2','e','t') : return False
-        if not selections.signalTauSelection(row,'t'): return False
+        if selections.generalCuts(row, 'm1','m2','e','t') : return False
+        if not selections.looseTauSelection(row,'t'): return False
         if not bool(row.tAntiMuonLoose2): return False
         if not bool(row.tAntiElectronMVA3Tight): return False
-        #if not bool(row.tAntiElectronTight): return False
-        #if row.LT < 45: return False
         if (row.ePt + row.tPt < 30): return False
-        #if (row.e_t_SVfitMass < 100 or row.e_t_SVfitMass > 150): return False # for MSSM
-        return selections.signalElectronSelection(row,'e')
+        return selections.looseElectronSelection(row,'e')
 
     def sign_cut(self, row):
         ''' Returns true if muons are SS '''

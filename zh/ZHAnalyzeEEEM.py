@@ -47,16 +47,13 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_Z_histos(folder)
         self.book_H_histos(folder)
 
-    def leg3_id(self, row):
-       # return selections.elIsoLoose(row, 'e3') and bool(row.e3MVAIDH2TauWP) and bool(row.e3MissingHits <= 1)
-        return selections.elIsoLoose(row, 'e3') and selections.eleID(row, 'e3') and bool(row.e3MissingHits <= 1)
+    def tau1Selection(self, row):
+        return selections.elIsoLoose(row, 'e3') and selections.eleIDLoose(row, 'e3')
 
-    def leg4_id(self, row):
+    def tau2Selection(self, row):
         return selections.muIsoLoose(row, 'm') and selections.muIDLoose(row, 'm')
 
     def red_shape_cuts(self, row):
-        if not selections.ZEESelection(row): return False
-        if (row.e3Pt + row.mPt < 25): return False
         if (row.e3RelPFIsoDB > 2.0): return False
         if (row.mRelPFIsoDB > 2.0): return False
         return True
@@ -67,13 +64,10 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         Excludes FR object IDs and sign cut.
         '''
         if not selections.ZEESelection(row): return False
-        if selections.overlap(row, 'e1','e2','e3','m') : return False
-        if not selections.signalMuonSelection(row,'m'): return False
-        if not selections.signalElectronSelection(row,'e3'): return False
-        #if row.LT < 25: return False
+        if selections.generalCuts(row, 'e1','e2','e3','m') : return False
+        if not selections.looseMuonSelection(row,'m'): return False
+        if not selections.looseElectronSelection(row,'e3'): return False
         if (row.e3Pt + row.mPt < 25): return False
-        #if row.e3MissingHits > 1: return False
-        #if (row.e3_m_SVfitMass < 100 or row.e3_m_SVfitMass > 150): return False # for MSSM
         return True
 
     def sign_cut(self, row):

@@ -48,22 +48,20 @@ def Vetos(row):
     '''
     applies b-tag, muon, electron and tau veto
     '''
-    #if bool(row.bjetCSVVeto):      return False
     if bool(row.bjetCSVVetoZHLikeNoJetId_2): return False
-    #if bool(row.muGlbIsoVetoPt10): return False
-    #if bool(row.muVetoPt5): return False
-    #if bool(row.tauHpsVetoPt20):   return False
-    #if bool(row.eVetoMVAIso):      return False
     if bool(row.muVetoZH): return False
-    #if bool(row.muVetoPt15IsoIdVtx): return False
     if bool(row.eVetoZH): return False
-    #if bool(row.tauVetoZH): return False
     return True
 
 def overlap(row,*args):
+    ## also need dZ < 0.1cm cut (impact parameter)
     return any( map( lambda x: x < 0.1, [getattr(row,'%s_%s_DR' % (l1,l2) ) for l1 in args for l2 in args if l1 <> l2 and hasattr(row,'%s_%s_DR' % (l1,l2) )] ) )
 
-def eleID(row, name):
+def generalCuts(row, *args):
+    if overlap(row, *args): return False
+    return Vetos(row)
+
+def eleIDLoose(row, name):
     if getattr(row, getVar(name, 'Pt') )   < 10: return False
     if getattr(row, getVar(name, 'MissingHits') ) >= 2: return False
     if getattr(row, getVar(name, 'AbsEta') ) < 0.8    and getattr(row, getVar(name, 'MVANonTrig')) > 0.5: return True
@@ -86,30 +84,37 @@ def muIDLoose(row, name):
     if not bool(getattr(row, getVar(name, 'IsGlobal'))): return False
     if not bool(getattr(row, getVar(name, 'IsTracker'))): return False
     if not bool(getattr(row, getVar(name, 'IsPFMuon'))): return False
-    #return  bool(getattr(row, getVar(name, 'PFIDTight')))
     return True
 
+def muIDTight(row, name):
+    return bool(getattr(row, getVar(name, 'PFIDTight') ) )
 
-
-def ZMuMuSelectionNoVetos(row):
+def ZMuMuSelection(row):
     '''
     Z Selection as AN
     '''
     #Z Selection
     if not (row.doubleMuPass > 0 and row.doubleMuTrkPass > 0):  return False
-    if row.m1Pt < row.m2Pt:                            return False
-    if row.m1Pt < 20:                                  return False
-    if row.m2Pt < 10:                                  return False
-    if row.m1AbsEta > 2.4:                             return False
-    if row.m2AbsEta > 2.4:                             return False
-    if abs(row.m1DZ) > 0.1:                            return False
-    if abs(row.m2DZ) > 0.1:                            return False
-    if not muIDLoose(row,'m1'):                      return False
-    if not muIsoLoose(row,'m1'):                       return False
-    if not muIDLoose(row,'m2'):                      return False
-    if not muIsoLoose(row,'m2'):                       return False
-    if bool(row.m1_m2_SS):                             return False
-    if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 :   return False
+
+    if not tightMuonSelection(row, 'm1'):            return False
+    if not tightMuonSelection(row, 'm2'):            return False
+    if row.m1Pt < 20:                                return False
+    if bool(row.m1_m2_SS):                           return False
+    if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 : return False
+
+    #if row.m1Pt < row.m2Pt:                            return False
+    #if row.m1Pt < 20:                                  return False
+    #if row.m2Pt < 10:                                  return False
+    #if row.m1AbsEta > 2.4:                             return False
+    #if row.m2AbsEta > 2.4:                             return False
+    #if abs(row.m1DZ) > 0.1:                            return False
+    #if abs(row.m2DZ) > 0.1:                            return False
+    #if not muIDLoose(row,'m1'):                      return False
+    #if not muIsoLoose(row,'m1'):                       return False
+    #if not muIDLoose(row,'m2'):                      return False
+    #if not muIsoLoose(row,'m2'):                       return False
+    #if bool(row.m1_m2_SS):                             return False
+    #if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 :   return False
     # a bit of a hack in an attempt to sync
     #if bool(row.m1MatchesMu17Ele8IsoPath > 0): return False
     #if bool(row.m2MatchesMu17Ele8IsoPath > 0): return False
@@ -118,62 +123,80 @@ def ZMuMuSelectionNoVetos(row):
     return True
 #return MuTriggerMatching(row)
 
-def ZMuMuSelection(row):
-    return ZMuMuSelectionNoVetos(row) and Vetos(row)
-
-def ZEESelectionNoVetos(row):
+def ZEESelection(row):
     '''
     Z Selection as AN
     '''
-    if not row.doubleEPass > 0:                      return False
-    if row.e1Pt < row.e2Pt:                          return False
+    if not tightElectronSelection(row, 'e1'):        return False
+    if not tightElectronSelection(row, 'e2'):        return False
     if row.e1Pt < 20:                                return False
-    if row.e2Pt < 10:                                return False
-    if row.e1AbsEta > 2.5:                           return False
-    if row.e2AbsEta > 2.5:                           return False
-    if abs(row.e1DZ) > 0.1:                          return False
-    if abs(row.e2DZ) > 0.1:                          return False
-    if not eleID(row, 'e1'):                         return False
-    if not elIsoLoose(row, 'e1'):                    return False
-    if not eleID(row, 'e2'):                         return False
-    if not elIsoLoose(row, 'e1'):                    return False
     if bool(row.e1_e2_SS):                           return False
     if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
+
+    if not row.doubleEPass > 0:                      return False
+    #if row.e1Pt < row.e2Pt:                          return False
+    #if row.e1Pt < 20:                                return False
+    #if row.e2Pt < 10:                                return False
+    #if row.e1AbsEta > 2.5:                           return False
+    #if row.e2AbsEta > 2.5:                           return False
+    #if abs(row.e1DZ) > 0.1:                          return False
+    #if abs(row.e2DZ) > 0.1:                          return False
+    #if not eleID(row, 'e1'):                         return False
+    #if not elIsoLoose(row, 'e1'):                    return False
+    #if not eleID(row, 'e2'):                         return False
+    #if not elIsoLoose(row, 'e1'):                    return False
+    #if bool(row.e1_e2_SS):                           return False
+    #if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
     return True
 #return ElTriggerMatching(row)
 
-def ZEESelection(row):
-    return ZEESelectionNoVetos(row) and Vetos(row)
-
-def signalMuonSelection(row,muId):
+def looseMuonSelection(row,muId):
     '''
     Basic selection for signal muons (the ones coming from Higgs). No Isolation applied
     '''
     if getattr(row, getVar(muId,'Pt') ) < 10:              return False
     if getattr(row, getVar(muId,'AbsEta') ) > 2.4:         return False
-    if abs(getattr(row, getVar(muId,'DZ') )) > 0.1:        return False
-        #if not bool(getattr(row, '%sPFIDTight' % muId) ): return False
-    return True
+    if bool(getattr(row, getVar(name, 'IsGlobal'))) or bool(getattr(row, getVar(name, 'IsTracker'))): return True
+    return False
 
-def signalTauSelection(row, tauId, ptThr = 15):
+def tightMuonSelection(row, muId):
+    if getattr(row, getVar(muId,'Pt') ) < 10:              return False
+    if getattr(row, getVar(muId,'AbsEta') ) > 2.4:         return False
+    if not muIDLoose(row, muId): return False
+    return muIsoLoose(row, muId)
+
+def looseTauSelection(row, tauId, ptThr = 15):
     '''
     Basic selection for signal hadronic (the ones coming from Higgs). No Isolation is applied, but DecayMode is
     '''
     if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
     if getattr( row, getVar(tauId, 'Pt') )  < ptThr:                   return False
     if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
-    if abs(getattr( row, getVar(tauId, 'DZ') ) ) > 0.1:                return False
-    #if abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) > 0.898:      return False #Veto Btagged taus
+    return True
+
+def tightTauSelection(row, tauId, ptThr = 15):
+    
+    if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
+    if getattr( row, getVar(tauId, 'Pt') )  < ptThr:                   return False
+    if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
+    if not bool( getattr( row, getVar(tauId, 'AntiMuonLoose2') ) ):      return False
+    if not bool( getattr( row, getVar(tauId, 'AntiElectronLoose') ) ):      return False
+    if not bool( getattr( row, getVar(tauId, 'LooseIso3Hits') ) ):      return False
     return True
 
 
-def signalElectronSelection(row, elId):
+def looseElectronSelection(row, elId):
     '''
     Basic selection for signal electrons (the ones coming from Higgs). No Isolation applied
     '''
     if getattr(row, getVar(elId, 'Pt') ) < 10:                 return False
     if getattr(row, getVar(elId, 'AbsEta') ) > 2.5:            return False
-    if abs(getattr(row, getVar(elId, 'DZ') )) > 0.1:           return False
-        #if not bool(getattr(row, '%sMVAIDH2TauWP' % elId) ): return False
+    return True
+
+def tightElectronSelection(row, elId):
+    if getattr(row, getVar(elId, 'Pt') ) < 10:                 return False
+    if getattr(row, getVar(elId, 'AbsEta') ) > 2.5:            return False
+    if not eleIDLoose(row, elId): return False
+    if not elIsoLoose(row, elId): return False
     return True
     
