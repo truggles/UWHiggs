@@ -57,7 +57,7 @@ class ZHAnalyzerBase(MegaBase):
         self.hfunc   = { #maps the name of non-trivial histograms to a function to get the proper value, the function MUST have two args (evt and weight). Used in fill_histos later
             'nTruePU' : lambda row, weight: row.nTruePU,
             'weight'  : lambda row, weight: weight,
-            'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int(row.evt)/10**5,int(row.evt)%10**5,getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_Mass' % self.H_decay_products())] ),
+            'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,row.evt,getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products())] ),
             }
         #print '__init__->self.channel %s' % self.channel
         

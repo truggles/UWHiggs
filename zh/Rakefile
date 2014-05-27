@@ -44,8 +44,8 @@ samples = Hash[
   "diboson" => get_sample_names('WZ') + get_sample_names('WWJet') + get_sample_names('ZZ'), #Array['ZZJetsTo4L_pythia'] + 
   #"signal" => get_sample_names('VH') + get_sample_names('WH'),
   "signal" => Array['VH_H2Tau_M-125'],
-  "signal_mmtt" => get_sample_names('Zh-mmtt') + Array['VH_H2Tau_M-125'],
-  "signal_eett" => get_sample_names('Zh-eett') + Array['VH_H2Tau_M-125'],
+  "signal_mmtt" => get_sample_names('Zh-mmtt'),# + Array['VH_H2Tau_M-125'],
+  "signal_eett" => get_sample_names('Zh-eett'),# + Array['VH_H2Tau_M-125'],
   "fullsim" => get_sample_names('FullSim'),
   #"signal_125" => Array['VH_H2Tau_M-125'],
   # Automagically figure out what data samples we have
