@@ -26,7 +26,7 @@ class EFakeRateMMET(EMUFakeRatesBase.EMUFakeRatesBase):
         #return selections.signalElectronSelection(row,'e')
 
         if not selections.ZMuMuSelection(row): return False
-        if selections.generalCuts(row, 'm1','m2','e','t') : return False
+        if not selections.generalCuts(row, 'm1','m2','e','t') : return False
         if not selections.looseTauSelection(row,'t',5): return False
         if not bool(row.tAntiMuonLoose2): return False
         if not bool(row.tAntiElectronMVA3Tight): return False

@@ -69,7 +69,7 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         Excludes FR object IDs and sign cut.
         '''
         if not selections.ZMuMuSelection(row): return False
-        if selections.generalCuts(row, 'm1','m2','t1','t2') : return False
+        if not selections.generalCuts(row, 'm1','m2','t1','t2') : return False
         if not selections.looseTauSelection(row,'t1'): return False
         if not selections.looseTauSelection(row,'t2'): return False
         if not bool(row.t1AntiMuonLoose2): return False

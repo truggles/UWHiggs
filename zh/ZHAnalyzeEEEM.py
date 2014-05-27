@@ -64,7 +64,7 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         Excludes FR object IDs and sign cut.
         '''
         if not selections.ZEESelection(row): return False
-        if selections.generalCuts(row, 'e1','e2','e3','m') : return False
+        if not selections.generalCuts(row, 'e1','e2','e3','m') : return False
         if not selections.looseMuonSelection(row,'m'): return False
         if not selections.looseElectronSelection(row,'e3'): return False
         if (row.e3Pt + row.mPt < 25): return False

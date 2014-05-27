@@ -14,7 +14,7 @@ class TauFakeRatesMMTT(TauFakeRatesBase.TauFakeRatesBase):
         
     def zSelection(self, row):
         if not selections.ZMuMuSelection(row): return False
-        return selections.generalCuts(row, 'm1','m2','t1','t2')
+        if not selections.generalCuts(row, 'm1','m2','t1','t2'): return False
         if (row.t1Pt + row.t2Pt < 50): return False
         if not bool(row.t1AntiMuonLoose2): return False
         if not bool(row.t1AntiElectronLoose): return False

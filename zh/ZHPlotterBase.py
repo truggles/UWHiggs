@@ -170,6 +170,7 @@ class ZHPlotterBase(Plotter):
         cat0   = 'os/Leg3Failed_Leg4Failed/all_weights_applied/'
         cat1   = 'os/Leg3Failed/leg3_weight/'
         cat2   = 'os/Leg4Failed/leg4_weight/'
+        cat_red = 'ss/All_Passed_red_shape/'
 
         # View of weighted obj1-fails data
         cat1_view = views.SubdirectoryView(all_data_view, cat1)
@@ -177,6 +178,8 @@ class ZHPlotterBase(Plotter):
         cat2_view = views.SubdirectoryView(all_data_view, cat2)
         # View of weighted obj1&2-fails data
         cat0_view = views.SubdirectoryView(all_data_view, cat0)
+
+        cat_red_view = views.SubdirectoryView(all_data_view, cat_red)
 
         subtract_cat0_view = views.ScaleView(cat0_view, -1)
         # Corrected fake view
@@ -188,6 +191,8 @@ class ZHPlotterBase(Plotter):
             views.StyleView(
                 views.SubdirectoryView(all_data_view, 'os/p1p2p3/c1'),
                 **data_styles['TT*']), 'Charge mis-id')
+
+        Zjets_view = views.ScaleView(cat_red_view, Zjets_view.Get('A_SVfitMass').Integral() )
 
         output = {
            # 'wz' : wz_view,

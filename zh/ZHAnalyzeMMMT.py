@@ -73,7 +73,7 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         Excludes FR object IDs and sign cut.
         '''
         if not selections.ZMuMuSelection(row): return False
-        if selections.generalCuts(row, 'm1','m2','m3','t') : return False
+        if not selections.generalCuts(row, 'm1','m2','m3','t') : return False
         if not selections.looseTauSelection(row,'t'): return False
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
@@ -92,7 +92,7 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.double_muon_trigger(row,'m1','m2')
 
     def leg3_weight(self, row):
-        return fr_fcn.mu_loose_jetpt_fr( row.m3JetPt)/(1 - fr_fcn.mu_loose_jetpt_fr( row.m3JetPt))
+        return fr_fcn.mu_tight_jetpt_fr( row.m3JetPt)/(1 - fr_fcn.mu_tight_jetpt_fr( row.m3JetPt))
 
     def leg4_weight(self, row):
         return fr_fcn.tau_jetpt_fr(row.tJetPt)/(1 - fr_fcn.tau_jetpt_fr(row.tJetPt))

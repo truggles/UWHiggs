@@ -46,6 +46,7 @@ samples = Hash[
   "signal" => Array['VH_H2Tau_M-125'],
   "signal_mmtt" => get_sample_names('Zh-mmtt') + Array['VH_H2Tau_M-125'],
   "signal_eett" => get_sample_names('Zh-eett') + Array['VH_H2Tau_M-125'],
+  "fullsim" => get_sample_names('FullSim'),
   #"signal_125" => Array['VH_H2Tau_M-125'],
   # Automagically figure out what data samples we have
   "data_mm" =>  get_sample_names("data_DoubleMu"),
@@ -280,14 +281,15 @@ fr_fits = Hash[
   #  "rebin" => 5,
   #  "range" => "15 150",
   #],
-  #"t_ztt_pt10_LooseIso3Hits_tauJetPt" =>  Hash[
-  #  "samples" => Array["diboson", "data_mm", "data_ee"],
-  #  "analyzer" => "TauFakeRates??TT",
-  #  "function" => exponential,
-  #  "variables" => exponential_vars,
-  #  "rebin" => 5,
-  #  "range" => "15 150",
-  #],
+  "t_ztt_pt10_LooseIso3Hits_tauJetPt" =>  Hash[
+    "samples" => Array["diboson", "data_mm", "data_ee"],
+    "analyzer" => "TauFakeRates??TT",
+    "function" => exponential,
+    "variables" => exponential_vars,
+    "corr" => "--noCorrection true",
+    "rebin" => 5,
+    "range" => "15 150",
+  ],
   "t_ztt_pt10_MediumIso3Hits_tauJetPt" =>  Hash[
     "samples" => Array["diboson", "data_mm", "data_ee"],
     "analyzer" => "TauFakeRates??TT",
@@ -462,6 +464,15 @@ task :eeem_ggzz => get_analyzer_results("ZHAnalyzeEEEM", samples['ggzz2l2l'])
 task :mmtt_ggzz => get_analyzer_results("ZHAnalyzeMMTT", samples['ggzz2l2l'])
 task :eett_ggzz => get_analyzer_results("ZHAnalyzeEETT", samples['ggzz2l2l'])
 
+task :mmmt_fs => get_analyzer_results("ZHAnalyzeMMMT", samples['fullsim'])
+task :eemt_fs => get_analyzer_results("ZHAnalyzeEEMT", samples['fullsim'])
+task :mmet_fs => get_analyzer_results("ZHAnalyzeMMET", samples['fullsim'])
+task :eeet_fs => get_analyzer_results("ZHAnalyzeEEET", samples['fullsim'])
+task :mmem_fs => get_analyzer_results("ZHAnalyzeMMEM", samples['fullsim'])
+task :eeem_fs => get_analyzer_results("ZHAnalyzeEEEM", samples['fullsim'])
+task :mmtt_fs => get_analyzer_results("ZHAnalyzeMMTT", samples['fullsim'])
+task :eett_fs => get_analyzer_results("ZHAnalyzeEETT", samples['fullsim'])
+
 task :mmmt => get_analyzer_results("ZHAnalyzeMMMT.py", samples['ZZ'] + samples['data_mm'] + samples['signal_mmtt'])
 task :eemt => get_analyzer_results("ZHAnalyzeEEMT.py", samples['ZZ'] + samples['data_ee'] + samples['signal_eett'])
 task :mmet => get_analyzer_results("ZHAnalyzeMMET.py", samples['ZZ'] + samples['data_mm'] + samples['signal_mmtt'])
@@ -526,6 +537,10 @@ task :eett_ks => get_analyzer_results("ZHAnalyzeEETT", samples['key_shapes'])
 
 task :analyzezh_ks => [:mmmt_ks, :eemt_ks, :mmet_ks, :eeet_ks, :mmem_ks, :eeem_ks, :mmtt_ks, :eett_ks] do
   puts "called analyzezh_ks task from local rakefile"
+end
+
+task :analyzezh_fullsim => [:mmmt_fs, :eemt_fs, :mmet_fs, :eeet_fs, :mmem_fs, :eeem_fs, :mmtt_fs, :eett_fs] do
+  puts "called analyzezh_fullsim task from local rakefile"
 end
 
 ################################################################################

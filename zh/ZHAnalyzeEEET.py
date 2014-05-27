@@ -65,7 +65,7 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         '''
         #Z Selection
         if not selections.ZEESelection(row): return False
-        if selections.generalCuts(row, 'e1','e2','e3','t') : return False
+        if not selections.generalCuts(row, 'e1','e2','e3','t') : return False
         if not selections.looseTauSelection(row,'t'): return False
         if not bool(row.tAntiMuonLoose2): return False
         if not bool(row.tAntiElectronMVA3Tight): return False

@@ -65,7 +65,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         '''
         #Z Selection
         if not selections.ZEESelection(row): return False
-        if selections.generalCuts(row, 'e1','e2','m','t') : return False
+        if not selections.generalCuts(row, 'e1','e2','m','t') : return False
         if not selections.looseTauSelection(row,'t'): return False
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
@@ -84,7 +84,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.get_electron_corrections(row, 'e1', 'e2')
 
     def leg3_weight(self, row):
-        return fr_fcn.mu_loose_jetpt_fr( row.mJetPt ) / (1 - fr_fcn.mu_loose_jetpt_fr( row.mJetPt ))
+        return fr_fcn.mu_tight_jetpt_fr( row.mJetPt ) / (1 - fr_fcn.mu_tight_jetpt_fr( row.mJetPt ))
 
     def leg4_weight(self, row):
         return fr_fcn.tau_jetpt_fr( row.tJetPt ) / (1 -  fr_fcn.tau_jetpt_fr( row.tJetPt ))

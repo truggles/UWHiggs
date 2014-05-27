@@ -54,12 +54,20 @@ def Vetos(row):
     return True
 
 def overlap(row,*args):
-    ## also need dZ < 0.1cm cut (impact parameter)
+  
     return any( map( lambda x: x < 0.1, [getattr(row,'%s_%s_DR' % (l1,l2) ) for l1 in args for l2 in args if l1 <> l2 and hasattr(row,'%s_%s_DR' % (l1,l2) )] ) )
 
 def generalCuts(row, *args):
     if overlap(row, *args): return False
-    return Vetos(row)
+
+    # all leptons within 0.1cm of the primary vertex
+    for l in args:
+      if abs(getattr(row, getVar(l, 'DZ') ) ) > 0.1: return False
+
+
+    if not Vetos(row): return False
+    return True
+    #return not any( map( lambda x: x > 0.1, getattr(row,'%sDZ' % l for l in args) ) )
 
 def eleIDLoose(row, name):
     if getattr(row, getVar(name, 'Pt') )   < 10: return False
@@ -121,7 +129,7 @@ def ZMuMuSelection(row):
     #if bool(row.m1MatchesMu8Ele17IsoPath > 0): return False
     #if bool(row.m2MatchesMu8Ele17IsoPath > 0): return False
     return True
-#return MuTriggerMatching(row)
+    #return MuTriggerMatching(row)
 
 def ZEESelection(row):
     '''
@@ -148,7 +156,7 @@ def ZEESelection(row):
     #if bool(row.e1_e2_SS):                           return False
     #if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
     return True
-#return ElTriggerMatching(row)
+    #return ElTriggerMatching(row)
 
 def looseMuonSelection(row,muId):
     '''
@@ -156,7 +164,7 @@ def looseMuonSelection(row,muId):
     '''
     if getattr(row, getVar(muId,'Pt') ) < 10:              return False
     if getattr(row, getVar(muId,'AbsEta') ) > 2.4:         return False
-    if bool(getattr(row, getVar(name, 'IsGlobal'))) or bool(getattr(row, getVar(name, 'IsTracker'))): return True
+    if bool(getattr(row, getVar(muId, 'IsGlobal'))) or bool(getattr(row, getVar(muId, 'IsTracker'))): return True
     return False
 
 def tightMuonSelection(row, muId):
