@@ -57,7 +57,7 @@ class ZHAnalyzerBase(MegaBase):
         self.hfunc   = { #maps the name of non-trivial histograms to a function to get the proper value, the function MUST have two args (evt and weight). Used in fill_histos later
             'nTruePU' : lambda row, weight: row.nTruePU,
             'weight'  : lambda row, weight: weight,
-            'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,row.evt,getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products())] ),
+            'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int(row.evt)/10**5,int(row.evt)%10**5,getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products())] ),
             }
         #print '__init__->self.channel %s' % self.channel
         
@@ -174,7 +174,7 @@ class ZHAnalyzerBase(MegaBase):
             
     def process(self):
         # output text file with run:lumi:evt info for syncing purposes
-        sync_file = open("sync_file_%s.txt" % self.name, 'a')
+        #sync_file = open("sync_file_%s.txt" % self.name, 'a')
   
 
         # For speed, map the result of the region cuts to a folder path
@@ -285,13 +285,13 @@ class ZHAnalyzerBase(MegaBase):
                     if folder[1] == 'All_Passed_Leg3Real' and not self.leg3IsReal(row): continue
 
                     ## add fully passed events to sync file
-                    if folder[1] == 'All_Passed':
-                        hmass = round(getattr(row, "%s_%s_SVfitMass" % self.H_decay_products()), 1) # should switch to SVfitMas when ready
-                        hmass_visible = round(getattr(row, "%s_%s_Mass" % self.H_decay_products()), 1)
-                        #zmass = round(getattr(row, "%s_%s_Mass" % self.Z_decay_products()), 1)
-                        sync_info = str(self.name) + ' ' + str(row.run) + ' ' + str(row.lumi) + ' ' + str(row.evt) + ' '+ str(hmass_visible) + ' ' + str(hmass) + '\n'
-                        sync_file.write(sync_info)
-                        #print "sync_info: " + sync_info
+                    #if folder[1] == 'All_Passed':
+                    #    hmass = round(getattr(row, "%s_%s_SVfitMass" % self.H_decay_products()), 1) # should switch to SVfitMas when ready
+                    #    hmass_visible = round(getattr(row, "%s_%s_Mass" % self.H_decay_products()), 1)
+                    #    #zmass = round(getattr(row, "%s_%s_Mass" % self.Z_decay_products()), 1)
+                    #    sync_info = str(self.name) + ' ' + str(row.run) + ' ' + str(row.lumi) + ' ' + str(row.evt) + ' '+ str(hmass_visible) + ' ' + str(hmass) + '\n'
+                    #    sync_file.write(sync_info)
+                    #    #print "sync_info: " + sync_info
                      
                     fill_histos(histos, folder, row, event_weight)
                     wToApply = [ (w, w(row) )  for w in region_info['weights'] ]
@@ -302,7 +302,7 @@ class ZHAnalyzerBase(MegaBase):
                     if len(wToApply) > 1:
                         w_prod = reduce(lambda x, y: x*y, [x for y,x in wToApply])
                         fill_histos(histos, folder+('all_weights_applied',), row, event_weight*w_prod)
-        sync_file.close()
+        #sync_file.close()
 
     def book_general_histos(self, folder):
         '''Book general histogram, valid for each analyzer'''

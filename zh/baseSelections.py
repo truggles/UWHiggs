@@ -51,6 +51,7 @@ def Vetos(row):
     if bool(row.bjetCSVVetoZHLikeNoJetId_2): return False
     if bool(row.muVetoZH): return False
     if bool(row.eVetoZH): return False
+    #if bool(row.t_tauHpsVetoPt15): return False
     return True
 
 def overlap(row,*args):

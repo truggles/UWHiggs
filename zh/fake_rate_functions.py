@@ -96,7 +96,7 @@ e_loose_jetpt_fr =build_roofunctor( #lambda x: 0.2
 ## )
 
 tau_medium_jetpt_fr = build_roofunctor(
-    frfit_dir + '/t_ztt_pt10_MediumIso3Hits_tauJetPt.root',
+    frfit_dir + '/t_ztt_pt10_MediumIso3Hits_tauJetPt_tautau.root',
     'fit_efficiency',
     'efficiency'
 )
@@ -122,7 +122,7 @@ tau_medium_jetpt_fr = build_roofunctor(
 #    'efficiency'
 #)
 tau_jetpt_fr = build_roofunctor(
-    frfit_dir + '/t_ztt_pt10_LooseIso3Hits_tauJetPt.root',
+    frfit_dir + '/t_ztt_pt10_LooseIso3Hits_tauJetPt_ltau.root',
     'fit_efficiency',
     'efficiency'
 )

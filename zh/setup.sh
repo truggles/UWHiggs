@@ -6,19 +6,19 @@ source jobid.sh
 #export datasrc=/hdfs/store/user/stephane/
 export datasrc=/nfs_scratch/stephane/data
 export jobid=$jobid8
-export afile=`find $datasrc/$jobid | grep root | head -n 1`
-#export afile='/nfs_scratch/stephane/2013-11-02-8TeV-v1-ZH/MSSM_A_ZH_FastSim/make_ntuples_cfg-A-Zh-mmtt-PU025-0032_patTuple.root'
+#export afile=`find $datasrc/$jobid | grep root | head -n 1`
+export afile='/nfs_scratch/stephane/data/2014-02-28_Ntuples-v2/A300-Zh-lltt-FullSim_new/make_ntuples_cfg-patTuple_cfg-FA493589-2AA7-E311-87C1-001E67396CFC.root'
 
 echo "Building cython wrappers from file: $afile"
 
-#rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
-#rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
-#rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
-#rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
-#rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
-#rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
-#rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
-#rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
+rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
+rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
+rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
+rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
+rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
+rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
+rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
+rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
 
 #rake "make_wrapper[$afile, eem/final/Ntuple, EEMuTree]"
 #rake "make_wrapper[$afile, eee/final/Ntuple, EEETree]"
@@ -26,7 +26,7 @@ echo "Building cython wrappers from file: $afile"
 #rake "make_wrapper[$afile, mmm/final/Ntuple, MuMuMuTree]"
 
 
-#ls *pyx | sed "s|pyx|so|" | xargs rake 
+ls *pyx | sed "s|pyx|so|" | xargs rake 
 
 echo "done?"
 
@@ -44,6 +44,6 @@ pushd inputs/$jobid/
 # For the effectively lumis, we have to recompute using the 8 TeV x-section.
 #ls ../../inputs/$jobid7/WH_*HWW* | grep -v lumicalc | xargs -n 1 ln -s 
 popd
-rake "meta:getmeta[inputs/$jobid, mmtt/metaInfo, 8]"
+#rake "meta:getmeta[inputs/$jobid, mmtt/metaInfo, 8]"
 echo "done"
 

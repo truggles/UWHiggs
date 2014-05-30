@@ -5,7 +5,7 @@ import math
  
 def print_table(channel, weighted=True):
 # print a tex table for a given channel
-    my_file = ROOT.TFile("results/2014-02-28_Ntuples-v2/ZHAnalyze%s/data.root" % channel, "READ")
+    my_file = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/ZHAnalyze%s/data.root" % channel, "READ")
     column_values = []
     background_estimates = []
     errors = []

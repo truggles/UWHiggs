@@ -8,6 +8,7 @@ import baseSelections as selections
 
 class TauFakeRatesEETT(TauFakeRatesBase.TauFakeRatesBase):
     tree = 'eett/final/Ntuple'
+    tau_legs = ['t1', 't2']
     def __init__(self, tree, outfile, **kwargs):
         super(TauFakeRatesEETT, self).__init__(tree, outfile, EETauTauTree, **kwargs)
         
@@ -24,5 +25,7 @@ class TauFakeRatesEETT(TauFakeRatesBase.TauFakeRatesBase):
         if row.t1Pt < row.t2Pt: return False
         return True
 
+    def sameSign(self, row):
+        return bool(row.t1_t2_SS)
 
         

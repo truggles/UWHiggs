@@ -16,12 +16,13 @@ export jobid=$jobid8
 #rake fits
 #rake analyzezh_fullsim
 #rake analyzezh_data
-rake analyzezh_signal
+#rake analyzezh_signal
 #rake analyzezh_ks
 #rake analyzezh_ggzz
+#rake analyzezh
 #rake mmtt
 #rake plots
-#rake cards
+rake cards
 #rake limits
 #rake mmtt
 #rake mmtt_ggzz

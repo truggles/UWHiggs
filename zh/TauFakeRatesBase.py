@@ -62,8 +62,7 @@ class TauFakeRatesBase(MegaBase):
             #if row.t1Pt < row.t2Pt: return False #Avoid double counting
             #if row.t1Pt + row.t2Pt < 60: return False
             #if not bool(row.t1_t2_SS):       return False
-            if not self.sameSign(row): return False
-            return True
+            return self.sameSign(row)
 
         histos = self.histograms
 
@@ -80,13 +79,12 @@ class TauFakeRatesBase(MegaBase):
             if not preselection(self, row):
                 continue
             
-            fill(pt10, row, 't1')
-            fill(pt10, row, 't2')
-            for t in ['t1','t2']:
-                  for num in self.numerators:
+            for t in self.tau_legs:
+                fill(pt10, row, t) # fill denominator
+                for num in self.numerators:
                     if bool( getattr(row,t+num) ):
-                        fill(histos[('ztt', 'pt10', num)], row, t)
-            pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
+                        fill(histos[('ztt', 'pt10', num)], row, t) # fill numerator
+            #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
 
             #if (row.t1AbsEta < 1.4):
             #    fill(pt10_lo, row, 't1')

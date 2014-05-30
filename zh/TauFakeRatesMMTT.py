@@ -9,6 +9,7 @@ from MuMuTauTauTree import MuMuTauTauTree
 
 class TauFakeRatesMMTT(TauFakeRatesBase.TauFakeRatesBase):
     tree = 'mmtt/final/Ntuple'
+    tau_legs = ['t1', 't2']
     def __init__(self, tree, outfile, **kwargs):
         super(TauFakeRatesMMTT, self).__init__(tree, outfile, MuMuTauTauTree, **kwargs)
         
@@ -22,7 +23,11 @@ class TauFakeRatesMMTT(TauFakeRatesBase.TauFakeRatesBase):
         if not bool(row.t1AntiElectronLoose): return False
         if not bool(row.t2AntiMuonLoose2): return False
         if not bool(row.t2AntiElectronLoose): return False
+        if (row.t1Pt < row.t2Pt): return False
         return True
+
+    def sameSign(self, row):
+        return bool(row.t1_t2_SS)
 
 
        

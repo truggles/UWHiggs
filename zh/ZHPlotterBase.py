@@ -132,7 +132,7 @@ class ZHPlotterBase(Plotter):
             files += glob.glob('results/%s/ZHAnalyze%s/%s.root' % (jobid, channel, x))
             lumifiles += glob.glob('inputs/%s/%s.lumicalc.sum' % (jobid, x))
         self.outputdir = 'results/%s/plots/%s' % (jobid, channel.lower() )
-        pprint.pprint(files)
+        #pprint.pprint(files)
         blinder = None
         if blind:
             # Don't look at the SS all pass region
@@ -142,7 +142,7 @@ class ZHPlotterBase(Plotter):
         self.general_histos += ['doubleMuPrescale'] if channel[:2] == 'MM' else []
         self.kin_histos     = ["%sPt", "%sJetPt", "%sAbsEta"]
         self.mass_histos    = [h for h in get_mass_histos(channel)]
-        pprint.pprint(self.views)
+        #pprint.pprint(self.views)
 
     def plot_mc_vs_data(self, folder, variable, rebin=1, xaxis='', leftside=True, xrange=None):
         super(ZHPlotterBase, self).plot_mc_vs_data(folder, variable, rebin, xaxis, leftside, xrange)
@@ -192,7 +192,7 @@ class ZHPlotterBase(Plotter):
                 views.SubdirectoryView(all_data_view, 'os/p1p2p3/c1'),
                 **data_styles['TT*']), 'Charge mis-id')
 
-        Zjets_view = views.ScaleView(cat_red_view, Zjets_view.Get('A_SVfitMass').Integral() )
+        Zjets_view = views.ScaleView(cat_red_view, Zjets_view.Get('A_SVfitMass').Integral() / cat_red_view.Get('A_SVfitMass').Integral() )
 
         output = {
            # 'wz' : wz_view,
@@ -226,18 +226,24 @@ class ZHPlotterBase(Plotter):
         )
         output['VH_H2Tau_M-125'] = htt_view
         
-        for mass in [260, 270, 280, 290, 300, 310, 320, 330, 340]:
-            if channel[:2] == 'MM':
-                AZh_view = views.SubdirectoryView(
-                  self.rebin_view(self.get_view('A%i-Zh-mmtt*' % mass), rebin),
+        #for mass in [260, 270, 280, 290, 300, 310, 320, 330, 340]:
+        #    if channel[:2] == 'MM':
+        #        AZh_view = views.SubdirectoryView(
+        #          self.rebin_view(self.get_view('A%i-Zh-mmtt*' % mass), rebin),
+        #          'os/All_Passed/'
+        #        )
+        #    else:
+        #        AZh_view = views.SubdirectoryView(
+        #          self.rebin_view(self.get_view('A%i-Zh-eett*' % mass), rebin),
+        #          'os/All_Passed/'
+        #        )
+        #
+        for mass in [290, 300, 330, 350]:
+            AZh_view = views.SubdirectoryView(
+                  self.rebin_view(self.get_view('A%i-Zh-lltt-FullSim' % mass), rebin),
                   'os/All_Passed/'
                 )
-            else:
-                AZh_view = views.SubdirectoryView(
-                  self.rebin_view(self.get_view('A%i-Zh-eett*' % mass), rebin),
-                  'os/All_Passed/'
-                )
-
+ 
             output['AZhtt%i' % mass] = AZh_view 
        
         
@@ -269,7 +275,8 @@ class ZHPlotterBase(Plotter):
         #    ww.SetName('ZH_hww%i' % mass)
         #    ww.Write()
  
-        for mass in [260,270,280,290,300,310,320,330,340]:
+        #for mass in [260,270,280,290,300,310,320,330,340]:
+        for mass in [290,300,330,350]:
             signal = sig_view['AZhtt%i' % mass].Get(variable)
             signal.SetName('AHttZll%i' % mass)
             signal.Write()
@@ -532,7 +539,7 @@ for channel in channels:
     shape_file = ROOT.TFile( os.path.join(plotter.outputdir, '%s_shapes_%s.root' % (channel.lower(), plotter.period)), 'RECREATE')
     shape_dir  = shape_file.mkdir( channel.lower()+'_zh' )
     #plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 15, shape_dir, unblinded=True)
-    plotter.write_shapes('A_SVfitMass', 20, shape_dir, unblinded=True)
+    plotter.write_shapes('A_SVfitMass', 40, shape_dir, unblinded=True)
     #plotter.write_cut_and_count('subMass', shape_dir, unblinded=True)
     shape_file.Close()
 

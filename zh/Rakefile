@@ -44,8 +44,10 @@ samples = Hash[
   "diboson" => get_sample_names('WZ') + get_sample_names('WWJet') + get_sample_names('ZZ'), #Array['ZZJetsTo4L_pythia'] + 
   #"signal" => get_sample_names('VH') + get_sample_names('WH'),
   "signal" => Array['VH_H2Tau_M-125'],
-  "signal_mmtt" => get_sample_names('Zh-mmtt'),# + Array['VH_H2Tau_M-125'],
-  "signal_eett" => get_sample_names('Zh-eett'),# + Array['VH_H2Tau_M-125'],
+  #"signal_mmtt" => get_sample_names('Zh-mmtt'), + Array['VH_H2Tau_M-125'],
+  #"signal_eett" => get_sample_names('Zh-eett'), + Array['VH_H2Tau_M-125'],
+  "signal_mmtt" => Array['VH_H2Tau_M-125'],
+  "signal_eett" => Array['VH_H2Tau_M-125'],
   "fullsim" => get_sample_names('FullSim'),
   #"signal_125" => Array['VH_H2Tau_M-125'],
   # Automagically figure out what data samples we have
@@ -78,6 +80,10 @@ fr_analyzer_sample_map = Hash[
   "MUFakeRateMMMT.py"   => samples['data_mm'] + samples["ZZ"],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
   "TauFakeRatesEETT.py" => samples["ZZ"] + samples['data_ee'],# + samples["wjets"],# + Array["TTplusJets_madgraph"],
   "TauFakeRatesMMTT.py" => samples["ZZ"] + samples['data_mm'],# + samples["wjets"],# + Array["TTplusJets_madgraph"],
+  "TauFakeRatesEEMT.py" => samples['ZZ'] + samples['data_ee'],
+  "TauFakeRatesEEET.py" => samples['ZZ'] + samples['data_ee'],
+  "TauFakeRatesMMET.py" => samples['ZZ'] + samples['data_mm'],
+  "TauFakeRatesMMMT.py" => samples['ZZ'] + samples['data_mm'],
  ]
 
 fr_analyzer_dependencies = Hash[
@@ -87,6 +93,10 @@ fr_analyzer_dependencies = Hash[
   "MUFakeRateMMMT.py"   => Array["EMUFakeRatesBase.py","baseSelections.py",],  # "MuMuMuTauTree.py",],
   "TauFakeRatesEETT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],  # "EETauTauTree.py",],
   "TauFakeRatesMMTT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],  # "MuMuTauTauTree.py",],
+  "TauFakeRatesEEMT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
+  "TauFakeRatesEEET.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
+  "TauFakeRatesMMET.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
+  "TauFakeRatesMMMT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
 ]
 
 # Create an empty placeholder to enable tab-completion
@@ -281,16 +291,16 @@ fr_fits = Hash[
   #  "rebin" => 5,
   #  "range" => "15 150",
   #],
-  "t_ztt_pt10_LooseIso3Hits_tauJetPt" =>  Hash[
+  "t_ztt_pt10_LooseIso3Hits_tauJetPt_ltau" =>  Hash[
     "samples" => Array["diboson", "data_mm", "data_ee"],
-    "analyzer" => "TauFakeRates??TT",
+    "analyzer" => "TauFakeRates???T",
     "function" => exponential,
     "variables" => exponential_vars,
     "corr" => "--noCorrection true",
     "rebin" => 5,
     "range" => "15 150",
   ],
-  "t_ztt_pt10_MediumIso3Hits_tauJetPt" =>  Hash[
+  "t_ztt_pt10_MediumIso3Hits_tauJetPt_tautau" =>  Hash[
     "samples" => Array["diboson", "data_mm", "data_ee"],
     "analyzer" => "TauFakeRates??TT",
     "function" => exponential,
@@ -594,10 +604,14 @@ end
 $carddir = "results/#{$jobid}/cards"
 # 
 ## Combine all category shape files into the datacard project
-##file "#{$carddir}/shapes_unmorphed.root" => Dir.glob("results/#{$jobid}/plots/????/????_shapes_#{$period}.root") do |t|
-##  sh "mkdir -p #{$carddir}"
-##  sh "hadd -f #{t.name} #{t.prerequisites.join(' ')}"
-##end
+file "#{$carddir}/shapes.root" => Dir.glob("results/#{$jobid}/plots/????/????_shapes_#{$period}.root") do |t|
+  sh "mkdir -p #{$carddir}"
+  sh "hadd -f #{t.name} #{t.prerequisites.join(' ')}"
+  puts "#{$jobid}"
+  puts "#{$period}"
+  puts "results/#{$jobid}/plots/????/????_shapes_#{$period}.root"
+  puts t.prerequisites
+end
 
 # Masses where actually have signal samples
 ##pivot_masses = []
@@ -605,7 +619,8 @@ $carddir = "results/#{$jobid}/cards"
 #  pivot_masses << name.split("/")[-1].split('-')[-1].split('.')[0]
 #end
 
-pivot_masses = [260,270,280,290,300,310,320,330,340] # mA for MSSM
+#pivot_masses = [260,270,280,290,300,310,320,330,340] # mA for MSSM
+pivot_masses = [290, 300, 330, 350]
 
 # Now do the horizontal morphing
 ##file "#{$carddir}/shapes.root" => ["#{$carddir}/shapes_unmorphed.root"] do |t|
@@ -620,9 +635,9 @@ stat_shape_lists = [] #Dir.glob("results/#{$jobid}/plots/*/*_statshapes.txt")
 # stat_shapes = Dir.glob("results/#{$jobid}/plots/*/*_statshapes.root")
 
 # We need to build the unc.conf and unc.vals with our stat shapes
-##file "#{$carddir}/unc.conf" => ["unc.conf.template", "#{$carddir}/shapes.root"] + stat_shape_lists do |t|
-##  # Copy the basic template
-##  sh "cp unc.conf.template #{t.name}"
+file "#{$carddir}/unc.conf" => ["unc.conf.template", "#{$carddir}/shapes.root"] + stat_shape_lists do |t|
+  # Copy the basic template
+  sh "cp unc.conf.template #{t.name}"
   # Append all the stat shape types
 ##  sh "echo '' >> #{t.name}"
 ##  sh "echo '# Stat shape uncertainties' >> #{t.name}"
@@ -630,12 +645,12 @@ stat_shape_lists = [] #Dir.glob("results/#{$jobid}/plots/*/*_statshapes.txt")
   # stat_shape_lists.each do |list|
   #   sh "cat #{list} | xargs -n 1 -I {} echo '{} shape' >> #{t.name}"
   # end
-##end
+end
 
-##file "#{$carddir}/unc.vals" => ["unc.vals.template", "#{$carddir}/shapes.root"] + stat_shape_lists do |t|
+file "#{$carddir}/unc.vals" => ["unc.vals.template", "#{$carddir}/shapes.root"] + stat_shape_lists do |t|
   # Copy the basic template
   #puts t.investigation
-##  sh "cp #{t.prerequisites[0]} #{t.name}"
+  sh "cp #{t.prerequisites[0]} #{t.name}"
   #NOT IMPLEMENTED YET
   # Append all the stat shape types
   # sh "echo '' >> #{t.name}"
@@ -644,11 +659,11 @@ stat_shape_lists = [] #Dir.glob("results/#{$jobid}/plots/*/*_statshapes.txt")
   #   sh "cat #{list} | grep mmt | xargs -n 1 -I {} echo 'mmt fakes {} 1.0' >> #{t.name}"
   #   sh "cat #{list} | grep emt | xargs -n 1 -I {} echo 'emt fakes {} 1.0' >> #{t.name}"
   # end
-##end
+end
 
-##file "#{$carddir}/cgs.conf" => "cgs.conf.template" do |t|
-##  sh "cp #{t.prerequisites[0]} #{t.name}"
-##end
+file "#{$carddir}/cgs.conf" => "cgs.conf.template" do |t|
+  sh "cp #{t.prerequisites[0]} #{t.name}"
+end
 
 def make_datacard_task(mass, channel, categories)
   card = "#{$carddir}/#{mass}/vhtt_#{channel}.txt"  
@@ -661,9 +676,9 @@ def make_datacard_task(mass, channel, categories)
         sh "ln -s ../../shapes.root"
       end
       if categories == ''
-        sh "create-datacard.py -i shapes.root -o #{channel}/#{mass}/vhtt_#{channel}.txt #{mass}"
+        sh "create-datacard.py -i shapes.root -o #{channel}/#{mass}/azhtt_#{channel}_1_8TeV.txt #{mass}"
       else
-        sh "create-datacard.py -i shapes.root -o #{channel}/#{mass}/vhtt_#{channel}.txt #{mass} --categories '#{categories}'"
+        sh "create-datacard.py -i shapes.root -o #{channel}/#{mass}/azhtt_#{channel}_1_8TeV.txt #{mass} --categories '#{categories}'"
       end
     end
   end
@@ -672,7 +687,8 @@ end
 
 task :cards => []
 
-cardmasses = Array[260,270,280,290,300,310,320,330,340]
+#cardmasses = Array[260,270,280,290,300,310,320,330,340]
+cardmasses = Array[290, 300, 330, 350]
 
 cardmasses.each do |mass|
   task :cards => make_datacard_task(mass, '4l', '')
