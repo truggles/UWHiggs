@@ -87,4 +87,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         return fr_fcn.mu_tight_jetpt_fr( row.mJetPt ) / (1 - fr_fcn.mu_tight_jetpt_fr( row.mJetPt ))
 
     def leg4_weight(self, row):
-        return fr_fcn.tau_jetpt_fr( row.tJetPt ) / (1 -  fr_fcn.tau_jetpt_fr( row.tJetPt ))
+        if (row.tAbsEta <= 1.4):
+          return fr_fcn.tau_jetpt_fr_low( row.tJetPt ) / (1 -  fr_fcn.tau_jetpt_fr_low( row.tJetPt ))
+        else: 
+          return fr_fcn.tau_jetpt_fr_high( row.tJetPt ) / (1 -  fr_fcn.tau_jetpt_fr_high( row.tJetPt ))

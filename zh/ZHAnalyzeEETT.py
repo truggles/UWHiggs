@@ -86,7 +86,13 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.get_electron_corrections(row, 'e1','e2')
 
     def leg3_weight(self, row):
-        return fr_fcn.tau_medium_jetpt_fr( row.t1JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr( row.t1JetPt ))
+        if (row.t1AbsEta <= 1.4):
+          return fr_fcn.tau_medium_jetpt_fr_low( row.t1JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr_low( row.t1JetPt ))
+        else:
+          return fr_fcn.tau_medium_jetpt_fr_high( row.t1JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr_high( row.t1JetPt ))
 
     def leg4_weight(self, row):
-        return fr_fcn.tau_medium_jetpt_fr( row.t2JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr( row.t2JetPt ))
+        if (row.t2AbsEta <= 1.4):
+          return fr_fcn.tau_medium_jetpt_fr_low( row.t2JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr_low( row.t2JetPt ))
+        else:
+          return fr_fcn.tau_medium_jetpt_fr_high( row.t2JetPt ) / (1 - fr_fcn.tau_medium_jetpt_fr_high( row.t2JetPt ))

@@ -20,7 +20,7 @@ class TauFakeRatesBase(MegaBase):
     def begin(self):
         # Book histograms
         region = 'ztt'
-        for denom in ['pt10']:
+        for denom in ['pt10low', 'pt10high']:
             denom_key = (region, denom)
             denom_histos = {}
             self.histograms[denom_key] = denom_histos
@@ -67,9 +67,9 @@ class TauFakeRatesBase(MegaBase):
         histos = self.histograms
 
         # Denominator regions (dicts of histograms)
-        pt10 = histos[('ztt', 'pt10')]
-        #pt10_lo = histos[('ztt', 'pt10_lo')]
-        #pt10_hi = histos[('ztt', 'pt10_hi')]
+        #pt10 = histos[('ztt', 'pt10')]
+        pt10_low = histos[('ztt', 'pt10low')]
+        pt10_high = histos[('ztt', 'pt10high')]
         #pt10_antiElMVATight_antiMuLoose = histos[('ztt', 'pt10-antiElMVATight-antiMuLoose')]
         #pt10_antiElMed_antiMuMed = histos[('ztt','pt10-antiElMed-antiMuMed')]
         #pt10_antiElLoose_antiMuTight = histos[('ztt','pt10-antiElLoose-antiMuTight')]
@@ -80,10 +80,17 @@ class TauFakeRatesBase(MegaBase):
                 continue
             
             for t in self.tau_legs:
+                if (getattr(row, t+'AbsEta') <= 1.4):
+                    pt10 = pt10_low
+                elif (getattr(row, t+'AbsEta') > 1.4):
+                    pt10 = pt10_high
                 fill(pt10, row, t) # fill denominator
                 for num in self.numerators:
                     if bool( getattr(row,t+num) ):
-                        fill(histos[('ztt', 'pt10', num)], row, t) # fill numerator
+                        if (getattr(row, t+'AbsEta') <= 1.4):
+                            fill(histos[('ztt', 'pt10low', num)], row, t) # fill numerator
+                        elif (getattr(row, t+'AbsEta') > 1.4):
+                            fill(histos[('ztt', 'pt10high', num)], row, t) # fill numerator
             #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
 
             #if (row.t1AbsEta < 1.4):

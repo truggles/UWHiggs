@@ -57,9 +57,10 @@ class ZHAnalyzerBase(MegaBase):
         self.hfunc   = { #maps the name of non-trivial histograms to a function to get the proper value, the function MUST have two args (evt and weight). Used in fill_histos later
             'nTruePU' : lambda row, weight: row.nTruePU,
             'weight'  : lambda row, weight: weight,
-            'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int(row.evt)/10**5,int(row.evt)%10**5,getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products())] ),
+            'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int((row.evt)/10**5),int((row.evt)%10**5),getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products())] ),
             }
         #print '__init__->self.channel %s' % self.channel
+        self.eventSet = set() # to keep track of duplicate events
         
     ## def get_channel(self):
     ##     return 'LL'
@@ -273,7 +274,6 @@ class ZHAnalyzerBase(MegaBase):
                 #if not (preselection(row) or 'red_shape' in folder[1] ):
                 #    continue
                 if not preselection(row): continue
-                
            
                 selection = region_info['selection']
                 #if counter < 200:
@@ -292,6 +292,13 @@ class ZHAnalyzerBase(MegaBase):
                     #    sync_info = str(self.name) + ' ' + str(row.run) + ' ' + str(row.lumi) + ' ' + str(row.evt) + ' '+ str(hmass_visible) + ' ' + str(hmass) + '\n'
                     #    sync_file.write(sync_info)
                     #    #print "sync_info: " + sync_info
+ 
+                    # make sure we don't have any duplicates
+                    eventTuple = (row.run, row.lumi, int((row.evt)/10**5), int((row.evt)%10**5) )
+                    if eventTuple in self.eventSet and not 'red_shape' in folder[1] :
+                        #print "found a duplicate in " + str(folder)
+                        continue # we've already put this event in another category!
+                    self.eventSet.add(eventTuple)
                      
                     fill_histos(histos, folder, row, event_weight)
                     wToApply = [ (w, w(row) )  for w in region_info['weights'] ]

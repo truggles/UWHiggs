@@ -291,7 +291,7 @@ fr_fits = Hash[
   #  "rebin" => 5,
   #  "range" => "15 150",
   #],
-  "t_ztt_pt10_LooseIso3Hits_tauJetPt_ltau" =>  Hash[
+  "t_ztt_pt10low_LooseIso3Hits_tauJetPt_ltau" =>  Hash[
     "samples" => Array["diboson", "data_mm", "data_ee"],
     "analyzer" => "TauFakeRates???T",
     "function" => exponential,
@@ -300,7 +300,25 @@ fr_fits = Hash[
     "rebin" => 5,
     "range" => "15 150",
   ],
-  "t_ztt_pt10_MediumIso3Hits_tauJetPt_tautau" =>  Hash[
+  "t_ztt_pt10high_LooseIso3Hits_tauJetPt_ltau" =>  Hash[
+    "samples" => Array["diboson", "data_mm", "data_ee"],
+    "analyzer" => "TauFakeRates???T",
+    "function" => exponential,
+    "variables" => exponential_vars,
+    "corr" => "--noCorrection true",
+    "rebin" => 5,
+    "range" => "15 150",
+  ],
+  "t_ztt_pt10low_MediumIso3Hits_tauJetPt_tautau" =>  Hash[
+    "samples" => Array["diboson", "data_mm", "data_ee"],
+    "analyzer" => "TauFakeRates??TT",
+    "function" => exponential,
+    "variables" => exponential_vars,
+    "corr"      => "--noCorrection true",
+    "rebin" => 5,
+    "range" => "15 150",
+  ],
+  "t_ztt_pt10high_MediumIso3Hits_tauJetPt_tautau" =>  Hash[
     "samples" => Array["diboson", "data_mm", "data_ee"],
     "analyzer" => "TauFakeRates??TT",
     "function" => exponential,
