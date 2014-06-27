@@ -1,0 +1,39 @@
+mkdir -p `dirname results/2014-02-28_8TeV_Ntuples-v2/ZHAnalyzeMMMT/A300-Zh-lltt-FullSim.root`
+(in /afs/hep.wisc.edu/cms/truggles/zh_proj/june23_sync_setup/src/UWHiggs/zh)
+diboson: ["ZZJetsTo4L_pythia", "ggZZ2L2L"]
+Creating tasks for analyzer: TauFakeRatesMMET.py
+Creating tasks for analyzer: MUFakeRateMMMT.py
+Creating tasks for analyzer: TauFakeRatesEEMT.py
+Creating tasks for analyzer: EFakeRateMMET.py
+Creating tasks for analyzer: TauFakeRatesEETT.py
+Creating tasks for analyzer: TauFakeRatesMMTT.py
+Creating tasks for analyzer: EFakeRateEEET.py
+Creating tasks for analyzer: TauFakeRatesMMMT.py
+Creating tasks for analyzer: TauFakeRatesEEET.py
+Creating tasks for analyzer: MUFakeRateEEMT.py
+time mega ZHAnalyzeMMMT.py inputs/2014-02-28_8TeV_Ntuples-v2/A300-Zh-lltt-FullSim.txt results/2014-02-28_8TeV_Ntuples-v2/ZHAnalyzeMMMT/A300-Zh-lltt-FullSim.root --workers 2 --chain 10
+0
+RuntimeWarning:class TEfficiencyBugFixed already in TClassTable
+RuntimeWarning:class RooCruijff already in TClassTable
+RuntimeWarning:class RooDataHistEffBuilder already in TClassTable
+Error in <TFile::TFile>: file results/2014-02-28_8TeV_Ntuples-v2/fakerate_fits/m_zlt_pt10_tightId_muonJetPt.root does not exist
+
+ Beginning new ROOT session with Stephane's rootlogon.C file
+Is 7TeV: False
+Traceback (most recent call last):
+  File "/afs/hep.wisc.edu/cms/truggles/zh_proj/june23_sync_setup/src/FinalStateAnalysis//PlotTools/scripts/mega", line 94, in <module>
+    module = __import__(class_name, fromlist=[class_name])
+  File "/afs/hep.wisc.edu/cms/truggles/zh_proj/june23_sync_setup/src/UWHiggs/zh/ZHAnalyzeMMMT.py", line 17, in <module>
+    import fake_rate_functions as fr_fcn
+  File "/afs/hep.wisc.edu/cms/truggles/zh_proj/june23_sync_setup/src/UWHiggs/zh/fake_rate_functions.py", line 38, in <module>
+    'efficiency'
+  File "/afs/hep.wisc.edu/cms/truggles/zh_proj/june23_sync_setup/python/FinalStateAnalysis/StatTools/RooFunctorFromWS.py", line 77, in build_roofunctor
+    raise IOError("Can't open file: %s" % filename)
+IOError: Can't open file: results/2014-02-28_8TeV_Ntuples-v2/fakerate_fits/m_zlt_pt10_tightId_muonJetPt.root
+Command exited with non-zero status 1
+1.55user 0.45system 0:03.53elapsed 56%CPU (0avgtext+0avgdata 554448maxresident)k
+0inputs+0outputs (2111major+40400minor)pagefaults 0swaps
+rake aborted!
+Command failed with status (1): [time mega ZHAnalyzeMMMT.py inputs/2014-02-...]
+
+(See full trace by running task with --trace)

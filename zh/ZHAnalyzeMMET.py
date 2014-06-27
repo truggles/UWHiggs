@@ -49,7 +49,7 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def tau1Selection(self, row):
-        return selections.eleIDTight(row,'e') and selections.elIsoTight(row, 'e')# and (row.eMissingHits==0)##THIS SEEMS too low
+        return selections.eleIDTight(row,'e') and selections.elIsoTight(row, 'e') and (row.eMissingHits==0)
 
     def tau2Selection(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
@@ -71,6 +71,7 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiMuonLoose2): return False
         if not bool(row.tAntiElectronMVA3Tight): return False
         if (row.ePt + row.tPt < 30): return False
+        if not (row.muTightCountZH == 2): return False #THR
         return selections.looseElectronSelection(row,'e')
 
     def sign_cut(self, row):

@@ -15,12 +15,14 @@ export jobid=$jobid8
 #rake fakerates
 #rake fits
 rake analyzezh_fullsim
+#rake analyzezh_fullsim_madgraph
 #rake analyzezh_data
 #rake analyzezh_signal
 #rake analyzezh_ks
 #rake analyzezh_ggzz
 #rake analyzezh
-#rake mmtt_fs
+#rake mmmt_fs
+#rake eett_fs
 #rake plots
 #rake cards
 #rake limits

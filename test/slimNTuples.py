@@ -140,7 +140,7 @@ files_dict   = dict( [(sample, glob('/'.join([hdfs_path,sample,'','*.root'])))  
 run = 'source %s/environment.sh\n' % os.environ['fsa']
 for sample in SAMPLES:
     print 'Merging %s...' % sample
-    sample_dir = '/'.join(['','scratch',user,'data',JOBID,sample])
+    sample_dir = '/'.join(['','nfs_scratch',user,'data',JOBID,sample])
     make_dir( sample_dir )
     chunk = []
     isize  = 0
@@ -152,7 +152,7 @@ for sample in SAMPLES:
     print 'number of file for farmoutAnalysisJob '+ str(int(ifile)) +''
     output_jid = JOBID+'_light'
     output_dir = 'srm://cmssrm.hep.wisc.edu:8443/srm/v2/server?SFN=/hdfs/store/user/'+'/'.join([user,output_jid,sample])    
-    submit_dir = '/'.join(['','scratch',user,output_jid,sample])
+    submit_dir = '/'.join(['','nfs_scratch',user,output_jid,sample])
     input_path=hdfs_path[5:]
     run+="""mkdir -p """+submit_dir+"""/dags
 farmoutAnalysisJobs  --infer-cmssw-path \"--submit-dir="""+submit_dir+"""/submit\" \

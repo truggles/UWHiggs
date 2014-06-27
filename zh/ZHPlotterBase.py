@@ -119,7 +119,7 @@ var_map = {
 class ZHPlotterBase(Plotter):
     def __init__(self, channel, blind=False):
         #self.samples = [ 'Zjets_M50', 'WplusJets_madgraph', 'WZ*', 'ZZ*', 'WW*', 'VH*', 'TTplusJets_madgraph','*A*Zh*']#'WH*',
-        self.samples = ['ZZ*','VH_H2Tau_M-125','*A*Zh*']
+        self.samples = ['ZZ*','VH_H2Tau_M-125','*A*Zh*', 'VH*HWW*', 'ggZZ2L2L' ]
         self.samples += ['data_DoubleMu*'] if channel[:2] == 'MM' else ['data_DoubleElectron*']
         self.jobid = os.environ['jobid']
         self.channel = channel
@@ -159,6 +159,11 @@ class ZHPlotterBase(Plotter):
             self.rebin_view(self.get_view('ZZ*'), rebin),
             'os/All_Passed/'
         )
+        ggzz_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('ggZZ2L2L'), rebin),
+            'os/All_Passed/'
+        )
+
         all_data_view =self.rebin_view(self.get_view('data'), rebin)
         if unblinded and self.blind:
             all_data_view =self.rebin_view(
@@ -201,6 +206,7 @@ class ZHPlotterBase(Plotter):
             'cat1' : cat1_view,
             'cat2' : cat2_view,
             'Zjets' : Zjets_view,
+            'ggZZ2L2L' : ggzz_view
             #'charge_fakes' : charge_fakes,
         }
 
@@ -225,6 +231,14 @@ class ZHPlotterBase(Plotter):
             'os/All_Passed/'
         )
         output['VH_H2Tau_M-125'] = htt_view
+ 
+        hww_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('VH_120_HWW'), rebin),
+            'os/All_Passed/'
+        )
+        hww_view = views.ScaleView(hww_view, 1.28090/1.27742) # scale mH=120 GeV sample to 125 GeV (ratio of xsec's)
+        # from http://ceballos.web.cern.ch/ceballos/mcfm/xsec_several_ecm.txt
+        output['VH_120_HWW'] = hww_view
         
         #for mass in [260, 270, 280, 290, 300, 310, 320, 330, 340]:
         #    if channel[:2] == 'MM':
@@ -243,9 +257,16 @@ class ZHPlotterBase(Plotter):
                   self.rebin_view(self.get_view('A%i-Zh-lltt-FullSim' % mass), rebin),
                   'os/All_Passed/'
                 )
- 
+        
             output['AZhtt%i' % mass] = AZh_view 
        
+        #for mass in [260, 270, 290, 350]:
+        #    AZh_view = views.SubdirectoryView(
+        #          self.rebin_view(self.get_view('A%i-AToZhToLLTauTau-MadGraph' % mass), rebin),
+        #          'os/All_Passed/'
+        #        )
+        #
+        #    output['AZhtt%i' % mass] = AZh_view 
         
         return output
 
@@ -256,15 +277,20 @@ class ZHPlotterBase(Plotter):
        
         #wz = sig_view['wz'].Get(variable)
         zz = sig_view['zz'].Get(variable)
+        ggzz = sig_view['ggZZ2L2L'].Get(variable)
         obs = sig_view['data'].Get(variable)
         Zjets = sig_view['Zjets'].Get(variable)
         vhtt = sig_view['VH_H2Tau_M-125'].Get(variable)
+        vhww = sig_view['VH_120_HWW'].Get(variable)
 
         #wz.SetName('WZ')
         zz.SetName('ZZ')
         obs.SetName('data_obs')
         Zjets.SetName('Zjets')
-        vhtt.SetName('VH')
+        vhtt.SetName('VHtautau')
+        vhww.SetName('VHww')
+        ggzz.SetName('ggZZ2L2L')
+        
 
         #print sig_view.keys()
         #for mass in [110, 120, 130, 140]:
@@ -277,6 +303,7 @@ class ZHPlotterBase(Plotter):
  
         #for mass in [260,270,280,290,300,310,320,330,340]:
         for mass in [290,300,330,350]:
+        #for mass in [260,270,290,350]:
             signal = sig_view['AZhtt%i' % mass].Get(variable)
             signal.SetName('AHttZll%i' % mass)
             signal.Write()
@@ -286,6 +313,8 @@ class ZHPlotterBase(Plotter):
         obs.Write()
         Zjets.Write()
         vhtt.Write()
+        vhww.Write()
+        ggzz.Write()
 
     def write_cut_and_count(self, variable, outdir, unblinded=False):
         ''' Version of write_shapes(...) with only one bin.

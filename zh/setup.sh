@@ -4,10 +4,13 @@
 
 source jobid.sh
 #export datasrc=/hdfs/store/user/stephane/
-export datasrc=/nfs_scratch/stephane/data
+#export datasrc=/nfs_scratch/stephane/data
+export datasrc=$CMSSW_BASE/src/UWHiggs/zh/inputs/2014-02-28_8TeV_Ntuples-v2/
 export jobid=$jobid8
 #export afile=`find $datasrc/$jobid | grep root | head -n 1`
-export afile='/nfs_scratch/stephane/data/2014-02-28_Ntuples-v2/A300-Zh-lltt-FullSim_new/make_ntuples_cfg-patTuple_cfg-FA493589-2AA7-E311-87C1-001E67396CFC.root'
+
+#make sure that this file is new if you made new variables in Ntuples, also run the top 8 "make_wrapper" functions and ls *pyx
+export afile='/hdfs/store/user/truggles/2014-06-23_Ntuples/A300-Zh-lltt-FullSim/make_ntuples_cfg-patTuple_cfg-CAAB054D-23A7-E311-BEE2-001E673972DD.root'
 
 echo "Building cython wrappers from file: $afile"
 
@@ -20,6 +23,7 @@ rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
 rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
 rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
 
+# Legacy for 3lepton  channels
 #rake "make_wrapper[$afile, eem/final/Ntuple, EEMuTree]"
 #rake "make_wrapper[$afile, eee/final/Ntuple, EEETree]"
 #rake "make_wrapper[$afile, emm/final/Ntuple, MuMuETree]"
@@ -32,18 +36,18 @@ echo "done?"
 
 echo "getting meta info"
 
-#echo "rake meta:getinputs[$jobid, $datasrc]"
-#rake "meta:getinputs[$jobid, $datasrc, "mmtt"]"
-#rake "meta:getmeta[inputs/$jobid, mm/metaInfo, 7]"
+echo "rake meta:getinputs[$jobid, $datasrc]"
+rake "meta:getinputs[$jobid, $datasrc, "mmtt"]"
+rake "meta:getmeta[inputs/$jobid, mm/metaInfo, 7]"
 echo "done getting input files"
-#export jobid=$jobid8
-#rake "meta:getinputs[$jobid, $datasrc]"
+export jobid=$jobid8
+rake "meta:getinputs[$jobid, $datasrc]"
 # Use the 7TeV WH samples for 8TeV
 pushd inputs/$jobid/
 # Symlink the list of input files and the counts of the number of events.
 # For the effectively lumis, we have to recompute using the 8 TeV x-section.
 #ls ../../inputs/$jobid7/WH_*HWW* | grep -v lumicalc | xargs -n 1 ln -s 
 popd
-#rake "meta:getmeta[inputs/$jobid, mmtt/metaInfo, 8]"
+rake "meta:getmeta[inputs/$jobid, eett/metaInfo, 8]"
 echo "done"
 

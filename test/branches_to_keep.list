@@ -3,14 +3,10 @@
 *recoil*
 *Phi*
 tDecayMode
-eChargeId*
 bCSVVeto
-jetVeto*
-t*Iso3Hits
-t*MVA2Iso
-tAntiMuon*
-tAntiElectron*
-*CosThetaStar
+*Veto*
+*AntiMuon*
+*AntiElectron*
 *Veto*Vtx
 *met*
 *MET*
@@ -34,4 +30,8 @@ isZtautau
 isdata
 *mu17ele8*
 *mu8ele17*
-type1_pfMetPhi
+*Iso*
+*iso*
+*IsGlobal*
+*IsTracker*
+*IsPF*

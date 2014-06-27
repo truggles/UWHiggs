@@ -4,7 +4,7 @@ from FinalStateAnalysis.MetaData.data_views import extract_sample, read_lumi
 import math
 import sys
 
-jobid = "2014-02-28_Ntuples-v2"
+jobid = "2014-02-28_8TeV_Ntuples-v2"
 
 def get_lumi(filename):
     sample_name = extract_sample(filename)

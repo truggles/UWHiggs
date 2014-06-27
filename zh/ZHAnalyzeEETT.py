@@ -22,6 +22,7 @@ import fake_rate_functions as fr_fcn
 
 class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
     tree = 'eett/final/Ntuple'
+    #tree = "Ntuple"
     name = 5
     def __init__(self, tree, outfile, **kwargs):
         super(ZHAnalyzeEETT, self).__init__(tree, outfile, EETauTauTree, 'TT', **kwargs)
@@ -63,16 +64,31 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
 
         Excludes FR object IDs and sign cut.
         '''
+#        print "0"
         if not selections.ZEESelection(row): return False
+#        print "1"
         if not selections.generalCuts(row, 'e1','e2','t1','t2') : return False
+#        print "2"
         if not selections.looseTauSelection(row,'t1'): return False
+#        print "3"
         if not selections.looseTauSelection(row,'t2'): return False
+#        print "4"
         if not bool(row.t1AntiMuonLoose2): return False
+#        print "5"
         if not bool(row.t1AntiElectronLoose): return False
+#        print "6"
         if not bool(row.t2AntiMuonLoose2): return False
+#        print "7"
         if not bool(row.t2AntiElectronLoose): return False
+#        print "8"
         if row.t1Pt < row.t2Pt: return False #Avoid double counting
+#        print "9"
         if (row.t1Pt + row.t2Pt < 70): return False
+#        print "10"
+        if not (row.eTightCountZH == 2): return False #THR
+#        print "11"
+        if (row.muTightCountZH > 0): return False #THR
+#        print "12"
         return True
 
     def sign_cut(self, row):

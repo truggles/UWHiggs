@@ -48,7 +48,7 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def tau1Selection(self, row):
-        return selections.eleIDTight(row, 'e3') and selections.elIsoTight(row, 'e3')# and (row.e3MissingHits==0)
+        return selections.eleIDTight(row, 'e3') and selections.elIsoTight(row, 'e3') and (row.e3MissingHits==0)
 
     def tau2Selection(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
@@ -71,7 +71,9 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiElectronMVA3Tight): return False
         if not selections.looseElectronSelection(row,'e3'): return False
         if (row.e3Pt + row.tPt < 30): return False
-        return True
+        if (row.muTightCountZH > 0): return False #THR
+        if not (row.eTightCountZH == 3): return False #remove post- debug 
+	return True
 
     def sign_cut(self, row):
         ''' Returns true if muons are SS '''

@@ -78,6 +78,7 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
         if (row.m3Pt + row.tPt < 45): return False
+        if (row.eTightCountZH > 0): return False #THR
         return selections.looseMuonSelection(row,'m3')
 
     def sign_cut(self, row):

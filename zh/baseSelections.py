@@ -36,27 +36,36 @@ def MuTriggerMatching(row):
     if is7TeV:
         return row.m1MatchesDoubleMu2011Paths > 0 and row.m2MatchesDoubleMu2011Paths > 0
     else:
-        return ( row.m1MatchesDoubleMu2011Paths > 0 or row.m1MatchesMu17TrkMu8Path > 0 ) and ( row.m2MatchesDoubleMu2011Paths > 0 or row.m2MatchesMu17TrkMu8Path > 0 )
+        #return True
+        if (row.m1MatchesDoubleMuPaths <= 0 and row.m1MatchesDoubleMuTrkPaths <= 0): return False
+        if (row.m2MatchesDoubleMuPaths <= 0 and row.m2MatchesDoubleMuTrkPaths <= 0): return False
+        return True
  
 def ElTriggerMatching(row):
     '''
     Applies trigger matching
     '''
-    return row.e1MatchesDoubleEPath > 0 and row.e2MatchesDoubleEPath > 0
+    #return True
+    return (row.e1MatchesDoubleEPath > 0 and row.e2MatchesDoubleEPath > 0)
 
 def Vetos(row):
     '''
     applies b-tag, muon, electron and tau veto
     '''
-    if bool(row.bjetCSVVetoZHLikeNoJetId_2): return False
-    if bool(row.muVetoZH): return False
-    if bool(row.eVetoZH): return False
+    #if (row.bjetTightCountZH > 0): return False
+    if (row.bjetCSVVetoZHLikeNoJetId_2 > 0): return False
+    
+    # Doubl check that elminiating these next two vetos doesn't mess us up (new counting mthds in channel specific files
+    if (row.muVetoZH > 0): return False
+    if (row.eVetoZH > 0): return False
+      #print "eVetoZH killed an event"
+    #  return False
     #if bool(row.t_tauHpsVetoPt15): return False
     return True
+    #return (row.bjetCSVVetoZHLikeNoJetId_2 <= 0 and row.muVetoZH <= 0 and row.eVetoZH <= 0)
 
 def overlap(row,*args):
-  
-    return any( map( lambda x: x < 0.1, [getattr(row,'%s_%s_DR' % (l1,l2) ) for l1 in args for l2 in args if l1 <> l2 and hasattr(row,'%s_%s_DR' % (l1,l2) )] ) )
+    return any( map( lambda x: x < 0.1, [getattr(row,'%s_%s_DR' % (l1,l2) ) for l1 in args for l2 in args if l1 <> l2 and hasattr(row,'%s_%s_DR' % (l1,l2) )] ) ) 
 
 def generalCuts(row, *args):
     if overlap(row, *args): return False
@@ -66,8 +75,8 @@ def generalCuts(row, *args):
       if abs(getattr(row, getVar(l, 'DZ') ) ) > 0.1: return False
 
 
-    if not Vetos(row): return False
-    return True
+    #if not Vetos(row): return False
+    return Vetos(row)
     #return not any( map( lambda x: x > 0.1, getattr(row,'%sDZ' % l for l in args) ) )
 
 def eleIDLoose(row, name):
@@ -103,14 +112,19 @@ def ZMuMuSelection(row):
     Z Selection as AN
     '''
     #Z Selection
-    if not (row.doubleMuPass > 0 and row.doubleMuTrkPass > 0):  return False
-
+   # print "x"
+    if not (row.doubleMuPass > 0 or row.doubleMuTrkPass > 0):  return False
+   # print "y"
     if not tightMuonSelection(row, 'm1'):            return False
     if not tightMuonSelection(row, 'm2'):            return False
+   # print "z1"
     if row.m1Pt < 20:                                return False
+   # print "z2"
     if bool(row.m1_m2_SS):                           return False
+   # print "z3"
     if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 : return False
-
+   # print "z4"
+   
     #if row.m1Pt < row.m2Pt:                            return False
     #if row.m1Pt < 20:                                  return False
     #if row.m2Pt < 10:                                  return False
@@ -129,20 +143,27 @@ def ZMuMuSelection(row):
     #if bool(row.m2MatchesMu17Ele8IsoPath > 0): return False
     #if bool(row.m1MatchesMu8Ele17IsoPath > 0): return False
     #if bool(row.m2MatchesMu8Ele17IsoPath > 0): return False
-    return True
-    #return MuTriggerMatching(row)
+    #return True
+    return MuTriggerMatching(row)
+#    print "z5"
 
 def ZEESelection(row):
     '''
     Z Selection as AN
     '''
+#    print "x"
     if not tightElectronSelection(row, 'e1'):        return False
+#    print "y"
     if not tightElectronSelection(row, 'e2'):        return False
+#    print "z1"
     if row.e1Pt < 20:                                return False
+#    print "z2"
     if bool(row.e1_e2_SS):                           return False
+#    print "z3"
     if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
-
+#    print "z4"
     if not row.doubleEPass > 0:                      return False
+#    print "z4p5"
     #if row.e1Pt < row.e2Pt:                          return False
     #if row.e1Pt < 20:                                return False
     #if row.e2Pt < 10:                                return False
@@ -156,8 +177,9 @@ def ZEESelection(row):
     #if not elIsoLoose(row, 'e1'):                    return False
     #if bool(row.e1_e2_SS):                           return False
     #if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
-    return True
-    #return ElTriggerMatching(row)
+    #return True
+    return ElTriggerMatching(row)
+    #print "z5"    
 
 def looseMuonSelection(row,muId):
     '''
@@ -171,16 +193,26 @@ def looseMuonSelection(row,muId):
 def tightMuonSelection(row, muId):
     if getattr(row, getVar(muId,'Pt') ) < 10:              return False
     if getattr(row, getVar(muId,'AbsEta') ) > 2.4:         return False
+    #print "hi1"
     if not muIDLoose(row, muId): return False
-    return muIsoLoose(row, muId)
+    #print "hi2"
+    if not muIsoLoose(row, muId): return False
+    #print "hi3"
+    return True
+    
 
 def looseTauSelection(row, tauId, ptThr = 15):
     '''
     Basic selection for signal hadronic (the ones coming from Higgs). No Isolation is applied, but DecayMode is
     '''
     if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
+    #print "0.1"
     if getattr( row, getVar(tauId, 'Pt') )  < ptThr:                   return False
+    #print "0.2"
     if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
+    #print "0.3"
+    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679: return False#  and abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) != 1:      return False
+    #print "0.4"
     return True
 
 def tightTauSelection(row, tauId, ptThr = 15):
@@ -191,6 +223,7 @@ def tightTauSelection(row, tauId, ptThr = 15):
     if not bool( getattr( row, getVar(tauId, 'AntiMuonLoose2') ) ):      return False
     if not bool( getattr( row, getVar(tauId, 'AntiElectronLoose') ) ):      return False
     if not bool( getattr( row, getVar(tauId, 'LooseIso3Hits') ) ):      return False
+    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:      return False
     return True
 
 

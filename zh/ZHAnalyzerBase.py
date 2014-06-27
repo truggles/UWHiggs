@@ -54,10 +54,37 @@ class ZHAnalyzerBase(MegaBase):
         self.channel = channel
         #Special histograms, data member so child classes can add to this keeping
         #light the filling part and still be flaxible using any weird variable you can build from the NTuple
-        self.hfunc   = { #maps the name of non-trivial histograms to a function to get the proper value, the function MUST have two args (evt and weight). Used in fill_histos later
+        self.hfunc   = { #maps the name of non-trivial histograms to a function to get the proper value, the function must have two args (evt and weight). Used in fill_histos later
             'nTruePU' : lambda row, weight: row.nTruePU,
             'weight'  : lambda row, weight: weight,
-            'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int((row.evt)/10**5),int((row.evt)%10**5),getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products())] ),
+            'Event_ID': lambda row, weight: array.array("f", [row.run, #THR - significant additions to tree
+							      row.lumi,
+							      int((row.evt)/10**5),
+							      int((row.evt)%10**5),
+							      getattr(row,'%s_%s_Mass' % self.Z_decay_products()),
+							      getattr(row,'%s_%s_SVfitMass' % self.H_decay_products()),
+							      row.eVetoZH,
+							      row.muVetoZH,
+							      row.tauVetoZH,
+							      row.muTightCountZH,
+							      row.eTightCountZH,
+							      row.tauTightCountZH,
+							      row.bjetTightCountZH,
+							      getattr(row,'%sPt' % self.H_decay_products()[0]),
+							      getattr(row,'%sEta' % self.H_decay_products()[0]),
+							      getattr(row,'%sMass' % self.H_decay_products()[0]),
+							      getattr(row,'%sJetPt' % self.H_decay_products()[0]),
+							      getattr(row,'%sPt' % self.H_decay_products()[1]),
+							      getattr(row,'%sEta' % self.H_decay_products()[1]),
+							      getattr(row,'%sMass' % self.H_decay_products()[1]),
+							      getattr(row,'%sJetPt' % self.H_decay_products()[1]),
+							      row.mva_metEt,
+							      row.mva_metPhi,
+							      row.pfMetEt,
+							      row.pfMetPhi
+							      ] ),
+           #'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int((row.evt)/10**5),int((row.evt)%10**5),getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products()),row.eVetoZH, row.muVetoZH, row.tauVetoZH, getattr(row,'%sJetPt' % self.H_decay_products()[0]), getattr(row,'%sJetPt' % self.H_decay_products()[1])  ] ),
+            #'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int((row.evt)/10**5),int((row.evt)%10**5),getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products()), row.t1MediumIso3Hits, row.t2MediumIso3Hits, row.t1AntiElectronLoose, row.t2AntiElectronLoose, row.t1AntiMuonLoose2, row.t2AntiMuonLoose2, row.t1DecayFinding, row.t2DecayFinding] ),
             }
         #print '__init__->self.channel %s' % self.channel
         self.eventSet = set() # to keep track of duplicate events
@@ -162,8 +189,9 @@ class ZHAnalyzerBase(MegaBase):
         for folders, regionInfo in self.build_zh_folder_structure().iteritems():
             folder = "/".join(folders)
             self.book_histos(folder) # in subclass
-            if 'All_Passed' in folder: #if we are in the all passed region ONLY
-                self.book(folder, "Event_ID", "Event ID", 'run:lumi:evt1:evt2:zmass:hmass', type=ROOT.TNtuple)
+            #if 'All_Passed' in folder: #if we are in the all passed region ONLY
+            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:eVetoZH:muVetoZH:tauVetoZH:muTightCountZH:eTightCountZH:tauTightCountZH:bjetTightCountZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi', type=ROOT.TNtuple)
+            #self.book(folder, "Event_ID", "Event ID", 'run:lumi:evt1:evt2:zmass:hmass:t1iso:t2iso:t1antiE:t2antiE:t1antiMu:t2antiMu:t1DF:t2DF', type=ROOT.TNtuple) #FIXME move back to only passed region
             # Each of the weight subfolders
             wToApply = regionInfo['weights']
             for w in wToApply:
@@ -267,13 +295,23 @@ class ZHAnalyzerBase(MegaBase):
             row_id_map = dict( [ (f, f( row) )  for f in id_functions] )
 
             # Get the generic event weight
-            event_weight = weight_func(row)
+            #event_weight = weight_func(row)
+            event_weight = 1.0 # quick hack FIXMEE!!!
 
             # Figure out which folder/region we are in, multiple regions allowed
             for folder, region_info in cut_region_map.iteritems():
-                #if not (preselection(row) or 'red_shape' in folder[1] ):
-                #    continue
-                if not preselection(row): continue
+                if not (preselection(row) or 'red_shape' in folder[1] ):
+                    continue
+                #if row.evt == 306250:
+                #  if folder[1]=='All_Passed':
+                #    print "analyzing event 306250"
+                ##    print row.t1Pt, row.t2Pt
+                #    print int((row.evt)/10**5),int((row.evt)%10**5)
+                #if not preselection(row):
+                #  if folder[1]=='All_Passed': 
+                #    print "event %f failed preselection" % row.evt
+                #    print row.t1Pt, row.t2Pt
+                #  continue
            
                 selection = region_info['selection']
                 #if counter < 200:
@@ -284,6 +322,10 @@ class ZHAnalyzerBase(MegaBase):
                     if folder[1] == 'All_Passed_Leg4Real' and not self.leg4IsReal(row): continue
                     if folder[1] == 'All_Passed_Leg3Real' and not self.leg3IsReal(row): continue
 
+                    #if folder[0]=='os' and folder[1] == 'All_Passed' and row.evt == 306250:
+                    #  print "event 306250 passed full selections"
+                    #  print
+                    #else: continue 
                     ## add fully passed events to sync file
                     #if folder[1] == 'All_Passed':
                     #    hmass = round(getattr(row, "%s_%s_SVfitMass" % self.H_decay_products()), 1) # should switch to SVfitMas when ready
@@ -294,11 +336,11 @@ class ZHAnalyzerBase(MegaBase):
                     #    #print "sync_info: " + sync_info
  
                     # make sure we don't have any duplicates
-                    eventTuple = (row.run, row.lumi, int((row.evt)/10**5), int((row.evt)%10**5) )
-                    if eventTuple in self.eventSet and not 'red_shape' in folder[1] :
-                        #print "found a duplicate in " + str(folder)
-                        continue # we've already put this event in another category!
-                    self.eventSet.add(eventTuple)
+                    #eventTuple = (row.run, row.lumi, int((row.evt)/10**5), int((row.evt)%10**5) )
+                    #if eventTuple in self.eventSet and not 'red_shape' in folder[1] :
+                    #    print "found a duplicate event %i" % row.evt
+                    #    continue # we've already put this event in another category!
+                    #self.eventSet.add(eventTuple)
                      
                     fill_histos(histos, folder, row, event_weight)
                     wToApply = [ (w, w(row) )  for w in region_info['weights'] ]
@@ -318,13 +360,11 @@ class ZHAnalyzerBase(MegaBase):
         #self.book(folder, "weight_nopu", "Event weight without PU", 100, 0, 5)
         self.book(folder, "rho", "Fastjet #rho", 100, 0, 25)
         self.book(folder, "nvtx", "Number of vertices", 31, -0.5, 30.5)
-        self.book(folder, "kinematicDiscriminant1", "pT(ZH)/(pT(Z) + pT(H))", 10, 0, 1)
-        self.book(folder, "kinematicDiscriminant2", "pT(H)/(pT(Tau1) + pT(Tau2))", 10, 0, 1)
         self.book(folder, "Mass", "A Candidate Mass", 800, 0, 800)
         self.book(folder, "LT_Higgs", "scalar PT sum of Higgs candidate legs", 200, 0, 200)
-        self.book(folder, "bjetCSVVeto", "bjetVeto", 10, -1, 2)
-        self.book(folder, "bjetCSVVetoZHLikeNoJetId", "bjetCSVVetoZHLikeNoJetId", 10, -1, 2) 
-        self.book(folder, "A_SVfitMass", "A candidate reconstructed sv Mass", 800, 0, 800) 
+        self.book(folder, "A_SVfitMass", "A candidate reconstructed sv Mass", 800, 0, 800)
+        self.book(folder, "mva_metEt", "MVA MET", 300, 0, 300)
+        self.book(folder, "mva_metPhi", "MVA MET PHI", 70, -3.5, 3.5) 
         return None
 
     def book_kin_histos(self, folder, Id):
