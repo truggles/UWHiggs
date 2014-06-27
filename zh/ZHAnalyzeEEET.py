@@ -71,8 +71,8 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiElectronMVA3Tight): return False
         if not selections.looseElectronSelection(row,'e3'): return False
         if (row.e3Pt + row.tPt < 30): return False
-        if (row.muTightCountZH > 0): return False #THR
-        if not (row.eTightCountZH == 3): return False #remove post- debug 
+        #X# if (row.muTightCountZH > 0): return False #THR
+        #X# if not (row.eTightCountZH == 3): return False #remove post- debug 
 	return True
 
     def sign_cut(self, row):

@@ -213,6 +213,12 @@ def looseTauSelection(row, tauId, ptThr = 15):
     #print "0.3"
     if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679: return False#  and abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) != 1:      return False
     #print "0.4"
+    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	
+#        print "LooseTauSelection failed MuOverlapZHLoose"
+        return False
+    if getattr( row, getVar(tauId, 'ElecOverlapZHTight') ) > 0:	
+#        print "LooseTauSelection failed ElecOverlapZHLoose"
+        return False
     return True
 
 def tightTauSelection(row, tauId, ptThr = 15):
@@ -224,6 +230,12 @@ def tightTauSelection(row, tauId, ptThr = 15):
     if not bool( getattr( row, getVar(tauId, 'AntiElectronLoose') ) ):      return False
     if not bool( getattr( row, getVar(tauId, 'LooseIso3Hits') ) ):      return False
     if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:      return False
+    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	
+#        print "TightTauSelec failed MuOverlapZHTight"
+        return False
+    if getattr( row, getVar(tauId, 'ElecOverlapZHTight') ) > 0:	
+#        print "TightTauSelection failed ElecOverlapZHTight"
+        return False
     return True
 
 
@@ -233,6 +245,9 @@ def looseElectronSelection(row, elId):
     '''
     if getattr(row, getVar(elId, 'Pt') ) < 10:                 return False
     if getattr(row, getVar(elId, 'AbsEta') ) > 2.5:            return False
+    if getattr(row, getVar(elId, 'MuOverlapZHTight') ) > 0:	   
+#        print "LooseElecSelection failed MuOverlapLoose"
+        return False
     return True
 
 def tightElectronSelection(row, elId):
@@ -240,5 +255,8 @@ def tightElectronSelection(row, elId):
     if getattr(row, getVar(elId, 'AbsEta') ) > 2.5:            return False
     if not eleIDLoose(row, elId): return False
     if not elIsoLoose(row, elId): return False
+    if getattr(row, getVar(elId, 'MuOverlapZHTight') ) > 0:	
+#        print "TightElecSelection failed MuOverlapZHTight"
+        return False
     return True
     

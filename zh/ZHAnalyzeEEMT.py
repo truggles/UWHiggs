@@ -70,7 +70,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
         if (row.mPt + row.tPt < 45): return False
-        if not (row.eTightCountZH == 2): return False #THR
+        #X# if not (row.eTightCountZH == 2): return False #THR
         return selections.looseMuonSelection(row,'m')
 
 

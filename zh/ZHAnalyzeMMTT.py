@@ -90,9 +90,9 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
 #        print "9"
         if (row.t1Pt + row.t2Pt < 70): return False
 #        print "10"
-        if not (row.muTightCountZH == 2): return False #THR
+        #X# if not (row.muTightCountZH == 2): return False #THR
 #        print "11"
-        if (row.eTightCountZH > 0): return False #THR
+        #X# if (row.eTightCountZH > 0): return False #THR
 #        print "12"
         return True
 

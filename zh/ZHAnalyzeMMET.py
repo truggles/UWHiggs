@@ -71,7 +71,7 @@ class ZHAnalyzeMMET(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiMuonLoose2): return False
         if not bool(row.tAntiElectronMVA3Tight): return False
         if (row.ePt + row.tPt < 30): return False
-        if not (row.muTightCountZH == 2): return False #THR
+        #X# if not (row.muTightCountZH == 2): return False #THR
         return selections.looseElectronSelection(row,'e')
 
     def sign_cut(self, row):
