@@ -60,8 +60,8 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
       #  return bool(row.t2MediumIso)
 
     def red_shape_cuts(self, row):
-        if (row.t1LooseMVA2Iso <= 0.0): return False
-        if (row.t2LooseMVA2Iso <= 0.0): return False
+        if (row.t1MVA2IsoRaw <= 0.0): return False
+        if (row.t2MVA2IsoRaw <= 0.0): return False
         return True
 
     def preselection(self, row):

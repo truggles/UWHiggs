@@ -25,11 +25,18 @@ for line in ifile:
     run = info[1]
     lumi = info[2]
     evtID = info[3]
+    t1Pt = info[4]
+    t1Eta = info[5]
+    t2Pt = info[6]
+    t2Eta = info[7]
+    zMass = info[8]
     #tuple = (channel, run, lumi, evtID)
     tuple = (run, lumi, evtID)
     #print (channel, run, lumi, evtID)
     #if (evtID == '48411'):
         #print tuple
+    pTuple =(channel, run, lumi, evtID, t1Pt, t1Eta, t2Pt, t2Eta, zMass)
+
     if not tuple in evtIDs:
         evtIDs.append(tuple)
         channel_dict[tuple] = channel_map[channel]
@@ -37,7 +44,8 @@ for line in ifile:
         dups += 1
         if channel == '5':
           ofile.write("%s:%s:%s\n" % (run, lumi, evtID))
-        print "%s event also %s" % (channel_dict[tuple], channel_map[channel])
+        #print "%s event also %s" % (channel_dict[tuple], channel_map[channel])
         #print evtID
-
+        #print "%s %s %s %s %s %s %s %s %s" % (pTuple[0],pTuple[1],pTuple[2],pTuple[3],pTuple[4],pTuple[5],pTuple[6],pTuple[7],pTuple[8]) 
+        print "%s,%s,%s,%s,%s,%s,%s,%s,%s" % (pTuple[0],pTuple[1],pTuple[2],pTuple[3],pTuple[4],pTuple[5],pTuple[6],pTuple[7],pTuple[8]) # comma delimited, for excel pasting 
 print "%i duplicates out of %i unique events" % (dups, len(evtIDs))

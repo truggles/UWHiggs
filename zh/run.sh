@@ -14,7 +14,7 @@ source jobid.sh
 export jobid=$jobid8
 #rake fakerates
 #rake fits
-rake analyzezh_fullsim
+rake analyzezh_fullsim --trace
 #rake analyzezh_fullsim_madgraph
 #rake analyzezh_data
 #rake analyzezh_signal

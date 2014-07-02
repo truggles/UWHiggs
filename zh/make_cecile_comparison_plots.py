@@ -1,6 +1,6 @@
 import ROOT
 import os
-from FinalStateAnalysis.MetaData.data_views import extract_sample, read_lumi
+#from FinalStateAnalysis.MetaData.data_views import extract_sample, read_lumi
 import math
 import sys
 
@@ -13,7 +13,7 @@ if (len(sys.argv) == 2):
 
 dict_prods = { 'MMMT' : ('m1','m2','m3','t'),
               'MMET' : ('m1','m2','e','t'),
-              'MMEM' : ('m1','m2','e','m3'),
+              'MMEM' : ('m1','m2','m3','e'),
               'MMTT' : ('m1','m2','t1','t2'),
               'EEMT' : ('e1','e2','m','t'),
               'EEET' : ('e1','e2','e3','t'),
@@ -30,6 +30,17 @@ channel_map = { 'MMTT' : 1,
                 'MMEM' : 4,
                 'EEEM' : 8,
 }
+
+tau_pt_map = { 'MMTT' : " && l3Pt_ > 20 && l4Pt_ > 20",
+               'EETT' : " && l3Pt_ > 20 && l4Pt_ > 20",
+               'MMMT' : " && l4Pt_ > 20",
+               'EEMT' : " && l4Pt_ > 20",
+               'MMET' : " && l4Pt_ > 20",
+               'EEET' : " && l4Pt_ > 20",
+               'MMEM' : "",
+               'EEEM' : "",
+}
+
 
 def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow, xhigh,blinded=False,strip=False):
 
@@ -91,22 +102,26 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
   cecile_hist = ROOT.TH1F()
   cecile_file = ROOT.TFile("For_Stephane/AZh300_8TeV.root", "READ")
   if (len(channels) > 2): 
+    print "(len(channels) > 2)"
     # running on all channels combined
     cecile_ntuple = cecile_file.Get("BG_Tree")
     #print "%s>>cecile_hist" % cvariable
     ofile.cd()
     #string = "%s>>cecile_hist" % cvariable
     #print "cecile_ntuple.Draw(%s, subChannel_==3)" % string
-    cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3","same")
+    for channel in channels:
+      print "channel: %s" % channel
+      print "subChannel_==3%s" % tau_pt_map[channel]
+      cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3&&Channel_==%i%s" % (channel_map[channels[0]], tau_pt_map[channel]),"same")
     cecile_hist = ROOT.gDirectory.Get("cecile_hist")
-    #os.system("sleep 1")
-    #canvas.cd()
-    #canvas.Close()
-    #os.system("sleep 2")
-    #print "now drawing cecile_hist"
-    #cecile_hist = ofile.Get("cecile_hist")
-    #cecile_hist.Draw()
-    #os.system("sleep 5")
+      #os.system("sleep 1")
+      #canvas.cd()
+      #canvas.Close()
+      #os.system("sleep 2")
+      #print "now drawing cecile_hist"
+      #cecile_hist = ofile.Get("cecile_hist")
+      #cecile_hist.Draw()
+      #os.system("sleep 5")
 
   #elif (cvariable == 'SVMass_'):
   #  ofile.cd()
@@ -120,9 +135,9 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
   else: 
     cecile_ntuple = cecile_file.Get("BG_Tree")
     ofile.cd()
-    cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3&&Channel_==%i" % channel_map[channels[0]],"same")
+    cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "Channel_==%i&&subChannel_==3%s" % (channel_map[channels[0]],tau_pt_map[channel]),"same")
     cecile_hist = ROOT.gDirectory.Get("cecile_hist")
-    print "Cecile's number of events is %f" % cecile_ntuple.GetEntries("subChannel_==3&&Channel_==%i" % channel_map[channels[0]])
+    print "Cecile's number of events is %f" % cecile_ntuple.GetEntries("Channel_==%i&&subChannel_==3%s" % (channel_map[channels[0]],tau_pt_map[channel]))
 
   
   ofile.cd()

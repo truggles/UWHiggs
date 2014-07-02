@@ -334,12 +334,21 @@ class ZHAnalyzerBase(MegaBase):
                     #    sync_info = str(self.name) + ' ' + str(row.run) + ' ' + str(row.lumi) + ' ' + str(row.evt) + ' '+ str(hmass_visible) + ' ' + str(hmass) + '\n'
                     #    sync_file.write(sync_info)
                     #    #print "sync_info: " + sync_info
+
+
  
                     # make sure we don't have any duplicates
+                    # Doesn't work, this currently eliminates duplicates before all selection has happened and thus throws away good events.
                     #eventTuple = (row.run, row.lumi, int((row.evt)/10**5), int((row.evt)%10**5) )
-                    #if eventTuple in self.eventSet and not 'red_shape' in folder[1] :
-                    #    print "found a duplicate event %i" % row.evt
-                    #    continue # we've already put this event in another category!
+                    #if ( (folder[0] == 'os') and (folder[1] == 'All_Passed')): 
+                    #    if ((eventTuple in self.eventSet) and not ('red_shape' in folder[1] )):
+                    ##if (eventTuple in self.eventSet):
+                    #        #print "found a duplicate event: %i run: %i lumi: %i ZMass: %f" % (row.evt, row.run, row.lumi, getattr(row,'%s_%s_Mass' % self.Z_decay_products()))
+                    #        continue # we've already put this event in this category!
+
+
+
+                    # not a duplicate in signal region
                     #self.eventSet.add(eventTuple)
                      
                     fill_histos(histos, folder, row, event_weight)

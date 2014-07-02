@@ -190,6 +190,9 @@ cdef class MuMuETauTree:
     cdef TBranch* eCiCTight_branch
     cdef float eCiCTight_value
 
+    cdef TBranch* eCiCTightElecOverlap_branch
+    cdef float eCiCTightElecOverlap_value
+
     cdef TBranch* eComesFromHiggs_branch
     cdef float eComesFromHiggs_value
 
@@ -261,6 +264,15 @@ cdef class MuMuETauTree:
 
     cdef TBranch* eEle32WP70PFMT50PFMTFilter_branch
     cdef float eEle32WP70PFMT50PFMTFilter_value
+
+    cdef TBranch* eElecOverlap_branch
+    cdef float eElecOverlap_value
+
+    cdef TBranch* eElecOverlapZHLoose_branch
+    cdef float eElecOverlapZHLoose_value
+
+    cdef TBranch* eElecOverlapZHTight_branch
+    cdef float eElecOverlapZHTight_value
 
     cdef TBranch* eEnergyError_branch
     cdef float eEnergyError_value
@@ -478,6 +490,15 @@ cdef class MuMuETauTree:
     cdef TBranch* eMu17Ele8dZFilter_branch
     cdef float eMu17Ele8dZFilter_value
 
+    cdef TBranch* eMuOverlap_branch
+    cdef float eMuOverlap_value
+
+    cdef TBranch* eMuOverlapZHLoose_branch
+    cdef float eMuOverlapZHLoose_value
+
+    cdef TBranch* eMuOverlapZHTight_branch
+    cdef float eMuOverlapZHTight_value
+
     cdef TBranch* eNearMuonVeto_branch
     cdef float eNearMuonVeto_value
 
@@ -684,18 +705,6 @@ cdef class MuMuETauTree:
 
     cdef TBranch* e_m1_SS_branch
     cdef float e_m1_SS_value
-
-    cdef TBranch* e_m1_SVfitEta_branch
-    cdef float e_m1_SVfitEta_value
-
-    cdef TBranch* e_m1_SVfitMass_branch
-    cdef float e_m1_SVfitMass_value
-
-    cdef TBranch* e_m1_SVfitPhi_branch
-    cdef float e_m1_SVfitPhi_value
-
-    cdef TBranch* e_m1_SVfitPt_branch
-    cdef float e_m1_SVfitPt_value
 
     cdef TBranch* e_m1_ToMETDPhi_Ty1_branch
     cdef float e_m1_ToMETDPhi_Ty1_value
@@ -1957,6 +1966,12 @@ cdef class MuMuETauTree:
     cdef TBranch* tElecOverlap_branch
     cdef float tElecOverlap_value
 
+    cdef TBranch* tElecOverlapZHLoose_branch
+    cdef float tElecOverlapZHLoose_value
+
+    cdef TBranch* tElecOverlapZHTight_branch
+    cdef float tElecOverlapZHTight_value
+
     cdef TBranch* tEta_branch
     cdef float tEta_value
 
@@ -2076,6 +2091,12 @@ cdef class MuMuETauTree:
 
     cdef TBranch* tMuOverlap_branch
     cdef float tMuOverlap_value
+
+    cdef TBranch* tMuOverlapZHLoose_branch
+    cdef float tMuOverlapZHLoose_value
+
+    cdef TBranch* tMuOverlapZHTight_branch
+    cdef float tMuOverlapZHTight_value
 
     cdef TBranch* tPhi_branch
     cdef float tPhi_value
@@ -2587,6 +2608,15 @@ cdef class MuMuETauTree:
         else:
             self.eCiCTight_branch.SetAddress(<void*>&self.eCiCTight_value)
 
+        #print "making eCiCTightElecOverlap"
+        self.eCiCTightElecOverlap_branch = the_tree.GetBranch("eCiCTightElecOverlap")
+        #if not self.eCiCTightElecOverlap_branch and "eCiCTightElecOverlap" not in self.complained:
+        if not self.eCiCTightElecOverlap_branch and "eCiCTightElecOverlap":
+            warnings.warn( "MuMuETauTree: Expected branch eCiCTightElecOverlap does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("eCiCTightElecOverlap")
+        else:
+            self.eCiCTightElecOverlap_branch.SetAddress(<void*>&self.eCiCTightElecOverlap_value)
+
         #print "making eComesFromHiggs"
         self.eComesFromHiggs_branch = the_tree.GetBranch("eComesFromHiggs")
         #if not self.eComesFromHiggs_branch and "eComesFromHiggs" not in self.complained:
@@ -2802,6 +2832,33 @@ cdef class MuMuETauTree:
             #self.complained.add("eEle32WP70PFMT50PFMTFilter")
         else:
             self.eEle32WP70PFMT50PFMTFilter_branch.SetAddress(<void*>&self.eEle32WP70PFMT50PFMTFilter_value)
+
+        #print "making eElecOverlap"
+        self.eElecOverlap_branch = the_tree.GetBranch("eElecOverlap")
+        #if not self.eElecOverlap_branch and "eElecOverlap" not in self.complained:
+        if not self.eElecOverlap_branch and "eElecOverlap":
+            warnings.warn( "MuMuETauTree: Expected branch eElecOverlap does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("eElecOverlap")
+        else:
+            self.eElecOverlap_branch.SetAddress(<void*>&self.eElecOverlap_value)
+
+        #print "making eElecOverlapZHLoose"
+        self.eElecOverlapZHLoose_branch = the_tree.GetBranch("eElecOverlapZHLoose")
+        #if not self.eElecOverlapZHLoose_branch and "eElecOverlapZHLoose" not in self.complained:
+        if not self.eElecOverlapZHLoose_branch and "eElecOverlapZHLoose":
+            warnings.warn( "MuMuETauTree: Expected branch eElecOverlapZHLoose does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("eElecOverlapZHLoose")
+        else:
+            self.eElecOverlapZHLoose_branch.SetAddress(<void*>&self.eElecOverlapZHLoose_value)
+
+        #print "making eElecOverlapZHTight"
+        self.eElecOverlapZHTight_branch = the_tree.GetBranch("eElecOverlapZHTight")
+        #if not self.eElecOverlapZHTight_branch and "eElecOverlapZHTight" not in self.complained:
+        if not self.eElecOverlapZHTight_branch and "eElecOverlapZHTight":
+            warnings.warn( "MuMuETauTree: Expected branch eElecOverlapZHTight does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("eElecOverlapZHTight")
+        else:
+            self.eElecOverlapZHTight_branch.SetAddress(<void*>&self.eElecOverlapZHTight_value)
 
         #print "making eEnergyError"
         self.eEnergyError_branch = the_tree.GetBranch("eEnergyError")
@@ -3451,6 +3508,33 @@ cdef class MuMuETauTree:
         else:
             self.eMu17Ele8dZFilter_branch.SetAddress(<void*>&self.eMu17Ele8dZFilter_value)
 
+        #print "making eMuOverlap"
+        self.eMuOverlap_branch = the_tree.GetBranch("eMuOverlap")
+        #if not self.eMuOverlap_branch and "eMuOverlap" not in self.complained:
+        if not self.eMuOverlap_branch and "eMuOverlap":
+            warnings.warn( "MuMuETauTree: Expected branch eMuOverlap does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("eMuOverlap")
+        else:
+            self.eMuOverlap_branch.SetAddress(<void*>&self.eMuOverlap_value)
+
+        #print "making eMuOverlapZHLoose"
+        self.eMuOverlapZHLoose_branch = the_tree.GetBranch("eMuOverlapZHLoose")
+        #if not self.eMuOverlapZHLoose_branch and "eMuOverlapZHLoose" not in self.complained:
+        if not self.eMuOverlapZHLoose_branch and "eMuOverlapZHLoose":
+            warnings.warn( "MuMuETauTree: Expected branch eMuOverlapZHLoose does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("eMuOverlapZHLoose")
+        else:
+            self.eMuOverlapZHLoose_branch.SetAddress(<void*>&self.eMuOverlapZHLoose_value)
+
+        #print "making eMuOverlapZHTight"
+        self.eMuOverlapZHTight_branch = the_tree.GetBranch("eMuOverlapZHTight")
+        #if not self.eMuOverlapZHTight_branch and "eMuOverlapZHTight" not in self.complained:
+        if not self.eMuOverlapZHTight_branch and "eMuOverlapZHTight":
+            warnings.warn( "MuMuETauTree: Expected branch eMuOverlapZHTight does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("eMuOverlapZHTight")
+        else:
+            self.eMuOverlapZHTight_branch.SetAddress(<void*>&self.eMuOverlapZHTight_value)
+
         #print "making eNearMuonVeto"
         self.eNearMuonVeto_branch = the_tree.GetBranch("eNearMuonVeto")
         #if not self.eNearMuonVeto_branch and "eNearMuonVeto" not in self.complained:
@@ -4071,42 +4155,6 @@ cdef class MuMuETauTree:
             #self.complained.add("e_m1_SS")
         else:
             self.e_m1_SS_branch.SetAddress(<void*>&self.e_m1_SS_value)
-
-        #print "making e_m1_SVfitEta"
-        self.e_m1_SVfitEta_branch = the_tree.GetBranch("e_m1_SVfitEta")
-        #if not self.e_m1_SVfitEta_branch and "e_m1_SVfitEta" not in self.complained:
-        if not self.e_m1_SVfitEta_branch and "e_m1_SVfitEta":
-            warnings.warn( "MuMuETauTree: Expected branch e_m1_SVfitEta does not exist!"                " It will crash if you try and use it!",Warning)
-            #self.complained.add("e_m1_SVfitEta")
-        else:
-            self.e_m1_SVfitEta_branch.SetAddress(<void*>&self.e_m1_SVfitEta_value)
-
-        #print "making e_m1_SVfitMass"
-        self.e_m1_SVfitMass_branch = the_tree.GetBranch("e_m1_SVfitMass")
-        #if not self.e_m1_SVfitMass_branch and "e_m1_SVfitMass" not in self.complained:
-        if not self.e_m1_SVfitMass_branch and "e_m1_SVfitMass":
-            warnings.warn( "MuMuETauTree: Expected branch e_m1_SVfitMass does not exist!"                " It will crash if you try and use it!",Warning)
-            #self.complained.add("e_m1_SVfitMass")
-        else:
-            self.e_m1_SVfitMass_branch.SetAddress(<void*>&self.e_m1_SVfitMass_value)
-
-        #print "making e_m1_SVfitPhi"
-        self.e_m1_SVfitPhi_branch = the_tree.GetBranch("e_m1_SVfitPhi")
-        #if not self.e_m1_SVfitPhi_branch and "e_m1_SVfitPhi" not in self.complained:
-        if not self.e_m1_SVfitPhi_branch and "e_m1_SVfitPhi":
-            warnings.warn( "MuMuETauTree: Expected branch e_m1_SVfitPhi does not exist!"                " It will crash if you try and use it!",Warning)
-            #self.complained.add("e_m1_SVfitPhi")
-        else:
-            self.e_m1_SVfitPhi_branch.SetAddress(<void*>&self.e_m1_SVfitPhi_value)
-
-        #print "making e_m1_SVfitPt"
-        self.e_m1_SVfitPt_branch = the_tree.GetBranch("e_m1_SVfitPt")
-        #if not self.e_m1_SVfitPt_branch and "e_m1_SVfitPt" not in self.complained:
-        if not self.e_m1_SVfitPt_branch and "e_m1_SVfitPt":
-            warnings.warn( "MuMuETauTree: Expected branch e_m1_SVfitPt does not exist!"                " It will crash if you try and use it!",Warning)
-            #self.complained.add("e_m1_SVfitPt")
-        else:
-            self.e_m1_SVfitPt_branch.SetAddress(<void*>&self.e_m1_SVfitPt_value)
 
         #print "making e_m1_ToMETDPhi_Ty1"
         self.e_m1_ToMETDPhi_Ty1_branch = the_tree.GetBranch("e_m1_ToMETDPhi_Ty1")
@@ -7888,6 +7936,24 @@ cdef class MuMuETauTree:
         else:
             self.tElecOverlap_branch.SetAddress(<void*>&self.tElecOverlap_value)
 
+        #print "making tElecOverlapZHLoose"
+        self.tElecOverlapZHLoose_branch = the_tree.GetBranch("tElecOverlapZHLoose")
+        #if not self.tElecOverlapZHLoose_branch and "tElecOverlapZHLoose" not in self.complained:
+        if not self.tElecOverlapZHLoose_branch and "tElecOverlapZHLoose":
+            warnings.warn( "MuMuETauTree: Expected branch tElecOverlapZHLoose does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("tElecOverlapZHLoose")
+        else:
+            self.tElecOverlapZHLoose_branch.SetAddress(<void*>&self.tElecOverlapZHLoose_value)
+
+        #print "making tElecOverlapZHTight"
+        self.tElecOverlapZHTight_branch = the_tree.GetBranch("tElecOverlapZHTight")
+        #if not self.tElecOverlapZHTight_branch and "tElecOverlapZHTight" not in self.complained:
+        if not self.tElecOverlapZHTight_branch and "tElecOverlapZHTight":
+            warnings.warn( "MuMuETauTree: Expected branch tElecOverlapZHTight does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("tElecOverlapZHTight")
+        else:
+            self.tElecOverlapZHTight_branch.SetAddress(<void*>&self.tElecOverlapZHTight_value)
+
         #print "making tEta"
         self.tEta_branch = the_tree.GetBranch("tEta")
         #if not self.tEta_branch and "tEta" not in self.complained:
@@ -8247,6 +8313,24 @@ cdef class MuMuETauTree:
             #self.complained.add("tMuOverlap")
         else:
             self.tMuOverlap_branch.SetAddress(<void*>&self.tMuOverlap_value)
+
+        #print "making tMuOverlapZHLoose"
+        self.tMuOverlapZHLoose_branch = the_tree.GetBranch("tMuOverlapZHLoose")
+        #if not self.tMuOverlapZHLoose_branch and "tMuOverlapZHLoose" not in self.complained:
+        if not self.tMuOverlapZHLoose_branch and "tMuOverlapZHLoose":
+            warnings.warn( "MuMuETauTree: Expected branch tMuOverlapZHLoose does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("tMuOverlapZHLoose")
+        else:
+            self.tMuOverlapZHLoose_branch.SetAddress(<void*>&self.tMuOverlapZHLoose_value)
+
+        #print "making tMuOverlapZHTight"
+        self.tMuOverlapZHTight_branch = the_tree.GetBranch("tMuOverlapZHTight")
+        #if not self.tMuOverlapZHTight_branch and "tMuOverlapZHTight" not in self.complained:
+        if not self.tMuOverlapZHTight_branch and "tMuOverlapZHTight":
+            warnings.warn( "MuMuETauTree: Expected branch tMuOverlapZHTight does not exist!"                " It will crash if you try and use it!",Warning)
+            #self.complained.add("tMuOverlapZHTight")
+        else:
+            self.tMuOverlapZHTight_branch.SetAddress(<void*>&self.tMuOverlapZHTight_value)
 
         #print "making tPhi"
         self.tPhi_branch = the_tree.GetBranch("tPhi")
@@ -8714,6 +8798,11 @@ cdef class MuMuETauTree:
             self.eCiCTight_branch.GetEntry(self.localentry, 0)
             return self.eCiCTight_value
 
+    property eCiCTightElecOverlap:
+        def __get__(self):
+            self.eCiCTightElecOverlap_branch.GetEntry(self.localentry, 0)
+            return self.eCiCTightElecOverlap_value
+
     property eComesFromHiggs:
         def __get__(self):
             self.eComesFromHiggs_branch.GetEntry(self.localentry, 0)
@@ -8833,6 +8922,21 @@ cdef class MuMuETauTree:
         def __get__(self):
             self.eEle32WP70PFMT50PFMTFilter_branch.GetEntry(self.localentry, 0)
             return self.eEle32WP70PFMT50PFMTFilter_value
+
+    property eElecOverlap:
+        def __get__(self):
+            self.eElecOverlap_branch.GetEntry(self.localentry, 0)
+            return self.eElecOverlap_value
+
+    property eElecOverlapZHLoose:
+        def __get__(self):
+            self.eElecOverlapZHLoose_branch.GetEntry(self.localentry, 0)
+            return self.eElecOverlapZHLoose_value
+
+    property eElecOverlapZHTight:
+        def __get__(self):
+            self.eElecOverlapZHTight_branch.GetEntry(self.localentry, 0)
+            return self.eElecOverlapZHTight_value
 
     property eEnergyError:
         def __get__(self):
@@ -9194,6 +9298,21 @@ cdef class MuMuETauTree:
             self.eMu17Ele8dZFilter_branch.GetEntry(self.localentry, 0)
             return self.eMu17Ele8dZFilter_value
 
+    property eMuOverlap:
+        def __get__(self):
+            self.eMuOverlap_branch.GetEntry(self.localentry, 0)
+            return self.eMuOverlap_value
+
+    property eMuOverlapZHLoose:
+        def __get__(self):
+            self.eMuOverlapZHLoose_branch.GetEntry(self.localentry, 0)
+            return self.eMuOverlapZHLoose_value
+
+    property eMuOverlapZHTight:
+        def __get__(self):
+            self.eMuOverlapZHTight_branch.GetEntry(self.localentry, 0)
+            return self.eMuOverlapZHTight_value
+
     property eNearMuonVeto:
         def __get__(self):
             self.eNearMuonVeto_branch.GetEntry(self.localentry, 0)
@@ -9538,26 +9657,6 @@ cdef class MuMuETauTree:
         def __get__(self):
             self.e_m1_SS_branch.GetEntry(self.localentry, 0)
             return self.e_m1_SS_value
-
-    property e_m1_SVfitEta:
-        def __get__(self):
-            self.e_m1_SVfitEta_branch.GetEntry(self.localentry, 0)
-            return self.e_m1_SVfitEta_value
-
-    property e_m1_SVfitMass:
-        def __get__(self):
-            self.e_m1_SVfitMass_branch.GetEntry(self.localentry, 0)
-            return self.e_m1_SVfitMass_value
-
-    property e_m1_SVfitPhi:
-        def __get__(self):
-            self.e_m1_SVfitPhi_branch.GetEntry(self.localentry, 0)
-            return self.e_m1_SVfitPhi_value
-
-    property e_m1_SVfitPt:
-        def __get__(self):
-            self.e_m1_SVfitPt_branch.GetEntry(self.localentry, 0)
-            return self.e_m1_SVfitPt_value
 
     property e_m1_ToMETDPhi_Ty1:
         def __get__(self):
@@ -11659,6 +11758,16 @@ cdef class MuMuETauTree:
             self.tElecOverlap_branch.GetEntry(self.localentry, 0)
             return self.tElecOverlap_value
 
+    property tElecOverlapZHLoose:
+        def __get__(self):
+            self.tElecOverlapZHLoose_branch.GetEntry(self.localentry, 0)
+            return self.tElecOverlapZHLoose_value
+
+    property tElecOverlapZHTight:
+        def __get__(self):
+            self.tElecOverlapZHTight_branch.GetEntry(self.localentry, 0)
+            return self.tElecOverlapZHTight_value
+
     property tEta:
         def __get__(self):
             self.tEta_branch.GetEntry(self.localentry, 0)
@@ -11858,6 +11967,16 @@ cdef class MuMuETauTree:
         def __get__(self):
             self.tMuOverlap_branch.GetEntry(self.localentry, 0)
             return self.tMuOverlap_value
+
+    property tMuOverlapZHLoose:
+        def __get__(self):
+            self.tMuOverlapZHLoose_branch.GetEntry(self.localentry, 0)
+            return self.tMuOverlapZHLoose_value
+
+    property tMuOverlapZHTight:
+        def __get__(self):
+            self.tMuOverlapZHTight_branch.GetEntry(self.localentry, 0)
+            return self.tMuOverlapZHTight_value
 
     property tPhi:
         def __get__(self):

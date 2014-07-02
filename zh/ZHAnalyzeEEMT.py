@@ -55,7 +55,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
 
     def red_shape_cuts(self, row):
         if (row.mRelPFIsoDB > 2.0): return False
-        if (row.tLooseMVA2Iso <= 0.0): return False
+        if (row.tMVA2IsoRaw <= 0.0): return False
         return True
 
     def preselection(self, row):

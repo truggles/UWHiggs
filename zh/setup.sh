@@ -10,18 +10,18 @@ export jobid=$jobid8
 #export afile=`find $datasrc/$jobid | grep root | head -n 1`
 
 #make sure that this file is new if you made new variables in Ntuples, also run the top 8 "make_wrapper" functions and ls *pyx
-export afile='/hdfs/store/user/truggles/2014-06-23_Ntuples/A300-Zh-lltt-FullSim/make_ntuples_cfg-patTuple_cfg-CAAB054D-23A7-E311-BEE2-001E673972DD.root'
+export afile='/hdfs/store/user/truggles/2014-06-27_Ntuples/A300-Zh-lltt-FullSim/make_ntuples_cfg-patTuple_cfg-FA493589-2AA7-E311-87C1-001E67396CFC.root'
 
-echo "Building cython wrappers from file: $afile"
-
-rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
-rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
-rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
-rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
-rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
-rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
-rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
-rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
+#echo "Building cython wrappers from file: $afile"
+#
+#rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
+#rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
+#rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
+#rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
+#rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
+#rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
+#rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
+#rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
 
 # Legacy for 3lepton  channels
 #rake "make_wrapper[$afile, eem/final/Ntuple, EEMuTree]"
@@ -30,7 +30,7 @@ rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
 #rake "make_wrapper[$afile, mmm/final/Ntuple, MuMuMuTree]"
 
 
-ls *pyx | sed "s|pyx|so|" | xargs rake 
+#ls *pyx | sed "s|pyx|so|" | xargs rake 
 
 echo "done?"
 

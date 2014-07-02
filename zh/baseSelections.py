@@ -201,7 +201,7 @@ def tightMuonSelection(row, muId):
     return True
     
 
-def looseTauSelection(row, tauId, ptThr = 15):
+def looseTauSelection(row, tauId, ptThr = 20):
     '''
     Basic selection for signal hadronic (the ones coming from Higgs). No Isolation is applied, but DecayMode is
     '''
@@ -221,7 +221,7 @@ def looseTauSelection(row, tauId, ptThr = 15):
         return False
     return True
 
-def tightTauSelection(row, tauId, ptThr = 15):
+def tightTauSelection(row, tauId, ptThr = 20):
     
     if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
     if getattr( row, getVar(tauId, 'Pt') )  < ptThr:                   return False
