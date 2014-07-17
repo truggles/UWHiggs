@@ -112,8 +112,8 @@ def ZMuMuSelection(row):
     Z Selection as AN
     '''
     #Z Selection
-   # print "x"
-    if not (row.doubleMuPass > 0 or row.doubleMuTrkPass > 0):  return False
+   # print "x" 
+    if not (row.doubleMuPass > 0 or row.doubleMuTrkPass > 0):  return False   
    # print "y"
     if not tightMuonSelection(row, 'm1'):            return False
     if not tightMuonSelection(row, 'm2'):            return False
@@ -143,8 +143,10 @@ def ZMuMuSelection(row):
     #if bool(row.m2MatchesMu17Ele8IsoPath > 0): return False
     #if bool(row.m1MatchesMu8Ele17IsoPath > 0): return False
     #if bool(row.m2MatchesMu8Ele17IsoPath > 0): return False
-    #return True
-    return MuTriggerMatching(row)
+    return True
+
+    #return MuTriggerMatching(row)
+
 #    print "z5"
 
 def ZEESelection(row):
@@ -231,7 +233,7 @@ def tightTauSelection(row, tauId, ptThr = 20):
     if not bool( getattr( row, getVar(tauId, 'LooseIso3Hits') ) ):      return False
     if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:      return False
     if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	
-#        print "TightTauSelec failed MuOverlapZHTight"
+#        print "TightTauSelec failed MuOverlapZ
         return False
     if getattr( row, getVar(tauId, 'ElecOverlapZHTight') ) > 0:	
 #        print "TightTauSelection failed ElecOverlapZHTight"
