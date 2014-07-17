@@ -66,10 +66,6 @@ class ZHAnalyzerBase(MegaBase):
 							      row.eVetoZH,
 							      row.muVetoZH,
 							      row.tauVetoZH,
-							      row.muTightCountZH,
-							      row.eTightCountZH,
-							      row.tauTightCountZH,
-							      row.bjetTightCountZH,
 							      getattr(row,'%sPt' % self.H_decay_products()[0]),
 							      getattr(row,'%sEta' % self.H_decay_products()[0]),
 							      getattr(row,'%sMass' % self.H_decay_products()[0]),
@@ -190,7 +186,7 @@ class ZHAnalyzerBase(MegaBase):
             folder = "/".join(folders)
             self.book_histos(folder) # in subclass
             #if 'All_Passed' in folder: #if we are in the all passed region ONLY
-            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:eVetoZH:muVetoZH:tauVetoZH:muTightCountZH:eTightCountZH:tauTightCountZH:bjetTightCountZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi', type=ROOT.TNtuple)
+            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi', type=ROOT.TNtuple)
             #self.book(folder, "Event_ID", "Event ID", 'run:lumi:evt1:evt2:zmass:hmass:t1iso:t2iso:t1antiE:t2antiE:t1antiMu:t2antiMu:t1DF:t2DF', type=ROOT.TNtuple) #FIXME move back to only passed region
             # Each of the weight subfolders
             wToApply = regionInfo['weights']
@@ -343,12 +339,9 @@ class ZHAnalyzerBase(MegaBase):
                     #if ( (folder[0] == 'os') and (folder[1] == 'All_Passed')): 
                     #    if ((eventTuple in self.eventSet) and not ('red_shape' in folder[1] )):
                     ##if (eventTuple in self.eventSet):
-                    #        #print "found a duplicate event: %i run: %i lumi: %i ZMass: %f" % (row.evt, row.run, row.lumi, getattr(row,'%s_%s_Mass' % self.Z_decay_products()))
+                    #        print "found a duplicate event: %i run: %i lumi: %i ZMass: %f" % (row.evt, row.run, row.lumi, getattr(row,'%s_%s_Mass' % self.Z_decay_products()))
                     #        continue # we've already put this event in this category!
-
-
-
-                    # not a duplicate in signal region
+                    ## not a duplicate in signal region
                     #self.eventSet.add(eventTuple)
                      
                     fill_histos(histos, folder, row, event_weight)
