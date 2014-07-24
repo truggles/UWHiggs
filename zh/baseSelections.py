@@ -113,7 +113,7 @@ def ZMuMuSelection(row):
     '''
     #Z Selection
    # print "x" 
-    if not (row.doubleMuPass > 0 or row.doubleMuTrkPass > 0):  return False   
+    if not (row.doubleMuPass > 0 or row.mu17TkMu8Pass > 0):  return False   
    # print "y"
     if not tightMuonSelection(row, 'm1'):            return False
     if not tightMuonSelection(row, 'm2'):            return False
@@ -179,8 +179,8 @@ def ZEESelection(row):
     #if not elIsoLoose(row, 'e1'):                    return False
     #if bool(row.e1_e2_SS):                           return False
     #if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
-    #return True
-    return ElTriggerMatching(row)
+    return True
+    #return ElTriggerMatching(row)
     #print "z5"    
 
 def looseMuonSelection(row,muId):
