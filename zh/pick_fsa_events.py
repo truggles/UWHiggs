@@ -16,14 +16,30 @@ ROOT.gROOT.SetBatch(True)
 def txt2tuple(line):
     #return tuple([ int(float(i.strip())) for i in line.split(' ') ])
     info = line.strip().split(' ')
-    #return ( int(info[0]),int(info[1]),int(info[2]),round(float(info[3]),6),round(float(info[4]),6),round(float(info[5]),6),round(float(info[6]),6),round(float(info[7]),2)  )
-    #return ( int(info[0]),int(info[1]),int(info[2]),round(float(info[5]),6),round(float(info[6]),6) )
-    return ( int(info[0]),int(info[1]),int(info[2])  )
+    return ( int(info[0]),int(info[1]),int(info[2]),round(float(info[3]),0),round(float(info[4]),0),round(float(info[5]),0),round(float(info[6]),0),round(float(info[7]),0) )
+    #return ( int(info[0]),int(info[1]),int(info[2]),round(float(info[3]),2),round(float(info[4]),0),round(float(info[5]),0) )
+    #return ( int(info[0]),int(info[1]),int(info[2]),round(float(info[3]),2),round(float(info[6]),0),round(float(info[7]),0) ) # Last object
+    #return ( int(info[0]),int(info[1]),int(info[2]),round(float(info[3]),0) )
+    #return ( int(info[0]),int(info[1]),int(info[2])  )
+    #return ( int(info[1]),int(info[2]),int(info[3])  )
 
 def row2tuple(row):
-    #return int(row.run), int(row.lumi), int(row.evt), round(row.ePt,6), round(row.eEta,6), round(row.tPt,6), round(row.tEta,6), round(row.m1_m2_Mass,2)
-    #return int(row.run), int(row.lumi), int(row.evt), round(row.tPt,6), round(row.tEta,6)
-    return int(row.run), int(row.lumi), int(row.evt)
+    #return int(row.run), int(row.lumi), int(row.evt)
+
+    # for EMMT
+    #return int(row.run), int(row.lumi), int(row.evt), round(row.m1_m2_Mass,2), round(row.ePt,6), round(row.eEta,6), round(row.tPt,6), round(row.tEta,6)
+    #return int(row.run), int(row.lumi), int(row.evt), round(row.m1_m2_Mass,2), round(row.ePt,0), round(row.eEta,0)
+    #return int(row.run), int(row.lumi), int(row.evt), round(row.m1_m2_Mass,0)
+
+    # for MMTT
+    return int(row.run), int(row.lumi), int(row.evt), round(row.m1_m2_Mass,0), round(row.t1Pt,0), round(row.t1Eta,0), round(row.t2Pt,0), round(row.t2Eta,0)
+    #return int(row.run), int(row.lumi), int(row.evt), round(row.m1_m2_Mass,2), round(row.t1Pt,0), round(row.t1Eta,0)
+    #return int(row.run), int(row.lumi), int(row.evt), round(row.m1_m2_Mass,0)
+
+    # for XXXX
+    #return int(row.run), int(row.lumi), int(row.evt), round(row.m1_m2_Mass,0), round(row.m3Pt,0), round(row.m3Eta,0)
+    #return int(row.run), int(row.lumi), int(row.evt), round(row.e1_e2_Mass,0), round(row.e3Pt,0), round(row.e3Eta,0), round(row.mPt,0), round(row.mEta,0)
+
 
 def GetDbsInfo(query):
     "Interface with the DBS API to get the whatever you want of a requirements. ALWAYS RETURN A LIST OF STRINGS"

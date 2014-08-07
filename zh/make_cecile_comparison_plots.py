@@ -110,9 +110,10 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
     #string = "%s>>cecile_hist" % cvariable
     #print "cecile_ntuple.Draw(%s, subChannel_==3)" % string
     for channel in channels:
-      print "channel: %s" % channel
-      print "subChannel_==3%s" % tau_pt_map[channel]
-      cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3&&Channel_==%i%s" % (channel_map[channels[0]], tau_pt_map[channel]),"same")
+      #print "channel: %s" % channel
+      #print "subChannel_==3%s" % tau_pt_map[channel]
+      #cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3&&Channel_==%i%s" % (channel_map[channels[0]], tau_pt_map[channel]),"same")
+      cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3&&Channel_==%i" % (channel_map[channels[0]]),"same")
     cecile_hist = ROOT.gDirectory.Get("cecile_hist")
       #os.system("sleep 1")
       #canvas.cd()
@@ -220,9 +221,9 @@ make_control_plot((1,2), 'Mass', 'HMass_', 'Z Mass', 10, 200, 0, 200,True)
 #make_control_plot((1,2), 'DPhi', "Z products #delta#phi", 10, 180, 0, 7) 
 
 # tau 1, tau 2 plots
-make_control_plot((3,), 'Eta', 'l3Eta_', '#tau_{1} #eta', 10, 200, -2.4, 2.4,False,True)
-make_control_plot((4,), 'Eta', 'l4Eta_', '#tau_{2} #eta', 10, 200, -2.4, 2.4,False,True)
-make_control_plot((3,), 'Pt', 'l3Pt_', '#tau_{1} p_{T}', 10, 100, 0, 100,False,True)
-make_control_plot((4,), 'Pt', 'l4Pt_', '#tau_{2} p_{T}', 10, 100, 0, 100,False,True)
-make_control_plot((3,), 'JetPt', 'l3_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True)
-make_control_plot((4,), 'JetPt', 'l4_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True) 
+#make_control_plot((3,), 'Eta', 'l3Eta_', '#tau_{1} #eta', 10, 200, -2.4, 2.4,False,True)
+#make_control_plot((4,), 'Eta', 'l4Eta_', '#tau_{2} #eta', 10, 200, -2.4, 2.4,False,True)
+#make_control_plot((3,), 'Pt', 'l3Pt_', '#tau_{1} p_{T}', 10, 100, 0, 100,False,True)
+#make_control_plot((4,), 'Pt', 'l4Pt_', '#tau_{2} p_{T}', 10, 100, 0, 100,False,True)
+#make_control_plot((3,), 'JetPt', 'l3_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True)
+#make_control_plot((4,), 'JetPt', 'l4_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True) 

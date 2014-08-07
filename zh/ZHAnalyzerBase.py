@@ -291,8 +291,8 @@ class ZHAnalyzerBase(MegaBase):
             row_id_map = dict( [ (f, f( row) )  for f in id_functions] )
 
             # Get the generic event weight
-            #event_weight = weight_func(row)
-            event_weight = 1.0 # quick hack FIXMEE!!!
+            event_weight = weight_func(row)
+            #event_weight = 1.0 # quick hack FIXMEE!!!
 
             # Figure out which folder/region we are in, multiple regions allowed
             for folder, region_info in cut_region_map.iteritems():

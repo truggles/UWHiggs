@@ -21,12 +21,20 @@ for line in my_file:
     #evt.pop()
     #evt.pop()
     if (evt[0] == channel and evt[0] != '4'):
-      my_events.add((evt[1],evt[2],evt[3]))
-      #my_events.add((evt[1],evt[2],evt[3],evt[4],evt[5],evt[6],evt[7],evt[8])) # 6 = t2Pt, 7 = t2Eta
+      #my_events.add((evt[1],evt[2],evt[3]))
+      #my_events.add((evt[1],evt[2],evt[3],evt[4]))
+      my_events.add((evt[1],evt[2],evt[3],evt[4],evt[5],evt[6],evt[7],evt[8])) # 7 = t2Pt, 8 = t2Eta
+      #my_events.add((evt[1],evt[2],evt[3],evt[5],evt[6],evt[7],evt[8])) # 7 = t2Pt, 8 = t2Eta
+      #my_events.add((evt[1],evt[2],evt[3],evt[4],evt[5],evt[6],evt[7])) # 6 = t2Pt, 7 = t2Eta
+      #my_events.add((evt[1],evt[2],evt[4],evt[5],evt[6],evt[7],evt[8])) # 6 = t2Pt, 7 = t2Eta w/o EventID
       #my_events.add((evt[1],evt[2],evt[3],round(float(evt[4])),round(float(evt[5]))))
     elif(evt[0] == channel):
-      #my_events.add((evt[1],evt[2],evt[3],evt[6],evt[7],evt[4],evt[5],evt[8]))
-      my_events.add((evt[1],evt[2],evt[3]))
+      #my_events.add((evt[1],evt[2],evt[3]))
+      #my_events.add((evt[1],evt[2],evt[3],evt[4]))
+      my_events.add((evt[1],evt[2],evt[3],evt[4],evt[7],evt[8],evt[5],evt[6]))
+      #my_events.add((evt[1],evt[2],evt[3],evt[7],evt[8],evt[5],evt[6]))
+      #my_events.add((evt[1],evt[2],evt[3],evt[6],evt[7],evt[4],evt[5]))
+      #my_events.add((evt[1],evt[2],evt[6],evt[7],evt[4],evt[5],evt[8])) # w/o EventID
 
 #cecile_file = open("cecile_formatted.txt", "w")
 cecile_events = set()
@@ -38,12 +46,15 @@ for line in cecile_file:
     #if (int(evt[1]) < 190456): continue
     #print "skipped..."
     if (evt[0] == channel):
-      cecile_events.add((evt[1],evt[2],evt[3]))
-      #cecile_events.add((evt[1],evt[2],evt[3],evt[4],evt[5],evt[6],evt[7],evt[8]))
-     #cecile_events.add((evt[1],evt[2],evt[3],round(float(evt[4])),round(float(evt[5]))))
-#    s = evt[0] + ":" + evt[1] + ":" + evt[2] + "\n"
-#    cecile_file.write(s)
-
+      #cecile_events.add((evt[1],evt[2],evt[3]))
+      #cecile_events.add((evt[1],evt[2],evt[3],evt[4]))
+      cecile_events.add((evt[1],evt[2],evt[3],evt[4],evt[5],evt[6],evt[7],evt[8]))
+      #cecile_events.add((evt[1],evt[2],evt[3],evt[5],evt[6],evt[7],evt[8]))
+      #cecile_events.add((evt[1],evt[2],evt[3],evt[4],evt[5],evt[6],evt[7]))
+      #cecile_events.add((evt[1],evt[2],evt[4],evt[5],evt[6],evt[7],evt[8])) # w/o EventID
+      #cecile_events.add((evt[1],evt[2],evt[3],round(float(evt[4])),round(float(evt[5]))))
+      #s = evt[0] + ":" + evt[1] + ":" + evt[2] + "\n"
+      #cecile_file.write(s)
 
 common_events = open("common_events.txt", 'w')
 my_extras = open("my_extra_events.txt", 'w')
@@ -64,21 +75,27 @@ ceciles_extra_set = cecile_events.difference(my_events)
 
 for val in common_events_set:
     #if not (len(val) == 4): continue
-    s = val[0] + " " + val[1] + " " + val[2] + " " + "\n"
-    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] +  " " + val[7] + "\n" 
+    #s = val[0] + " " + val[1] + " " + val[2] + "\n"
+    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + "\n"
+    s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] +  " " + val[7] + "\n" 
+    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] + "\n" # w/o EventID 
     #print val
     nCommon+=1
     common_events.write(s)
 
 for val in my_extra_set:
-    s = val[0] + " " + val[1] + " " + val[2] + " " + "\n"
-    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] +  " " + val[7] + "\n" 
+    #s = val[0] + " " + val[1] + " " + val[2] + "\n"
+    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + "\n"
+    s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] +  " " + val[7] + "\n" 
+    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] + "\n" # w/o EventID 
     nMyExtra+=1
     my_extras.write(s)
 
 for val in ceciles_extra_set:
-    s = val[0] + " " + val[1] + " " + val[2] + " " + "\n"
-    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] +  " " + val[7] + "\n" 
+    #s = val[0] + " " + val[1] + " " + val[2] + "\n"
+    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + "\n"
+    s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] +  " " + val[7] + "\n" 
+    #s = val[0] + " " + val[1] + " " + val[2] + " " + val[3] + " " + val[4] + " " + val[5] + " " + val[6] + "\n" # w/o EventID 
     nPExtra+=1
     ceciles_extras.write(s)
 
