@@ -119,7 +119,8 @@ var_map = {
 class ZHPlotterBase(Plotter):
     def __init__(self, channel, blind=False):
         #self.samples = [ 'Zjets_M50', 'WplusJets_madgraph', 'WZ*', 'ZZ*', 'WW*', 'VH*', 'TTplusJets_madgraph','*A*Zh*']#'WH*',
-        self.samples = ['ZZ*','VH_H2Tau_M-125','*A*Zh*', 'VH*HWW*', 'ggZZ2L2L' ]
+        #self.samples = ['ZZ*','VH_H2Tau_M-125','*A*Zh*', 'VH*HWW*', 'ggZZ2L2L' ]
+        self.samples = ['A*Zh*','TTZJets','VHWW_lepdecay_125','VH_H2Tau_M-125','ZZJetsTo4L_pythia','ggZZ2L2L']
         self.samples += ['data_DoubleMu*'] if channel[:2] == 'MM' else ['data_DoubleElectron*']
         self.jobid = os.environ['jobid']
         self.channel = channel
@@ -151,16 +152,28 @@ class ZHPlotterBase(Plotter):
     def make_signal_views(self, rebin, unblinded=True):
         ''' Make signal views with FR background estimation '''
 
-        #wz_view = views.SubdirectoryView(
-        #    self.rebin_view(self.get_view('WZ*'), rebin),
-        #    'os/All_Passed/'
-        #)
-        zz_view = views.SubdirectoryView(
-            self.rebin_view(self.get_view('ZZ*'), rebin),
+        TTZJets_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('TTZJets'), rebin),
             'os/All_Passed/'
         )
-        #ggzz_view = views.SubdirectoryView(
-        #    self.rebin_view(self.get_view('ggZZ2L2L'), rebin),
+        VHWW_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('VHWW_lepdecay_125'), rebin),
+            'os/All_Passed/'
+        )
+        VHTauTau_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('VH_H2Tau_M-125'), rebin),
+            'os/All_Passed/'
+        )
+        ZZJetsTo4L_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('ZZJetsTo4L_pythia'), rebin),
+            'os/All_Passed/'
+        )
+        ggZZ2L2L_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('ggZZ2L2L'), rebin),
+            'os/All_Passed/'
+        )
+        #zz_view = views.SubdirectoryView(
+        #    self.rebin_view(self.get_view('ZZ*'), rebin),
         #    'os/All_Passed/'
         #)
 
@@ -200,16 +213,26 @@ class ZHPlotterBase(Plotter):
         Zjets_view = views.ScaleView(cat_red_view, Zjets_view.Get('A_SVfitMass').Integral() / cat_red_view.Get('A_SVfitMass').Integral() )
 
         output = {
-           # 'wz' : wz_view,
-            'zz' : zz_view,
+            'TTZJets' : TTZJets_view,
+            'VHWW' : VHWW_view,
+            'VHTauTau' : VHTauTau_view,
+            'ZZJetsTo4L' : ZZJetsTo4L_view,
+            'ggZZ2L2L' : ggZZ2L2L_view,
             'data' : data_view,
             'cat1' : cat1_view,
-            'cat2' : cat2_view,
-            'Zjets' : Zjets_view
+            'cat2' : cat2_view
+            #'Zjets' : Zjets_view
             #'ggZZ2L2L' : ggzz_view
-            #'charge_fakes' : charge_fakes,
+            #'charge_fakes' : charge_fakes
         }
 
+        for mass in [270, 290, 300, 320, 330, 350]:
+            AZh_view = views.SubdirectoryView(
+                  self.rebin_view(self.get_view('A%i-Zh-lltt-FullSim' % mass), rebin),
+                  'os/All_Passed/'
+                )
+        
+            output['AZhtt%i' % mass] = AZh_view 
         ## Add signal 
         # Not for MSSM!
         #for mass in [110, 120, 130, 140]:
@@ -224,13 +247,6 @@ class ZHPlotterBase(Plotter):
         #    )
         #    output['vh%i_hww' % mass] = ww_view
         #    output['signal%i' % mass] = views.SumView(ww_view, vh_view)
-
-        # Add SM VHtt as background
-        htt_view = views.SubdirectoryView(
-            self.rebin_view(self.get_view('VH_H2Tau_M-125'), rebin),
-            'os/All_Passed/'
-        )
-        output['VH_H2Tau_M-125'] = htt_view
  
         #hww_view = views.SubdirectoryView(
         #    self.rebin_view(self.get_view('VH_120_HWW'), rebin),
@@ -240,26 +256,6 @@ class ZHPlotterBase(Plotter):
         # from http://ceballos.web.cern.ch/ceballos/mcfm/xsec_several_ecm.txt
         #output['VH_120_HWW'] = hww_view
         
-        #for mass in [260, 270, 280, 290, 300, 310, 320, 330, 340]:
-        #    if channel[:2] == 'MM':
-        #        AZh_view = views.SubdirectoryView(
-        #          self.rebin_view(self.get_view('A%i-Zh-mmtt*' % mass), rebin),
-        #          'os/All_Passed/'
-        #        )
-        #    else:
-        #        AZh_view = views.SubdirectoryView(
-        #          self.rebin_view(self.get_view('A%i-Zh-eett*' % mass), rebin),
-        #          'os/All_Passed/'
-        #        )
-        #
-        for mass in [290, 300, 330, 350]:
-            AZh_view = views.SubdirectoryView(
-                  self.rebin_view(self.get_view('A%i-Zh-lltt-FullSim' % mass), rebin),
-                  'os/All_Passed/'
-                )
-        
-            output['AZhtt%i' % mass] = AZh_view 
-       
         #for mass in [260, 270, 290, 350]:
         #    AZh_view = views.SubdirectoryView(
         #          self.rebin_view(self.get_view('A%i-AToZhToLLTauTau-MadGraph' % mass), rebin),
@@ -275,46 +271,51 @@ class ZHPlotterBase(Plotter):
         sig_view = self.make_signal_views(rebin, unblinded)
         outdir.cd()
        
+        TTZJets = sig_view['TTZJets'].Get(variable)
+        VHWW = sig_view['VHWW'].Get(variable)
+        VHTauTau = sig_view['VHTauTau'].Get(variable)
+        ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
+        ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
+         
         #wz = sig_view['wz'].Get(variable)
-        zz = sig_view['zz'].Get(variable)
+        #zz = sig_view['zz'].Get(variable)
         #ggzz = sig_view['ggZZ2L2L'].Get(variable)
         obs = sig_view['data'].Get(variable)
-        Zjets = sig_view['Zjets'].Get(variable)
-        vhtt = sig_view['VH_H2Tau_M-125'].Get(variable)
+        #Zjets = sig_view['Zjets'].Get(variable)
+        #vhtt = sig_view['VH_H2Tau_M-125'].Get(variable)
         #vhww = sig_view['VH_120_HWW'].Get(variable)
-
+        
         #wz.SetName('WZ')
-        zz.SetName('ZZ')
+        #zz.SetName('ZZ')
         obs.SetName('data_obs')
-        Zjets.SetName('Zjets')
-        vhtt.SetName('VHtautau')
+        #Zjets.SetName('Zjets')
+        #vhtt.SetName('VHtautau')
         #vhww.SetName('VHww')
         #ggzz.SetName('ggZZ2L2L')
-        
+        TTZJets.SetName('TTZJets')
+        VHWW.SetName('VHWW')
+        VHTauTau.SetName('VHTauTau')
+        ZZJetsTo4L.SetName('ZZJetsTo4L')
+        ggZZ2L2L.SetName('ggZZ2L2L')
 
         #print sig_view.keys()
-        #for mass in [110, 120, 130, 140]:
-        #    vh = sig_view['vh%i' % mass].Get(variable)
-        #    vh.SetName('ZH_htt%i' % mass)
-        #    vh.Write()
-        #    ww = sig_view['vh%i_hww' % mass].Get(variable)
-        #    ww.SetName('ZH_hww%i' % mass)
-        #    ww.Write()
- 
         #for mass in [260,270,280,290,300,310,320,330,340]:
-        for mass in [290,300,330,350]:
+        for mass in [270,290,300,320,330,350]:
         #for mass in [260,270,290,350]:
             signal = sig_view['AZhtt%i' % mass].Get(variable)
             signal.SetName('AHttZll%i' % mass)
             signal.Write()
 
-        #wz.Write()
-        zz.Write()
+        #zz.Write()
         obs.Write()
-        Zjets.Write()
-        vhtt.Write()
+        #Zjets.Write()
+        #vhtt.Write()
         #vhww.Write()
-        #ggzz.Write()
+        TTZJets.Write()
+        VHWW.Write()
+        VHTauTau.Write()
+        ZZJetsTo4L.Write()
+        ggZZ2L2L.Write()
 
     def write_cut_and_count(self, variable, outdir, unblinded=False):
         ''' Version of write_shapes(...) with only one bin.
@@ -328,15 +329,26 @@ class ZHPlotterBase(Plotter):
     def get_yield(self, variable, unblinded=False):
         sig_view = self.make_signal_views(1, unblinded)
         #wz = sig_view['wz'].Get(variable)
-        zz = sig_view['zz'].Get(variable)
+        #zz = sig_view['zz'].Get(variable)
         obs = sig_view['data'].Get(variable)
-        Zjets = sig_view['Zjets'].Get(variable)
+        #Zjets = sig_view['Zjets'].Get(variable)
+        TTZJets = sig_view['TTZJets'].Get(variable)
+        VHWW = sig_view['VHWW'].Get(variable)
+        VHTauTau = sig_view['VHTauTau'].Get(variable)
+        ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
+        ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
+
 
         return {
             #'wz'    : wz.Integral(),   
-            'zz'    : zz.Integral(),
+            #'zz'    : zz.Integral(),
             'obs'   : obs.Integral(),
-            'Zjets' : Zjets.Integral(),
+            #'Zjets' : Zjets.Integral(),
+            'TTZJets'   : TTZJets.Integral(),
+            'VHWW'   : VHWW.Integral(),
+            'VHTauTau'   : VHTauTau.Integral(),
+            'ZZJetsTo4L'   : ZZJetsTo4L.Integral(),
+            'ggZZ2L2L'   : ggZZ2L2L.Integral(),
             }
 
     def passing_events(self):
@@ -390,7 +402,7 @@ class ZHPlotterBase(Plotter):
         #testData.SetTitle(testSampleName)
         refData.SetTitle(refSampleName)
 
-        diboson_views   = [ InflateErrorView( views.SubdirectoryView(self.rebin_view(self.get_view(pattern), rebin), refDir), 0.16 ) for pattern in ['WZ*'] ] #, 'ZZ*', 'WW*'] ]
+        diboson_views   = [ InflateErrorView( views.SubdirectoryView(self.rebin_view(self.get_view(pattern), rebin), refDir), 0.16 ) for pattern in ['VH*'] ] #, 'ZZ*', 'WW*'] ]
         to_stack_views  = diboson_views + [test_view] #+ 
         stack_hist      = views.StackView( *to_stack_views ).Get(var)
         refData.drawstyle  = "ep"
@@ -445,9 +457,14 @@ class ZHPlotterBase(Plotter):
         #)
 
         stack = views.StackView(
-            sig_view['wz'],
-            sig_view['zz'],
+            #sig_view['wz'],
+            #sig_view['zz'],
             sig_view['fakes'],
+            sig_view['TTZJets'],
+            sig_view['VHWW'],
+            sig_view['VHTauTau'],
+            sig_view['ZZJetsTo4L'],
+            sig_view['ggZZ2L2L'],
          #   vh_10x,
         )
         histo = stack.Get(variable)
@@ -462,8 +479,13 @@ class ZHPlotterBase(Plotter):
         if show_error:
             bkg_error_view = BackgroundErrorView(
                 sig_view['fakes'],
-                sig_view['wz'],
-                sig_view['zz'],
+                #sig_view['wz'],
+                #sig_view['zz'],
+                sig_view['TTZJets'],
+                sig_view['VHWW'],
+                sig_view['VHTauTau'],
+                sig_view['ZZJetsTo4L'],
+                sig_view['ggZZ2L2L'],
             )
             bkg_error = bkg_error_view.Get(variable)
             self.keep.append(bkg_error)
