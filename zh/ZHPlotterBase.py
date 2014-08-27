@@ -5,7 +5,7 @@ Base class to do WH plotting.
 Author: Evan K. Friis, UW
 
 Takes as input a set of ROOT [files] with analysis histgrams, and the corresponding
-lumicalc.sum [lumifiles] that hve the effective lumi for each sample.
+lumicalc.sum [lumifiles] that have the effective lumi for each sample.
 
 If [blind] is true, data in the p1p2p3 region will not be plotted.
 
@@ -205,10 +205,10 @@ class ZHPlotterBase(Plotter):
         #Zjets_view = views.TitleView(
         #    views.StyleView(Zjets_view, **data_styles['Zjets*']), 'Non-prompt')
 
-        charge_fakes = views.TitleView(
-            views.StyleView(
-                views.SubdirectoryView(all_data_view, 'os/p1p2p3/c1'),
-                **data_styles['TT*']), 'Charge mis-id')
+        #charge_fakes = views.TitleView(
+        #    views.StyleView(
+        #        views.SubdirectoryView(all_data_view, 'os/p1p2p3/c1'),
+        #        **data_styles['TT*']), 'Charge mis-id')
 
         Zjets_view = views.ScaleView(cat_red_view, Zjets_view.Get('A_SVfitMass').Integral() / cat_red_view.Get('A_SVfitMass').Integral() )
 
@@ -219,9 +219,11 @@ class ZHPlotterBase(Plotter):
             'ZZJetsTo4L' : ZZJetsTo4L_view,
             'ggZZ2L2L' : ggZZ2L2L_view,
             'data' : data_view,
+            'cat0' : cat0_view,
             'cat1' : cat1_view,
-            'cat2' : cat2_view
-            #'Zjets' : Zjets_view
+            'cat2' : cat2_view,
+            'cat_red' : cat_red_view,
+            'Zjets' : Zjets_view
             #'ggZZ2L2L' : ggzz_view
             #'charge_fakes' : charge_fakes
         }
@@ -231,7 +233,6 @@ class ZHPlotterBase(Plotter):
                   self.rebin_view(self.get_view('A%i-Zh-lltt-FullSim' % mass), rebin),
                   'os/All_Passed/'
                 )
-        
             output['AZhtt%i' % mass] = AZh_view 
         ## Add signal 
         # Not for MSSM!
@@ -276,27 +277,34 @@ class ZHPlotterBase(Plotter):
         VHTauTau = sig_view['VHTauTau'].Get(variable)
         ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
         ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
-         
+        cat0 = sig_view['cat0'].Get(variable)
+        cat1 = sig_view['cat1'].Get(variable)
+        cat2 = sig_view['cat2'].Get(variable)
+        cat_red = sig_view['cat_red'].Get(variable)
+        obs = sig_view['data'].Get(variable)
+        Zjets = sig_view['Zjets'].Get(variable)
         #wz = sig_view['wz'].Get(variable)
         #zz = sig_view['zz'].Get(variable)
         #ggzz = sig_view['ggZZ2L2L'].Get(variable)
-        obs = sig_view['data'].Get(variable)
-        #Zjets = sig_view['Zjets'].Get(variable)
         #vhtt = sig_view['VH_H2Tau_M-125'].Get(variable)
         #vhww = sig_view['VH_120_HWW'].Get(variable)
         
-        #wz.SetName('WZ')
-        #zz.SetName('ZZ')
         obs.SetName('data_obs')
-        #Zjets.SetName('Zjets')
-        #vhtt.SetName('VHtautau')
-        #vhww.SetName('VHww')
-        #ggzz.SetName('ggZZ2L2L')
+        Zjets.SetName('Zjets')
         TTZJets.SetName('TTZJets')
         VHWW.SetName('VHWW')
         VHTauTau.SetName('VHTauTau')
         ZZJetsTo4L.SetName('ZZJetsTo4L')
         ggZZ2L2L.SetName('ggZZ2L2L')
+        cat0.SetName('cat0')
+        cat1.SetName('cat1')
+        cat2.SetName('cat2')
+        cat_red.SetName('cat_red')
+        #wz.SetName('WZ')
+        #zz.SetName('ZZ')
+        #vhtt.SetName('VHtautau')
+        #vhww.SetName('VHww')
+        #ggzz.SetName('ggZZ2L2L')
 
         #print sig_view.keys()
         #for mass in [260,270,280,290,300,310,320,330,340]:
@@ -306,16 +314,20 @@ class ZHPlotterBase(Plotter):
             signal.SetName('AHttZll%i' % mass)
             signal.Write()
 
-        #zz.Write()
         obs.Write()
-        #Zjets.Write()
-        #vhtt.Write()
-        #vhww.Write()
+        Zjets.Write()
         TTZJets.Write()
         VHWW.Write()
         VHTauTau.Write()
         ZZJetsTo4L.Write()
         ggZZ2L2L.Write()
+        cat0.Write()
+        cat1.Write()
+        cat2.Write()
+        cat_red.Write()
+        #vhtt.Write()
+        #zz.Write()
+        #vhww.Write()
 
     def write_cut_and_count(self, variable, outdir, unblinded=False):
         ''' Version of write_shapes(...) with only one bin.
@@ -331,24 +343,31 @@ class ZHPlotterBase(Plotter):
         #wz = sig_view['wz'].Get(variable)
         #zz = sig_view['zz'].Get(variable)
         obs = sig_view['data'].Get(variable)
-        #Zjets = sig_view['Zjets'].Get(variable)
+        Zjets = sig_view['Zjets'].Get(variable)
         TTZJets = sig_view['TTZJets'].Get(variable)
         VHWW = sig_view['VHWW'].Get(variable)
         VHTauTau = sig_view['VHTauTau'].Get(variable)
         ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
         ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
-
+        cat0 = sig_view['cat0'].Get(variable)
+        cat1 = sig_view['cat1'].Get(variable)
+        cat2 = sig_view['cat2'].Get(variable)
+        cat_red = sig_view['cat_red'].Get(variable)
 
         return {
             #'wz'    : wz.Integral(),   
             #'zz'    : zz.Integral(),
             'obs'   : obs.Integral(),
-            #'Zjets' : Zjets.Integral(),
+            'Zjets' : Zjets.Integral(),
             'TTZJets'   : TTZJets.Integral(),
             'VHWW'   : VHWW.Integral(),
             'VHTauTau'   : VHTauTau.Integral(),
             'ZZJetsTo4L'   : ZZJetsTo4L.Integral(),
             'ggZZ2L2L'   : ggZZ2L2L.Integral(),
+            'cat0'   : cat0.Integral(),
+            'cat1'   : cat1.Integral(),
+            'cat2'   : cat2.Integral(),
+            'cat_red'   : cat_red.Integral(),
             }
 
     def passing_events(self):
@@ -465,6 +484,10 @@ class ZHPlotterBase(Plotter):
             sig_view['VHTauTau'],
             sig_view['ZZJetsTo4L'],
             sig_view['ggZZ2L2L'],
+            sig_view['cat0'],
+            sig_view['cat1'],
+            sig_view['cat2'],
+            sig_view['cat_red'],
          #   vh_10x,
         )
         histo = stack.Get(variable)
@@ -486,6 +509,10 @@ class ZHPlotterBase(Plotter):
                 sig_view['VHTauTau'],
                 sig_view['ZZJetsTo4L'],
                 sig_view['ggZZ2L2L'],
+                sig_view['cat0'],
+                sig_view['cat1'],
+                sig_view['cat2'],
+                sig_view['cat_red'],
             )
             bkg_error = bkg_error_view.Get(variable)
             self.keep.append(bkg_error)

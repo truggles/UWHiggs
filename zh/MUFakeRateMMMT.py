@@ -27,7 +27,7 @@ class MUFakeRateMMMT(EMUFakeRatesBase.EMUFakeRatesBase):
 
         if not selections.ZMuMuSelection(row): return False
         if not selections.generalCuts(row, 'm1','m2','m3','t') : return False
-        if not selections.looseTauSelection(row,'t',5): return False
+        if not selections.looseTauSelection(row,'t'): return False
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
         return selections.looseMuonSelection(row,'m3')

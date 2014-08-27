@@ -1,1 +1,0 @@
-vetoElectrons(0.4, "pt > 10 & abs(eta) < 2.5 & (userIso(0) + max(userIso(1) + neutralHadronIso - 0.5*userIso(2), 0))/pt < 0.3 & ( ( abs(eta) < 0.8 & electronID(\'mvaNonTrigV0\') > 0.5 ) || ( abs(eta) > 0.8 & abs(eta) < 1.479 & electronID(\'mvaNonTrigV0\') > 0.12 ) || ( abs(eta) > 1.479 & electronID(\'mvaNonTrigV0\') > 0.6 ))").size()'

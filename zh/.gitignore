@@ -1,3 +1,10 @@
 inputs/*/
 event_lists/*
 results/analysis/*/*.events
+Archive*
+*Tree*
+sync_shapes
+shape_comparisons
+results
+make_cec*
+mc_shape_comparisons

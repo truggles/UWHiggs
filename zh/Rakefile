@@ -67,8 +67,8 @@ samples = Hash[
 ]
 
  #puts "diboson: " + samples["diboson"].inspect
- puts "fullsim: " + samples["fullsim"].inspect
- puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
+ #puts "fullsim: " + samples["fullsim"].inspect
+ #puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
 
 # Function to get the .root files for an analyzer and samples
 def get_analyzer_results(analyzer, the_samples)
@@ -119,13 +119,13 @@ task :fakerates => []
 #chec/ if base class or some selections has changed
 fr_analyzer_dependencies.each do |analyzer, deps|
   file analyzer => fr_analyzer_dependencies[analyzer] do |t|
-    puts t.investigation
+   #puts t.investigation
     sh "touch #{t.name}"
   end
 end
 
 fr_analyzer_sample_map.each do |analyzer, the_samples|
-  puts "Creating tasks for analyzer: #{analyzer}"
+  #puts "Creating tasks for analyzer: #{analyzer}"
   get_analyzer_results(analyzer, the_samples).each do |result|
     #file result => fr_analyzer_dependencies[analyzer]
     task :fakerates => result
@@ -416,7 +416,7 @@ fr_fits.each do |fit, fit_info|
   # Expand sample list
   subsample_inputs = []
   fit_info['samples'].each do |sample|
-    puts sample.inspect + ": " + samples[sample].inspect
+    #puts sample.inspect + ": " + samples[sample].inspect
     subsample_inputs += samples[sample]
   end
 
@@ -670,7 +670,7 @@ end
 #end
 
 #pivot_masses = [260,270,280,290,300,310,320,330,340] # mA for MSSM
-pivot_masses = [290, 300, 330, 350]
+pivot_masses = [270, 290, 300, 320, 330, 350]
 #pivot_masses = [260, 270, 290, 350]
 
 # Now do the horizontal morphing
@@ -739,7 +739,7 @@ end
 task :cards => []
 
 #cardmasses = Array[260,270,280,290,300,310,320,330,340]
-cardmasses = Array[290, 300, 330, 350]
+cardmasses = Array[270, 290, 300, 320, 330, 350]
 #cardmasses = Array[260, 270, 290, 350]
 
 cardmasses.each do |mass|

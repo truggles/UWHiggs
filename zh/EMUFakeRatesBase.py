@@ -56,6 +56,7 @@ class EMUFakeRatesBase(MegaBase):
             if not self.zSelection(row):    return False
             #if row.pfMet_mes_Et > 20:                            return False
             #if row.mva_metEt > 20: return False
+            #print getattr(row,self.branchId+'MtToMET')
             if getattr(row,self.branchId+'MtToMET') > 30: return False #AN --> 30
             #if row.jetVeto30 < 0.5: return False
             if not getattr(row,self.branchId+'_t_SS'):    return False

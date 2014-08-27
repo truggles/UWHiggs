@@ -106,7 +106,7 @@ if __name__ == "__main__":
             )
 
     if not args.noCorrection:
-        wz_view = get_view('WZ*')
+        wz_view = get_view('ZJets*')
         zz_view = get_view('ZZ*')
         corrected_view = int_view(
             SubtractionView(data, wz_view, zz_view, restrict_positive=True))
