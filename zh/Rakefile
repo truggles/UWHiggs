@@ -46,11 +46,12 @@ samples = Hash[
   "VH_H2Tau_M-125" => Array['VH_H2Tau_M-125'],
   "VHWW_lepdecay_125" => Array['VHWW_lepdecay_125'],
   "ZZJetsTo4L_pythia" => Array['ZZJetsTo4L_pythia'],
+  "WJetsToLNu" => Array['WJetsToLNu'],
   # End important backgrounds
 
   "ZZ" => get_sample_names('ZZ'), #will include ZZJets4L and ggZZ2L2L
   #MCToAnalyze" => get_sample_names('VH_H2Tau_M-125') + get_sample_names('VHWW_lepdecay_125') + get_sample_names('ggZZ2L2L') + get_sample_names('TTZJets') + get_sample_names('ZZJetsTo4L_pythia'),
-  "MCToAnalyze" => Array['VH_H2Tau_M-125','VHWW_lepdecay_125','ggZZ2L2L','TTZJets','ZZJetsTo4L_pythia'], 
+  "MCToAnalyze" => Array['VH_H2Tau_M-125','VHWW_lepdecay_125','ggZZ2L2L','TTZJets','ZZJetsTo4L_pythia','WJetsToLNu'], 
   #"signal" => get_sample_names('VH') + get_sample_names('WH'),
   "signal" => Array['VH_H2Tau_M-125','VHWW_lepdecay_125', 'ggZZ2L2L'],
   #"VH_H2Tau_M-125" => Array['VH_H2Tau_M-125'],
@@ -60,6 +61,7 @@ samples = Hash[
   "signal_eett" => Array['VH_H2Tau_M-125'],
   "fullsim" => get_sample_names('Zh-lltt-FullSim'),
   "fullsim_madgraph" => get_sample_names('AToZhToLLTauTau-MadGraph'),
+  "madgraph" => get_sample_names('Zh-lltt-MadGraph'),
   #"signal_125" => Array['VH_H2Tau_M-125'],
   # Automagically figure out what data samples we have
   "data_mm" =>  get_sample_names('data_DoubleMu'),
@@ -68,7 +70,10 @@ samples = Hash[
 
  #puts "diboson: " + samples["diboson"].inspect
  #puts "fullsim: " + samples["fullsim"].inspect
- #puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
+ puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
+ puts "madgraph: " + samples["madgraph"].inspect
+ puts "data_mm: " + samples["data_mm"].inspect
+ puts "data_ee: " + samples["data_ee"].inspect
 
 # Function to get the .root files for an analyzer and samples
 def get_analyzer_results(analyzer, the_samples)
@@ -502,6 +507,15 @@ task :eeem_signal_only => get_analyzer_results("ZHAnalyzeEEEM", samples['signal'
 task :mmtt_signal_only => get_analyzer_results("ZHAnalyzeMMTT", samples['signal'])
 task :eett_signal_only => get_analyzer_results("ZHAnalyzeEETT", samples['signal'])
 
+task :mmmt_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeMMMT", samples['ZZJetsTo4L_pythia'])
+task :eemt_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeEEMT", samples['ZZJetsTo4L_pythia'])
+task :mmet_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeMMET", samples['ZZJetsTo4L_pythia'])
+task :eeet_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeEEET", samples['ZZJetsTo4L_pythia'])
+task :mmem_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeMMEM", samples['ZZJetsTo4L_pythia'])
+task :eeem_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeEEEM", samples['ZZJetsTo4L_pythia'])
+task :mmtt_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeMMTT", samples['ZZJetsTo4L_pythia'])
+task :eett_ZZJetsTo4L => get_analyzer_results("ZHAnalyzeEETT", samples['ZZJetsTo4L_pythia'])
+
 task :mmmt_ggzz => get_analyzer_results("ZHAnalyzeMMMT", samples['ggzz2l2l'])
 task :eemt_ggzz => get_analyzer_results("ZHAnalyzeEEMT", samples['ggzz2l2l'])
 task :mmet_ggzz => get_analyzer_results("ZHAnalyzeMMET", samples['ggzz2l2l'])
@@ -510,6 +524,15 @@ task :mmem_ggzz => get_analyzer_results("ZHAnalyzeMMEM", samples['ggzz2l2l'])
 task :eeem_ggzz => get_analyzer_results("ZHAnalyzeEEEM", samples['ggzz2l2l'])
 task :mmtt_ggzz => get_analyzer_results("ZHAnalyzeMMTT", samples['ggzz2l2l'])
 task :eett_ggzz => get_analyzer_results("ZHAnalyzeEETT", samples['ggzz2l2l'])
+
+task :mmmt_mg => get_analyzer_results("ZHAnalyzeMMMT", samples['madgraph'])
+task :eemt_mg => get_analyzer_results("ZHAnalyzeEEMT", samples['madgraph'])
+task :mmet_mg => get_analyzer_results("ZHAnalyzeMMET", samples['madgraph'])
+task :eeet_mg => get_analyzer_results("ZHAnalyzeEEET", samples['madgraph'])
+task :mmem_mg => get_analyzer_results("ZHAnalyzeMMEM", samples['madgraph'])
+task :eeem_mg => get_analyzer_results("ZHAnalyzeEEEM", samples['madgraph'])
+task :mmtt_mg => get_analyzer_results("ZHAnalyzeMMTT", samples['madgraph'])
+task :eett_mg => get_analyzer_results("ZHAnalyzeEETT", samples['madgraph'])
 
 task :mmmt_fs => get_analyzer_results("ZHAnalyzeMMMT", samples['fullsim'])
 task :eemt_fs => get_analyzer_results("ZHAnalyzeEEMT", samples['fullsim'])
@@ -529,15 +552,15 @@ task :eeem_fs_mg => get_analyzer_results("ZHAnalyzeEEEM", samples['fullsim_madgr
 task :mmtt_fs_mg => get_analyzer_results("ZHAnalyzeMMTT", samples['fullsim_madgraph'])
 task :eett_fs_mg => get_analyzer_results("ZHAnalyzeEETT", samples['fullsim_madgraph'])
 
-task :mmmt => get_analyzer_results("ZHAnalyzeMMMT.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['fullsim'])
-task :eemt => get_analyzer_results("ZHAnalyzeEEMT.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['fullsim'])
-task :mmet => get_analyzer_results("ZHAnalyzeMMET.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['fullsim'])
-task :eeet => get_analyzer_results("ZHAnalyzeEEET.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['fullsim'])
+task :mmmt => get_analyzer_results("ZHAnalyzeMMMT.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['madgraph'])
+task :eemt => get_analyzer_results("ZHAnalyzeEEMT.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['madgraph'])
+task :mmet => get_analyzer_results("ZHAnalyzeMMET.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['madgraph'])
+task :eeet => get_analyzer_results("ZHAnalyzeEEET.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['madgraph'])
           
-task :mmem => get_analyzer_results("ZHAnalyzeMMEM.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['fullsim'])
-task :eeem => get_analyzer_results("ZHAnalyzeEEEM.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['fullsim'])
-task :mmtt => get_analyzer_results("ZHAnalyzeMMTT.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['fullsim'])
-task :eett => get_analyzer_results("ZHAnalyzeEETT.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['fullsim'])
+task :mmem => get_analyzer_results("ZHAnalyzeMMEM.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['madgraph'])
+task :eeem => get_analyzer_results("ZHAnalyzeEEEM.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['madgraph'])
+task :mmtt => get_analyzer_results("ZHAnalyzeMMTT.py", samples['MCToAnalyze'] + samples['data_mm'] + samples['madgraph'])
+task :eett => get_analyzer_results("ZHAnalyzeEETT.py", samples['MCToAnalyze'] + samples['data_ee'] + samples['madgraph'])
 
 task :data_only_mmmt => get_analyzer_results("ZHAnalyzeMMMT.py", samples['data_mm'])
 task :data_only_eemt => get_analyzer_results("ZHAnalyzeEEMT.py", samples['data_ee'])
@@ -565,6 +588,14 @@ task :analyzezh => [:mmmt, :eemt, :mmet, :eeet, :mmem, :eeem, :mmtt, :eett] do
 #task :analyzezh => [:mmmt, :eemt, :eeet, :eeem, :mmtt, :eett] do
 #task :analyzezh => [:eeem, :mmtt, :eett] do
   puts "called analyzezh task from local rakefile"
+end
+
+task :analyzezh_ZZJetsTo4L => [:mmmt_ZZJetsTo4L, :eemt_ZZJetsTo4L, :mmet_ZZJetsTo4L, :eeet_ZZJetsTo4L, :mmem_ZZJetsTo4L, :eeem_ZZJetsTo4L, :mmtt_ZZJetsTo4L, :eett_ZZJetsTo4L] do
+  puts "called analyzezh_ZZJetsTo4L task from local rakefile"
+end
+
+task :analyzezh_mg => [:mmmt_mg, :eemt_mg, :mmet_mg, :eeet_mg, :mmem_mg, :eeem_mg, :mmtt_mg, :eett_mg] do
+  puts "called analyzezh_mg task from local rakefile"
 end
 
 task :analyzezh_data => [ :data_only_mmmt, :data_only_eemt, :data_only_mmet, :data_only_eeet, :data_only_mmem, :data_only_eeem, :data_only_mmtt, :data_only_eett] do
