@@ -18,6 +18,7 @@ class EMUFakeRatesBase(MegaBase):
         self.is7TeV = '7TeV' in os.environ['jobid']
         self.lepton   = ''#self.leptonName()
         self.branchId = ''#self.branchIdentifier()
+        self.eventSet = set() # to keep track of duplicate events
 
     def begin(self):
         # Book histograms
@@ -75,10 +76,15 @@ class EMUFakeRatesBase(MegaBase):
         pt10 = histos[('zlt', 'pt10')]
 
         # Analyze data.  Select events with a good Z.
+
+
         for row in self.tree:
             if not preselection(self, row):
                 continue
 
+            eventTuple = (row.run, row.lumi, row.evt, self.lepton_passes_loose_iso(row), self.lepton_passes_tight_iso(row) ) 
+            if (eventTuple in self.eventSet):
+                continue
             # Fill denominator
             #print 'PRESELECTION PASSED!'
             fill(pt10, row)
@@ -88,7 +94,7 @@ class EMUFakeRatesBase(MegaBase):
             if self.lepton_passes_tight_iso(row):
                 #print 'ISOLATION PASSED!'
                 fill(histos[('zlt', 'pt10', 'tightId')], row)
-
+            self.eventSet.add(eventTuple)
 
     def finish(self):
         self.write_histos()

@@ -25,19 +25,13 @@ control.  The subclasses must define the following functions:
 from FinalStateAnalysis.PlotTools.MegaBase import MegaBase
 import ROOT
 import array
-#import abdollah
 import os
 import pprint
 import baseSelections as selections
 
-#import debug
-#from debug import debugRow
-
 class ZHAnalyzerBase(MegaBase):
     def __init__(self, tree, outfile, wrapper, channel, **kwargs):
-        #print '__init__ called'
         super(ZHAnalyzerBase, self).__init__(tree, outfile, **kwargs)
-        #print '\n\n',os.environ['megatarget'],'\n\n'
         # Cython wrapper class must be passed
         self.tree = wrapper(tree)
         self.out = outfile
@@ -45,7 +39,6 @@ class ZHAnalyzerBase(MegaBase):
         zdec  = self.Z_decay_products()
         ch    = (zdec[0][0]+zdec[1][0]).upper()+channel
         #fname = '/'.join(['results',jobid,'ZHAnalyze'+ch,'abdollah_events.txt'])
-        #print fname
         ## if os.path.isfile(fname):
         ##     self.fileLog = open(fname,'a')
         ## else:
@@ -78,10 +71,7 @@ class ZHAnalyzerBase(MegaBase):
 							      row.mva_metPhi,
 							      row.pfMetEt,
 							      row.pfMetPhi
-							      ] ),
-           #'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int((row.evt)/10**5),int((row.evt)%10**5),getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products()),row.eVetoZH, row.muVetoZH, row.tauVetoZH, getattr(row,'%sJetPt' % self.H_decay_products()[0]), getattr(row,'%sJetPt' % self.H_decay_products()[1])  ] ),
-            #'Event_ID': lambda row, weight: array.array("f", [row.run,row.lumi,int((row.evt)/10**5),int((row.evt)%10**5),getattr(row,'%s_%s_Mass' % self.Z_decay_products()),getattr(row,'%s_%s_SVfitMass' % self.H_decay_products()), row.t1MediumIso3Hits, row.t2MediumIso3Hits, row.t1AntiElectronLoose, row.t2AntiElectronLoose, row.t1AntiMuonLoose2, row.t2AntiMuonLoose2, row.t1DecayFinding, row.t2DecayFinding] ),
-            }
+							      ] ),}
         #print '__init__->self.channel %s' % self.channel
         self.eventSet = set() # to keep track of duplicate events
         
@@ -139,16 +129,10 @@ class ZHAnalyzerBase(MegaBase):
         # Build list of folders, and a mapping of
         # (sign, ob1, obj2, ...) => ('the/path', (weights))
         #folders = []
-        #print dir(self)
-        #print 'folder->self.channel %s'% self.channel
         channel  = self.channel
-        #print channel
         flag_map = {}
         weightsAvail = [None, None, None, self.leg3_weight, self.leg4_weight]
         for sign in ['ss', 'os']:
-             #for failing_objs in [(), (1,2), (1,), (2,), (3,), (4,), (3,4), (1,2,3,4)]:
-             
-             #for failing_objs in [(), (3,), (4,), (3,4), (0,), (10,)]: # 0 special case for real4 check, 10 for real3 check
              for failing_objs in [(), (3,), (4,), (3,4)]:
                 region_label = '_'.join(['Leg%iFailed' % obj for obj in failing_objs]) if len(failing_objs) else 'All_Passed'
                 if 0 in failing_objs:
@@ -187,7 +171,6 @@ class ZHAnalyzerBase(MegaBase):
             self.book_histos(folder) # in subclass
             #if 'All_Passed' in folder: #if we are in the all passed region ONLY
             self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi', type=ROOT.TNtuple)
-            #self.book(folder, "Event_ID", "Event ID", 'run:lumi:evt1:evt2:zmass:hmass:t1iso:t2iso:t1antiE:t2antiE:t1antiMu:t2antiMu:t1DF:t2DF', type=ROOT.TNtuple) #FIXME move back to only passed region
             # Each of the weight subfolders
             wToApply = regionInfo['weights']
             for w in wToApply:
@@ -201,7 +184,6 @@ class ZHAnalyzerBase(MegaBase):
         # output text file with run:lumi:evt info for syncing purposes
         #sync_file = open("sync_file_%s.txt" % self.name, 'a')
   
-
         # For speed, map the result of the region cuts to a folder path
         # string using a dictionary
         cut_region_map = self.build_zh_folder_structure()
@@ -296,7 +278,7 @@ class ZHAnalyzerBase(MegaBase):
 
             # Figure out which folder/region we are in, multiple regions allowed
             for folder, region_info in cut_region_map.iteritems():
-                if not (preselection(row) or 'red_shape' in folder[1] ):
+                if not (preselection(row)):
                     continue
                 #if row.evt == 306250:
                 #  if folder[1]=='All_Passed':
@@ -335,17 +317,19 @@ class ZHAnalyzerBase(MegaBase):
  
                     # make sure we don't have any duplicates
                     # Doesn't work, this currently eliminates duplicates before all selection has happened and thus throws away good events.
-                    #eventTuple = (row.run, row.lumi, int((row.evt)/10**5), int((row.evt)%10**5) )
+                    eventTuple = (row.run, row.lumi, row.evt, folder[0], folder[1] )
                     #if ( (folder[0] == 'os') and (folder[1] == 'All_Passed')): 
                     #    if ((eventTuple in self.eventSet) and not ('red_shape' in folder[1] )):
-                    ##if (eventTuple in self.eventSet):
-                    #        print "found a duplicate event: %i run: %i lumi: %i ZMass: %f" % (row.evt, row.run, row.lumi, getattr(row,'%s_%s_Mass' % self.Z_decay_products()))
-                    #        continue # we've already put this event in this category!
-                    ## not a duplicate in signal region
-                    #self.eventSet.add(eventTuple)
+                    if (eventTuple in self.eventSet and not ('red_shape' in folder[1]) ):
+                           #print "found a duplicate event: %i run: %i lumi: %i ZMass: %f Sign: %s Folder Cut: %s" % (row.evt, row.run, row.lumi, getattr(row,'%s_%s_Mass' % self.Z_decay_products()), folder[0], folder[1])
+                           continue # we've already put this event in this category!
+                    # not a duplicate in signal region
+                    self.eventSet.add(eventTuple)
                      
                     fill_histos(histos, folder, row, event_weight)
                     wToApply = [ (w, w(row) )  for w in region_info['weights'] ]
+                    #print "folder: %s, event_weight: %f, event: %i_____________________" % (folder, event_weight, row.evt)
+                    #print "folder[0]: %s, folder[1]: %s, event_weight: %f, event: %i_____________________" % (folder[0], folder[1], event_weight, row.evt)
                     for w_fcn, w_val in wToApply:
                         #if w_val > 1. :
                             #print 'obj1_weight: %s' % w_val

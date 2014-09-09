@@ -20,6 +20,10 @@ export jobid=$jobid8
 #rake analyzezh_signal
 #rake analyzezh_ks
 #rake analyzezh_ggzz
+#rake analyzezh_ZZJetsTo4L
+#rake analyzezh_mg
+#rake analyzezh_A300FS
+#rake mmtt_A300FS
 #rake analyzezh
 #rake mmmt_fs
 #rake eett_fs

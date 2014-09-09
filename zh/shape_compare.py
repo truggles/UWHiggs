@@ -1,4 +1,5 @@
 from ROOT import gROOT
+from ROOT import gStyle
 import ROOT
 import os
 
@@ -34,11 +35,18 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
         if (channel == 'mmme'):
             my_red = my_shapes.Get("mmem_zh/%s" % sample)
         else: my_red = my_shapes.Get("%s_zh/%s" % (channel, sample))
+
+        ''' Normalize histos b/c we don't have properly normalized histos from ULB (9/9/14) '''
+        if (my_red.Integral() > 0):
+            my_red.Scale( 1/my_red.Integral() )
         off_red = official_shapes.Get("%s_zh/%s" % (channel, samples[sample]))
+        if (off_red.Integral() > 0):
+            off_red.Scale( 1/off_red.Integral() )
         c1 = ROOT.TCanvas("c1", "a canvas")
         pad1 = ROOT.TPad("pad1","",0,0.2,1,1) # compare distributions
         pad2 = ROOT.TPad("pad2","",0,0,1,0.2) # ratio plot
         pad1.Draw()
+        #gStyle.SetOptStat(0)
         pad2.Draw()
     
         pad1.cd() 
@@ -47,20 +55,32 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
         off_red.GetXaxis().SetTitle(" A SVMass (GeV), %s" % channel)
         #off_red.Sumw2()
         off_red.SetLineColor(ROOT.kBlue)
-        #off_red.SetMaximum(1.8 * off_red.GetMaximum() )
-        off_red.SetMaximum(4.0 * off_red.GetMaximum() )
+
         off_red.Draw("hist")
         off_red_2 = official_shapes.Get("%s_zh/%s" % (channel, samples[sample]))
+        if off_red_2.Integral() > 0:
+            off_red_2.Scale( 1/off_red_2.Integral() )
         off_red_2.Draw("AP same")
         my_red.Draw("AP same")
+
+        ''' Set reasonable maximums on histos '''        
+        off_red_max = off_red.GetMaximum()
+        my_red_max = my_red.GetMaximum()
+        if ( off_red.GetMaximum() >= my_red.GetMaximum() ):
+            off_red.SetMaximum(1.8 * off_red.GetMaximum() )
+            print "off_red_max: %f" % (1.8 * off_red.GetMaximum() )
+        else:
+            off_red.SetMaximum(1.8 * my_red.GetMaximum() )
+            print "my_red_max: %f" % (1.8 * my_red.GetMaximum() )
     
         pad2.cd()
         HDiff = my_red.Clone("HDiff")
         HDiff.Divide(off_red)
+        HDiff.SetTitle("")
         #HDiff.GetYaxis().SetRangeUser(0.9,1.1)
         #HDiff.GetYaxis().SetRangeUser(0.98,1.02)
         #HDiff.GetYaxis().SetRangeUser(0.5, 1.5)
-        HDiff.GetYaxis().SetRangeUser(0.0, 6)
+        HDiff.GetYaxis().SetRangeUser(0.0, 2.0)
         HDiff.GetYaxis().SetNdivisions(3)
         HDiff.GetYaxis().SetLabelSize(0.1)
         HDiff.GetYaxis().SetTitleSize(0.1)
@@ -70,10 +90,10 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
         HDiff.GetXaxis().SetTitle("")
         HDiff.GetXaxis().SetLabelSize(0.0001)
         HDiff.Draw()
+        HDiff.SetStats(0)
         line = ROOT.TLine()
         line.DrawLine(HDiff.GetXaxis().GetXmin(),1,HDiff.GetXaxis().GetXmax(),1)
     
-        #os.system("sleep 3")
         c1.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/shape_comparisons/%s/%s.png" % (sample, channel))
         pad1.Close()
         pad2.Close()
@@ -116,10 +136,11 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
     pad2.cd()
     HDiff = my_red.Clone("HDiff")
     HDiff.Divide(off_red)
+    HDiff.SetTitle("")
     #HDiff.GetYaxis().SetRangeUser(0.9,1.1)
     #HDiff.GetYaxis().SetRangeUser(0.98,1.02)
     #HDiff.GetYaxis().SetRangeUser(0.5, 1.5)
-    HDiff.GetYaxis().SetRangeUser(0.0, 6.0)
+    HDiff.GetYaxis().SetRangeUser(0.0, 2.0)
     HDiff.GetYaxis().SetNdivisions(3)
     HDiff.GetYaxis().SetLabelSize(0.1)
     HDiff.GetYaxis().SetTitleSize(0.1)
@@ -129,6 +150,7 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
     HDiff.GetXaxis().SetTitle("")
     HDiff.GetXaxis().SetLabelSize(0.0001)
     HDiff.Draw()
+    HDiff.SetStats(0)
     line = ROOT.TLine()
     line.DrawLine(HDiff.GetXaxis().GetXmin(),1,HDiff.GetXaxis().GetXmax(),1)
     

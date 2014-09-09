@@ -16,6 +16,7 @@ class TauFakeRatesBase(MegaBase):
         self.histograms = {}
         self.is7TeV = '7TeV' in os.environ['jobid']
         self.numerators = ['LooseIso3Hits', 'MediumIso3Hits']
+        self.eventSet = set() # to keep track of duplicate events
 
     def begin(self):
         # Book histograms
@@ -84,13 +85,19 @@ class TauFakeRatesBase(MegaBase):
                     pt10 = pt10_low
                 elif (getattr(row, t+'AbsEta') > 1.4):
                     pt10 = pt10_high
-                fill(pt10, row, t) # fill denominator
+                eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, t, 'x') #'x' is place holders for below numerator values
+                if (eventTuple not in self.eventSet):
+                    fill(pt10, row, t) # fill denominator
+                    self.eventSet.add(eventTuple)
                 for num in self.numerators:
                     if bool( getattr(row,t+num) ):
-                        if (getattr(row, t+'AbsEta') <= 1.4):
-                            fill(histos[('ztt', 'pt10low', num)], row, t) # fill numerator
-                        elif (getattr(row, t+'AbsEta') > 1.4):
-                            fill(histos[('ztt', 'pt10high', num)], row, t) # fill numerator
+                        eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, t, num)
+                        if (eventTuple not in self.eventSet):
+                            if (getattr(row, t+'AbsEta') <= 1.4):
+                                fill(histos[('ztt', 'pt10low', num)], row, t) # fill numerator
+                            elif (getattr(row, t+'AbsEta') > 1.4):
+                                fill(histos[('ztt', 'pt10high', num)], row, t) # fill numerator
+                            self.eventSet.add(eventTuple)
             #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
 
             #if (row.t1AbsEta < 1.4):

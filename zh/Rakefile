@@ -60,6 +60,7 @@ samples = Hash[
   "signal_mmtt" => Array['VH_H2Tau_M-125'],
   "signal_eett" => Array['VH_H2Tau_M-125'],
   "fullsim" => get_sample_names('Zh-lltt-FullSim'),
+  "fullsim300" => Array['A300-Zh-lltt-FullSim'],
   "fullsim_madgraph" => get_sample_names('AToZhToLLTauTau-MadGraph'),
   "madgraph" => get_sample_names('Zh-lltt-MadGraph'),
   #"signal_125" => Array['VH_H2Tau_M-125'],
@@ -413,8 +414,8 @@ task :fits => []
 # Create tasks for all the fr_fits
 fr_fits.each do |fit, fit_info|
   fit_configuration = fit.split("_")
-  puts "fit_config: " + fit_configuration[1] + " " + fit_configuration[2] + " " + fit_configuration[3] + " " + fit_configuration[4]
-  puts "fit_config2: " + fit_configuration.inspect
+  #puts "fit_config: " + fit_configuration[1] + " " + fit_configuration[2] + " " + fit_configuration[3] + " " + fit_configuration[4]
+  #puts "fit_config2: " + fit_configuration.inspect
   region = fit_configuration[1]
   denom = fit_configuration[2]
   num = fit_configuration[3]
@@ -423,13 +424,13 @@ fr_fits.each do |fit, fit_info|
   # Expand sample list
   subsample_inputs = []
   fit_info['samples'].each do |sample|
-    puts sample.inspect + ": " + samples[sample].inspect
+    #puts sample.inspect + ": " + samples[sample].inspect
     subsample_inputs += samples[sample]
   end
 
   fit_output = $frfit_dir + "/#{fit}.root"
   subsamples_inputs_result_list = subsample_inputs.map{|x|  "results/#{$jobid}/#{fit_info['analyzer']}/#{x}.root"}
-  puts "subsamples_inputs_result_list: " + subsamples_inputs_result_list.inspect
+  #puts "subsamples_inputs_result_list: " + subsamples_inputs_result_list.inspect
   mergedTargets = Array[]
   subsamples_inputs_result_list.each do |regexFile|
     #target = regexFile.sub('??','Z') 
@@ -442,7 +443,7 @@ fr_fits.each do |fit, fit_info|
     deps   = Dir.glob(regexFile)
     mergedir= File.dirname(target)
     file target => deps do |t|
-      puts "merging #{regexFile} into #{target}"
+      #puts "merging #{regexFile} into #{target}"
       sh "mkdir -p #{mergedir}"
       sh "hadd -f #{target} #{regexFile}" 
     end
@@ -460,12 +461,12 @@ fr_fits.each do |fit, fit_info|
   file corrected_file => mergedTargets + Dir.glob(fit_info['analyzer'] + '.py') + ["CorrectFakeRateData.py"] do |t|
     sh "mkdir -p #{$frfit_dir}"
     # debugging
-    puts "python CorrectFakeRateData.py --files #{subsample_input_list} --lumifiles inputs/#{$jobid}/*sum --outputfile #{t.name} --numerator '#{num_path}' --denom '#{denom_path}' --rebin #{fit_info['rebin']} #{fit_info['corr']}"
+    #puts "python CorrectFakeRateData.py --files #{subsample_input_list} --lumifiles inputs/#{$jobid}/*sum --outputfile #{t.name} --numerator '#{num_path}' --denom '#{denom_path}' --rebin #{fit_info['rebin']} #{fit_info['corr']}"
     sh "python CorrectFakeRateData.py --files #{subsample_input_list} --lumifiles inputs/#{$jobid}/*sum --outputfile #{t.name} --numerator '#{num_path}' --denom '#{denom_path}' --rebin #{fit_info['rebin']} #{fit_info['corr']}"
   end
   
-  puts fit_output
-  puts corrected_file
+  #puts fit_output
+  #puts corrected_file
   file fit_output => [corrected_file, ENV['CMSSW_BASE'] + '/src/FinalStateAnalysis/StatTools/scripts/fit_efficiency_chi2.py'] do |t| # ] do |t| #
     sh "fit_efficiency_chi2.py #{fit_output} numerator denominator \'#{fit_info['function']}\' \'#{fit_info['variables']}\' #{corrected_file} --plot --xrange #{fit_info['range']} --xtitle #{var} --grid"
   end
@@ -499,6 +500,15 @@ analyzer_dependencies.each do |analyzer, deps|
     sh "touch #{t.name}"
   end
 end
+
+task :mmmt_A300FS => get_analyzer_results("ZHAnalyzeMMMT", samples['fullsim300'])
+task :eemt_A300FS => get_analyzer_results("ZHAnalyzeEEMT", samples['fullsim300'])
+task :mmet_A300FS => get_analyzer_results("ZHAnalyzeMMET", samples['fullsim300'])
+task :eeet_A300FS => get_analyzer_results("ZHAnalyzeEEET", samples['fullsim300'])
+task :mmem_A300FS => get_analyzer_results("ZHAnalyzeMMEM", samples['fullsim300'])
+task :eeem_A300FS => get_analyzer_results("ZHAnalyzeEEEM", samples['fullsim300'])
+task :mmtt_A300FS => get_analyzer_results("ZHAnalyzeMMTT", samples['fullsim300'])
+task :eett_A300FS => get_analyzer_results("ZHAnalyzeEETT", samples['fullsim300'])
 
 task :mmmt_signal_only => get_analyzer_results("ZHAnalyzeMMMT", samples['signal'])
 task :eemt_signal_only => get_analyzer_results("ZHAnalyzeEEMT", samples['signal'])
@@ -590,6 +600,10 @@ task :analyzezh => [:mmmt, :eemt, :mmet, :eeet, :mmem, :eeem, :mmtt, :eett] do
 #task :analyzezh => [:mmmt, :eemt, :eeet, :eeem, :mmtt, :eett] do
 #task :analyzezh => [:eeem, :mmtt, :eett] do
   puts "called analyzezh task from local rakefile"
+end
+
+task :analyzezh_A300FS => [:mmmt_A300FS, :eemt_A300FS, :mmet_A300FS, :eeet_A300FS, :mmem_A300FS, :eeem_A300FS, :mmtt_A300FS, :eett_A300FS] do
+  puts "called analyzezh_A300FS task from local rakefile"
 end
 
 task :analyzezh_ZZJetsTo4L => [:mmmt_ZZJetsTo4L, :eemt_ZZJetsTo4L, :mmet_ZZJetsTo4L, :eeet_ZZJetsTo4L, :mmem_ZZJetsTo4L, :eeem_ZZJetsTo4L, :mmtt_ZZJetsTo4L, :eett_ZZJetsTo4L] do
@@ -703,7 +717,7 @@ end
 #end
 
 #pivot_masses = [260,270,280,290,300,310,320,330,340] # mA for MSSM
-pivot_masses = [220, 230, 240, 250, 260 270, 280, 290, 300, 310, 320, 330, 340, 350]
+pivot_masses = [220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]
 #pivot_masses = [260, 270, 290, 350]
 
 # Now do the horizontal morphing
@@ -772,7 +786,7 @@ end
 task :cards => []
 
 #cardmasses = Array[260,270,280,290,300,310,320,330,340]
-cardmasses = Array[220, 230, 240, 250, 260 270, 280, 290, 300, 310, 320, 330, 340, 350]
+cardmasses = Array[220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]
 #cardmasses = Array[260, 270, 290, 350]
 
 cardmasses.each do |mass|
