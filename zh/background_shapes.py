@@ -4,21 +4,27 @@ import ROOT
 import os
 
 # maps sample to marker color and marker fill style
-samples = { 'TTZJets' : ("kCyan", 21),
-            'VHWW' : ("kYellow", 21),
-            'VHTauTau' : ("kMagenta", 21),
-            'ZZJetsTo4L' : ("kGreen", 21),
-            'ggZZ2L2L' : ("kRed", 21), 
-            'data_obs' : ("",""),
-            'Zjets' : ("kMagenta+3", 21) 
+samples = { 'TTZJets' : ("kCyan", "kCyan-2", 21),
+            'VHWW' : ("kYellow", "kYellow-2", 21),
+            'VHTauTau' : ("kMagenta", "kMagenta-2", 21),
+            'ZZJetsTo4L' : ("kGreen", "kGreen-2", 21),
+            'ggZZ2L2L' : ("kRed", "kRed-2", 21), 
+            'Zjets' : ("kMagenta+3", "kMagenta+1", 21),
+            'data_obs' : ("","")
 }
 
-my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
+ROOT.gROOT.SetBatch(True)
 
 my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
-my_data = ROOT.TH1F("my_data", "my_total_data", 20, 0, 800)
+my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
+my_data = ROOT.TH1F("my_data", "Data", 20, 0, 800)
+my_VHWW = ROOT.TH1F("my_VHWW", "VHWW", 20, 0, 800)
+my_VHTauTau = ROOT.TH1F("my_VHTauTau", "VHTauTau", 20, 0, 800)
+my_TTZJets = ROOT.TH1F("my_TTZJets", "TTZJets", 20, 0, 800)
+my_ggZZ2L2L = ROOT.TH1F("my_ggZZ2L2L", "ggZZ2L2L", 20, 0, 800)
+my_ZZJetsTo4L = ROOT.TH1F("my_ZZJetsTo4L", "ZZJetsTo4L", 20, 0, 800)
+my_Zjets = ROOT.TH1F("my_Zjets", "Zjets", 20, 0, 800)
 
-ROOT.gROOT.SetBatch(True)
 for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets', 'data_obs']:
 
     my_red_combined = ROOT.THStack("%s combined" % sample, "%s combined" % sample)
@@ -33,10 +39,12 @@ for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets',
         pad1.Draw()    
         pad1.cd() 
         pad1.SetGrid()
+        my_red.Draw("%s_%s" % (sample, channel) )
         my_red.SetLineColor(ROOT.kRed)
         my_red.SetMarkerColor(ROOT.kRed)
+        my_red.SetFillColor(ROOT.kRed)
+        my_red.SetFillStyle(1001)
         my_red.GetXaxis().SetTitle(" A SVMass (GeV), %s" % channel)
-        my_red.Draw("%s_%s" % (sample, channel) )
 
         ''' Set reasonable maximums on histos '''        
         my_red_max = my_red.GetMaximum()
@@ -56,6 +64,7 @@ for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets',
     
     pad2.cd()
     my_red_combined.GetStack().Last().Draw()
+    my_red_combined.GetStack().Last().SetFillStyle( 1001 )
     my_red_combined.GetStack().Last().GetXaxis().SetTitle(" A SVMass (GeV), combined")
     
     pad2.SetGrid() 
@@ -66,39 +75,58 @@ for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets',
     gROOT.cd()
 
     my_red_combined.GetStack().Last().SetFillStyle( 1001 ) 
+    #call0 = 'my_%s=ROOT.TH1F("my_%s", "%s", 20, 0, 800)' % (sample, sample, sample)
+    #eval ( call0 )
     if sample == 'data_obs':
 	my_red_combined.GetStack().Last().SetStats(0)
         tempHistD = ROOT.TH1F("my_temp_data", "%s" % sample, 20, 0, 800)
         tempHistD = my_red_combined.GetStack().Last().Clone()
-        my_data.Add( tempHist.Clone() )
+        my_data.Add( tempHistD.Clone() )
     else:
         color = "ROOT.%s" % samples[sample][0]
-        my_red_combined.GetStack().Last().SetFillColor( eval(color) )
+        fillColor = "ROOT.%s" % samples[sample][1]
+	my_red_combined.GetStack().Last().SetFillColor( eval(color) )
         my_red_combined.GetStack().Last().SetMarkerColor( eval(color) )
         my_red_combined.GetStack().Last().SetLineColor( eval(color) )
         my_red_combined.GetStack().Last().SetStats(0)
-        tempHist = ROOT.TH1F("my_temp_bkgs", "%s" % sample, 20, 0, 800)
-        tempHist = my_red_combined.GetStack().Last().Clone()
-        my_total.Add( tempHist.Clone() )
+        call = "my_%s.Add ( my_red_combined.GetStack().Last().Clone() )" % sample
+        eval( call )
+        call = "my_%s.SetMarkerColor( eval(color) )" % sample
+        eval( call )
+        call = "my_%s.SetLineColor( ROOT.kBlack )" % sample
+        eval( call )
+        call = "my_%s.SetFillColor( eval(color) )" % sample
+        eval( call )
+        call = "my_%s.SetFillStyle( 1001 )" % sample
+        eval( call )
+        call = "my_%s.Clone()" % sample
+        my_total.Add( eval( call ), "hist e1" )
+
+        if sample == 'Zjets':
+		cX = ROOT.TCanvas("cX", "a canvas")
+		padX = ROOT.TPad("padX","",0,0.2,1,1)
+		padX.Draw()
+		padX.SetGridy(1)
+		padX.cd()
+		my_Zjets.Draw()
+		my_Zjets.SetFillStyle( 1001 )
+		cX.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/Zjets_test.png")
+		cX.Close()
 
 c3 = ROOT.TCanvas("c3", "a canvas")
-pad5 = ROOT.TPad("pad1","",0,0.2,1,1) # compare distributions
+pad5 = ROOT.TPad("pad5","",0,0.2,1,1) # compare distributions
 pad5.Draw()
 pad5.SetGridy(1)
 pad5.cd()
 my_total.Draw()
+#my_total.GetStack().SetFillStyle( 1001 )
 my_total.GetStack().Last().GetXaxis().SetTitle(" A SVMass (GeV), total")
 my_total.GetStack().Last().SetMaximum( 1.8 * my_total.GetStack().Last().GetMaximum() )
 my_data.Draw("AP Same")
-#my_data.GetXaxis().SetTitle(" A SVMass (GeV), total")
-#while ( my_total.GetStack().Last() ):
-#	leg.AddEntry(my_total.GetStack().Last(), "", "l")
-#	my_total.RecursiveRemove( my_total.GetStack().Last() )
-#leg.AddEntry(my_data, "", "l")
-#leg.Draw()
+my_data.GetXaxis().SetTitle("A_SVMass (GeV)")
 leg = pad5.BuildLegend()
+#leg.SetNColumns(2)
 leg.Draw()
-#leg.Draw()
 c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/total_bkg.png")
 pad5.SetLogy()
 c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/total_bkg_log.png")
