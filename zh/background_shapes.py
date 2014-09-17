@@ -10,6 +10,7 @@ samples = { 'TTZJets' : ("kCyan", "kCyan-2", 21),
             'ZZJetsTo4L' : ("kGreen", "kGreen-2", 21),
             'ggZZ2L2L' : ("kRed", "kRed-2", 21), 
             'Zjets' : ("kMagenta+3", "kMagenta+1", 21),
+            'AHttZll300' : ("kBlue", "kBlue", 21),
             'data_obs' : ("","")
 }
 
@@ -17,16 +18,17 @@ ROOT.gROOT.SetBatch(True)
 
 my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
 my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
-my_data = ROOT.TH1F("my_data", "Data", 20, 0, 800)
+my_data = ROOT.TH1F("my_data", "Data (no stack)", 20, 0, 800)
 my_VHWW = ROOT.TH1F("my_VHWW", "VHWW", 20, 0, 800)
 my_VHTauTau = ROOT.TH1F("my_VHTauTau", "VHTauTau", 20, 0, 800)
 my_TTZJets = ROOT.TH1F("my_TTZJets", "TTZJets", 20, 0, 800)
 my_ggZZ2L2L = ROOT.TH1F("my_ggZZ2L2L", "ggZZ2L2L", 20, 0, 800)
 my_ZZJetsTo4L = ROOT.TH1F("my_ZZJetsTo4L", "ZZJetsTo4L", 20, 0, 800)
-my_Zjets = ROOT.TH1F("my_Zjets", "Zjets", 20, 0, 800)
+my_Zjets = ROOT.TH1F("my_Zjets", "Zjets (Red bkg)", 20, 0, 800)
+my_A300 = ROOT.TH1F("my_A300", "A300 Signal (no stack)", 20, 0, 800)
 
-for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets', 'data_obs']:
-
+for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets', 'data_obs', 'AHttZll300']:
+    print sample
     my_red_combined = ROOT.THStack("%s combined" % sample, "%s combined" % sample)
 
     for channel in ['mmtt', 'eett', 'mmmt', 'eemt', 'mmet', 'eeet', 'mmme', 'eeem']:
@@ -64,9 +66,7 @@ for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets',
     
     pad2.cd()
     my_red_combined.GetStack().Last().Draw()
-    my_red_combined.GetStack().Last().SetFillStyle( 1001 )
     my_red_combined.GetStack().Last().GetXaxis().SetTitle(" A SVMass (GeV), combined")
-    
     pad2.SetGrid() 
     c2.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s/combined.png" % sample)
     pad2.Close()
@@ -74,61 +74,73 @@ for sample in ['VHWW', 'VHTauTau', 'TTZJets', 'ggZZ2L2L', 'ZZJetsTo4L', 'Zjets',
 
     gROOT.cd()
 
-    my_red_combined.GetStack().Last().SetFillStyle( 1001 ) 
-    #call0 = 'my_%s=ROOT.TH1F("my_%s", "%s", 20, 0, 800)' % (sample, sample, sample)
-    #eval ( call0 )
     if sample == 'data_obs':
-	my_red_combined.GetStack().Last().SetStats(0)
+	#my_red_combined.GetStack().Last().SetStats(0)
         tempHistD = ROOT.TH1F("my_temp_data", "%s" % sample, 20, 0, 800)
         tempHistD = my_red_combined.GetStack().Last().Clone()
         my_data.Add( tempHistD.Clone() )
-    else:
+    if sample == 'AHttZll300':
+        #tempHistA = ROOT.TH1F("my_temp_data", "%s" % sample, 20, 0, 800)
+        #tempHistA = my_red_combined.GetStack().Last().Clone()
+        my_A300.Add( my_red_combined.GetStack().Last().Clone() )
+	my_A300.SetLineColor(ROOT.kPink+10)
+	my_A300.SetLineWidth(3)
+	#my_A300.SetMarkerType(21)
+	#my_A300.SetMarkerColor(ROOT.kRed)
+	my_A300.SetFillStyle(0)
+    if sample != 'data_obs' and sample != 'AHttZll300':
         color = "ROOT.%s" % samples[sample][0]
         fillColor = "ROOT.%s" % samples[sample][1]
 	my_red_combined.GetStack().Last().SetFillColor( eval(color) )
         my_red_combined.GetStack().Last().SetMarkerColor( eval(color) )
         my_red_combined.GetStack().Last().SetLineColor( eval(color) )
-        my_red_combined.GetStack().Last().SetStats(0)
+        #my_red_combined.GetStack().Last().SetStats(0)
         call = "my_%s.Add ( my_red_combined.GetStack().Last().Clone() )" % sample
+        eval( call )
+        call = "my_%s.SetFillColor( eval(color) )" % sample
+        eval( call )
+        call = "my_%s.SetFillStyle( 3140 )" % sample
         eval( call )
         call = "my_%s.SetMarkerColor( eval(color) )" % sample
         eval( call )
         call = "my_%s.SetLineColor( ROOT.kBlack )" % sample
         eval( call )
-        call = "my_%s.SetFillColor( eval(color) )" % sample
-        eval( call )
-        call = "my_%s.SetFillStyle( 1001 )" % sample
+        call = "my_%s.GetXaxis().SetTitle('A_SVVVMass (Gev)')" % sample
         eval( call )
         call = "my_%s.Clone()" % sample
         my_total.Add( eval( call ), "hist e1" )
 
-        if sample == 'Zjets':
-		cX = ROOT.TCanvas("cX", "a canvas")
-		padX = ROOT.TPad("padX","",0,0.2,1,1)
-		padX.Draw()
-		padX.SetGridy(1)
-		padX.cd()
-		my_Zjets.Draw()
-		my_Zjets.SetFillStyle( 1001 )
-		cX.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/Zjets_test.png")
-		cX.Close()
+#	if sample == 'Zjets':
+#	    cX = ROOT.TCanvas("cX", "a canvas")
+#	    padX = ROOT.TPad("padX","",0,0.2,1,1)
+#	    padX.Draw()
+#	    padX.SetGridy(1)
+#	    padX.cd()
+#	    my_Zjets.Draw("hist e1")
+#	    cX.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/Zjets_test.png")
+#	    cX.Close()
 
 c3 = ROOT.TCanvas("c3", "a canvas")
-pad5 = ROOT.TPad("pad5","",0,0.2,1,1) # compare distributions
+pad5 = ROOT.TPad("pad5","",0,0,1,1) # compare distributions
 pad5.Draw()
 pad5.SetGridy(1)
 pad5.cd()
-my_total.Draw()
-#my_total.GetStack().SetFillStyle( 1001 )
-my_total.GetStack().Last().GetXaxis().SetTitle(" A SVMass (GeV), total")
-my_total.GetStack().Last().SetMaximum( 1.8 * my_total.GetStack().Last().GetMaximum() )
-my_data.Draw("AP Same")
+my_data.Draw("e1")
+my_data.GetYaxis().SetTitle("dN/20 Gev")
 my_data.GetXaxis().SetTitle("A_SVMass (GeV)")
-leg = pad5.BuildLegend()
+my_data.SetStats(0)
+my_total.Draw("hist e1 same")
+my_A300.Draw("hist e1 same")
+#my_total.GetStack().Last().GetXaxis().SetTitle(" A SVMass (GeV), total")
+#my_total.GetStack().Last().SetMaximum( 1.8 * my_total.GetStack().Last().GetMaximum() )
+leg = pad5.BuildLegend(0.7, 0.70, 0.9, 0.9)
 #leg.SetNColumns(2)
+leg.SetMargin(0.3)
 leg.Draw()
+my_data.SetTitle("CMS Preliminary 2014, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
 c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/total_bkg.png")
 pad5.SetLogy()
+my_data.SetMinimum( 0.001 )
 c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/total_bkg_log.png")
 pad5.Close()
 c3.Close()
