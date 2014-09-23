@@ -1,6 +1,7 @@
 from ROOT import gROOT, gDirectory, gPad, gSystem, gStyle
 import ROOT
 import os
+import GeneralPlotScript as Plots
 
 # maps sample to marker color and marker fill style
 sample_map = {  1 : ('4objFR_Ele_NumLoose_0_Jet', 'e_zlt_pt10_looseId_electronJetPt', 'numerator', 10),
@@ -17,10 +18,6 @@ sample_map = {  1 : ('4objFR_Ele_NumLoose_0_Jet', 'e_zlt_pt10_looseId_electronJe
 		12 : ('FakeRate_TT_Tau_Pt_After_Loose_CloseJet_E', 't_ztt_pt10high_LooseIso3Hits_tauJetPt_tautau', 'numerator', 5),
 }
 
-#samples = []
-#for key in sample_map.keys():
-#    samples.append( sample_map[key][0] )
-
 ROOT.gROOT.SetBatch(True)
 ROOT.gStyle.SetOptStat(1111)
 
@@ -33,10 +30,6 @@ for sample in sample_map.keys():
     myShapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/fakerate_fits/%s.corrected_inputs.root" % sample_map[sample][1], "r")
     myShape = myShapes.Get("%s" % sample_map[sample][2] )
     herShape = herShapes.Get( sample_map[sample][0] )
-    #herShape.SetStats(1)
-    #herShape.
-    #herShape.Add( herTemp )
-    #myShape.Add( myTemp )
 
     #myShape.Scale( 1/myShape.Integral() )
     #herShape.Scale( 1/herShape.Integral() )
@@ -77,40 +70,17 @@ for sample in sample_map.keys():
     myShape.SetName("UW")
     herShape.SetStats(1)
     myShape.SetStats(1)
-    #statBox2 = ROOT.TPaveStats(myShape.GetListOfFunctions().FindObject("stats") )
-    #statBox2 = ROOT.TPaveStats(0.5, 0.5, 0.7, 0.6 )
-    #statBox2 = gROOT.FindObject("stats")
-#    yAx = gROOT.FindObject("stats").GetY1NDC()
-#    print "yAx: %f" % yAx
-
- 
-    #statBox2.SetX1NDC(.65)
-    #statBox2.SetX2NDC(.8)
-
     herShape.Draw()
     myShape.Draw("AP sames")
     c1.Update()
-    stats = herShape.GetListOfFunctions().FindObject("stats")
-    stats.SetX1NDC(0.8)
-    stats.SetX2NDC(.98)
-    stats.SetY1NDC(0.98)
-    stats.SetY2NDC(0.85)
-    stats1 = myShape.GetListOfFunctions().FindObject("stats")
-    stats1.SetX1NDC(0.8)
-    stats1.SetX2NDC(.98)
-    stats1.SetY1NDC(0.85)
-    stats1.SetY2NDC(0.72)
+    stats1 = Plots.getStatBox( herShape )
+    Plots.moveStatBox( stats1, 0.8, 0.98, 0.98, 0.85)
+    stats2 = Plots.getStatBox( myShape )
+    Plots.moveStatBox( stats2, 0.8, 0.85, 0.98, 0.72)
     leg = pad1.BuildLegend(.8, .63, .98, .72)
     leg.SetFillColor(0)
     leg.Draw()
     c1.Update()
-    #statBox2 = gROOT.FindObject("stats")
-    #statBox2 = ROOT.gPad.GetPrimitive("stats")
-    #statBox2.Draw()
-    #statBox2.cd()
-    #statBox2 = gROOT.FindObject("stats")
-    #statBox2.SetX1NDC(.65)
-    #statBox2.SetX2NDC(.8)
     
     ##txtULB = ROOT.TText(150, herShape.GetMaximum()*0.9, "ULB's # of Entries: %i" % herShape.GetEntries() )
     #txtULB = ROOT.TText(70, herShape.GetMaximum()*0.9, "ULB's # of Entries: %i" % herShape.GetEntries() )
