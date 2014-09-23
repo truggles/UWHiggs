@@ -25,11 +25,11 @@ for line in ifile:
     run = info[1]
     lumi = info[2]
     evtID = info[3]
-    t1Pt = info[4]
-    t1Eta = info[5]
-    t2Pt = info[6]
-    t2Eta = info[7]
-    zMass = info[8]
+    t1Pt = info[5]
+    t1Eta = info[6]
+    t2Pt = info[7]
+    t2Eta = info[8]
+    zMass = info[4]
     #tuple = (channel, run, lumi, evtID)
     tuple = (run, lumi, evtID)
     #print (channel, run, lumi, evtID)

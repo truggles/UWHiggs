@@ -28,7 +28,7 @@ ofile = open("stephane_fullsim%i.txt" % mass, 'w')
 
 for channel in ['MMTT','MMMT','MMEM','MMET','EEMT','EEET','EEEM','EETT']:
     #print channel
-    ifile = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/ZHAnalyze%s/A%i-Zh-lltt-FullSim.root" % (channel, mass), "READ" )
+    ifile = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/ZHAnalyze%s/A%i-Zh-lltt-FullSim_checkMVAMET.root" % (channel, mass), "READ" )
     #ifile = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/ZHAnalyze%s/data.root" % (channel), "READ" )
     ntuple = ifile.Get("os/All_Passed/Event_ID")
     for row in ntuple:

@@ -6,6 +6,7 @@ import sys
 
 jobid = "2014-02-28_8TeV_Ntuples-v2"
 
+ROOT.gROOT.SetBatch(True)
 
 channels = ["MMMT", "MMET", "MMEM", "MMTT", "EEMT", "EEET", "EEEM", "EETT"]
 if (len(sys.argv) == 2):
@@ -49,7 +50,7 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
 
   for channel in channels:
   #for i in range(1):
-    
+    print channel
     label = ""
     prods_avail = dict_prods[channel]
     #print prods_avail
@@ -59,9 +60,14 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
       label = label[:-1]
     label += variable
 
-    fullsim_file = ROOT.TFile("results/%s/ZHAnalyze%s/A300-Zh-lltt-FullSim.root" % (jobid, channel), "READ")
+    fullsim_file = ROOT.TFile("results/%s/ZHAnalyze%s/A300-Zh-lltt-FullSim_checkMVAMET.root" % (jobid, channel), "READ")
     fullsim_tmp = fullsim_file.Get("os/All_Passed/%s" % label)
     print label
+    #print "Number of bins UW: %i" % fullsim_tmp.GetSize()
+    #print "Bin Low UW: %f" % fullsim_tmp.GetXaxis().GetBinLowEdge(0)
+    #print "Bin High UW: %f" % fullsim_tmp.GetXaxis().GetBinUpEdge( fullsim_tmp.GetSize() )
+    #print "Bin Width UW: %f" % fullsim_tmp.GetXaxis().GetBinWidth( fullsim_tmp.GetSize() )
+
     fullsim.Add(fullsim_tmp)
     
     fullsim_file.Close()
@@ -85,7 +91,9 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
   ROOT.gStyle.SetOptStat(0)
   fullsim.SetStats(0)
   fullsim.Rebin(rbin)  
+  #print "Number of bins UW after: %i we used Rebin(%i)" % (fullsim.GetSize(), rbin)
   fullsim.SetMaximum(fullsim.GetMaximum()*1.8)
+  fullsim.SetMinimum(0)
 
   if (variable == 'SVfitMass'):
     fullsim.GetXaxis().SetRangeUser(0, 125)
@@ -102,7 +110,7 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
   cecile_hist = ROOT.TH1F()
   cecile_file = ROOT.TFile("For_Stephane/AZh300_8TeV.root", "READ")
   if (len(channels) > 2): 
-    print "(len(channels) > 2)"
+    #print "(len(channels) > 2)"
     # running on all channels combined
     cecile_ntuple = cecile_file.Get("BG_Tree")
     #print "%s>>cecile_hist" % cvariable
@@ -115,6 +123,8 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
       #cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3&&Channel_==%i%s" % (channel_map[channels[0]], tau_pt_map[channel]),"same")
       cecile_ntuple.Draw("%s>>cecile_hist" % cvariable, "subChannel_==3&&Channel_==%i" % (channel_map[channels[0]]),"same")
     cecile_hist = ROOT.gDirectory.Get("cecile_hist")
+    #print "Number of bins ULB original: %i" % cecile_hist.GetSize()
+    #print "Bin width ULB: %i" % cecile_hist.GetXaxis().GetXmax()
       #os.system("sleep 1")
       #canvas.cd()
       #canvas.Close()
@@ -144,15 +154,20 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
   ofile.cd()
   #ofile.ls()
   #cecile_hist.Rebin(rbin)
-  print "My number of events is %f" % fullsim.Integral()
+  print "My Integral is: %f" % fullsim.Integral()
+  print "My # of events is: %f" % fullsim.GetEntries()
+  weight = ( fullsim.Integral() / fullsim.GetEntries() )
+  print "Weight: %f" % weight
+  fullsim.Scale( 1 / weight )
+  print "My NEW Integral is: %f" % fullsim.Integral()
   fullsim.Draw("hist")
 
   #if len(channels) < 2:
   #  # Cecile's individual channel mass shapes are weighted, let's remove that
   #  cecile_hist.Scale( cecile_hist.GetEntries()/cecile_hist.Integral() )
-  print "Cecile's number of events is %f" % cecile_hist.Integral()
+  #print "Cecile's number of events is %f" % cecile_hist.Integral()
   cecile_hist.Draw("EP same")
-  
+  #print "Number of bins ULB: %i" % cecile_hist.GetSize() 
   
 
   l1 = ROOT.TLegend(0.60,0.73,0.70,0.93,"")
@@ -191,9 +206,9 @@ def make_control_plot(prods, variable, cvariable, xaxis_title, rbin, nbins, xlow
   ofile.cd()
   canvas.Write()
   if (len(sys.argv) == 2):
-    canvas.SaveAs("sync_shapes/%s/%s%s.png" % (channel, prod_label, variable) )
-  else: canvas.SaveAs("sync_shapes/combined/%s%s.png" % (prod_label, variable) )
-  os.system("sleep 1")
+    canvas.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/sync_shapes_MVA_test/%s/%s%s.png" % (channel, prod_label, variable) )
+  else: canvas.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/sync_shapes_MVA_test/combined/%s%s.png" % (prod_label, variable) )
+  #os.system("sleep 1")
 
   canvas.Close()
   cecile_file.Close()
@@ -208,7 +223,7 @@ make_control_plot((), 'A_SVfitMass','SVMass_', "A SV-fit Mass", 40, 800, 0, 800,
 
 # di-tau plots
 #make_control_plot((3,4), 'Mass', "#tau#tau Visible Mass", 10, 200, 0, 200, True)
-#make_control_plot((3,4), 'SVfitMass', 'HMass_', "#tau#tau SV-fit Mass", 10, 300, 0, 300,True)
+make_control_plot((3,4), 'SVfitMass', 'HMass_', "#tau#tau SV-fit Mass", 10, 300, 0, 300,True)
 #make_control_plot((3,4), 'Eta', "#tau#tau #eta", 10, 100, -2.4, 2.4)
 #make_control_plot((3,4), 'DR', "#tau#tau #deltaR", 10, 100, 0, 10)
 #make_control_plot((3,4), 'DPhi', "#tau#tau #delta#phi", 10, 180, 0, 7)
@@ -223,7 +238,9 @@ make_control_plot((1,2), 'Mass', 'HMass_', 'Z Mass', 10, 200, 0, 200,True)
 # tau 1, tau 2 plots
 #make_control_plot((3,), 'Eta', 'l3Eta_', '#tau_{1} #eta', 10, 200, -2.4, 2.4,False,True)
 #make_control_plot((4,), 'Eta', 'l4Eta_', '#tau_{2} #eta', 10, 200, -2.4, 2.4,False,True)
-#make_control_plot((3,), 'Pt', 'l3Pt_', '#tau_{1} p_{T}', 10, 100, 0, 100,False,True)
-#make_control_plot((4,), 'Pt', 'l4Pt_', '#tau_{2} p_{T}', 10, 100, 0, 100,False,True)
-#make_control_plot((3,), 'JetPt', 'l3_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True)
-#make_control_plot((4,), 'JetPt', 'l4_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True) 
+make_control_plot((3,), 'Pt', 'l3Pt_', '#tau_{1} p_{T}', 10, 100, 0, 100,False,True)
+make_control_plot((4,), 'Pt', 'l4Pt_', '#tau_{2} p_{T}', 10, 100, 0, 100,False,True)
+make_control_plot((3,), 'JetPt', 'l3_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True)
+make_control_plot((4,), 'JetPt', 'l4_CloseJetPt_', 'Closest jet p_{T}', 10, 100, 0, 200, False, True) 
+make_control_plot((), 'mva_metEt', 'met_', 'MVA_metEt', 10, 300, 0, 300,True)
+make_control_plot((), 'mva_metPhi', 'metPhi_', 'MVA_metPhi', 5, 70, -3.5, 3.5,True)

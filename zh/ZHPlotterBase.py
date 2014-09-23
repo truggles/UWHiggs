@@ -273,7 +273,7 @@ class ZHPlotterBase(Plotter):
         
         return output
 
-    def write_shapes(self, variable, rebin, outdir, unblinded=False):
+    def write_shapes(self, variable, rebin, outdir, unblinded=True):
         ''' Write final shape histos for [variable] into a TDirectory [outputdir] '''
         sig_view = self.make_signal_views(rebin, unblinded)
         outdir.cd()

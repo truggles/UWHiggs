@@ -13,7 +13,7 @@ source jobid.sh
 
 export jobid=$jobid8
 #rake fakerates
-#rake fits
+rake fits
 #rake analyzezh_fullsim --trace
 #rake analyzezh_fullsim_madgraph
 #rake analyzezh_data
@@ -28,7 +28,7 @@ export jobid=$jobid8
 #rake mmmt_fs
 #rake eett_fs
 #rake plots
-rake cards
+#rake cards
 #rake limits
 #rake mmtt
 #rake mmtt_ggzz
