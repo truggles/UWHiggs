@@ -39,8 +39,8 @@ class TauFakeRatesBase(MegaBase):
                     num_histos[name] = self.book(os.path.join(
                         region, denom, numerator), name, *args)
 
-                book_histo('tauPt', 'Tau Pt', 150, 0, 150)
-                book_histo('tauJetPt', 'Tau Jet Pt', 150, 0, 150)
+                book_histo('tauPt', 'Tau Pt', 800, 0, 800)
+                book_histo('tauJetPt', 'Tau Jet Pt', 800, 0, 800)
                 book_histo('tauAbsEta', 'Tau Abs Eta', 100, -2.5, 2.5)
                 book_histo('tauTauInvMass', ';M_{#tau #tau} [GeV/c^{2}];Events/10 [GeV/c^{2}]', 51, 0., 255)
 
@@ -85,18 +85,21 @@ class TauFakeRatesBase(MegaBase):
                     pt10 = pt10_low
                 elif (getattr(row, t+'AbsEta') > 1.4):
                     pt10 = pt10_high
-                eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, t, 'x') #'x' is place holders for below numerator values
+                eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Denom', '_NumPlace_') #'_NumPlace_' is place holders for below numerator values
                 if (eventTuple not in self.eventSet):
                     fill(pt10, row, t) # fill denominator
                     self.eventSet.add(eventTuple)
                 for num in self.numerators:
                     if bool( getattr(row,t+num) ):
-                        eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, t, num)
+                        #print "Current 'num': %s" % num
+                        eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Num', num)
                         if (eventTuple not in self.eventSet):
                             if (getattr(row, t+'AbsEta') <= 1.4):
                                 fill(histos[('ztt', 'pt10low', num)], row, t) # fill numerator
+                                #print "Filled ztt_pt10low"
                             elif (getattr(row, t+'AbsEta') > 1.4):
                                 fill(histos[('ztt', 'pt10high', num)], row, t) # fill numerator
+                                #print "Filled ztt_pt10high"
                             self.eventSet.add(eventTuple)
             #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
 
