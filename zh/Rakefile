@@ -39,7 +39,7 @@ samples = Hash[
   #"zjets" => Array['Zjets_M50'],
   #"zjets" => Array['Z1jet_M50'], 
   #"ttbar" => Array['TTplusJets_madgraph'],
-  
+  "A300-Zh-lltt-FullSim_checkMVAMET" => get_sample_names('A300-Zh-lltt-FullSim_checkMVA'),  
   #Important Backgrounds (Aug 6, 2014):
   "TTZJets" => Array['TTZJets'],
   "ggzz2l2l" => Array['ggZZ2L2L'],
@@ -75,6 +75,7 @@ samples = Hash[
  puts "madgraph: " + samples["madgraph"].inspect
  puts "data_mm: " + samples["data_mm"].inspect
  puts "data_ee: " + samples["data_ee"].inspect
+ puts "A300-Zh-lltt-FullSim_checkMVAMET: " + samples["A300-Zh-lltt-FullSim_checkMVAMET"].inspect
 
 # Function to get the .root files for an analyzer and samples
 def get_analyzer_results(analyzer, the_samples)
@@ -501,14 +502,14 @@ analyzer_dependencies.each do |analyzer, deps|
   end
 end
 
-task :mmmt_A300FS => get_analyzer_results("ZHAnalyzeMMMT", samples['fullsim300'])
-task :eemt_A300FS => get_analyzer_results("ZHAnalyzeEEMT", samples['fullsim300'])
-task :mmet_A300FS => get_analyzer_results("ZHAnalyzeMMET", samples['fullsim300'])
-task :eeet_A300FS => get_analyzer_results("ZHAnalyzeEEET", samples['fullsim300'])
-task :mmem_A300FS => get_analyzer_results("ZHAnalyzeMMEM", samples['fullsim300'])
-task :eeem_A300FS => get_analyzer_results("ZHAnalyzeEEEM", samples['fullsim300'])
-task :mmtt_A300FS => get_analyzer_results("ZHAnalyzeMMTT", samples['fullsim300'])
-task :eett_A300FS => get_analyzer_results("ZHAnalyzeEETT", samples['fullsim300'])
+task :mmmt_A300FS => get_analyzer_results("ZHAnalyzeMMMT", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
+task :eemt_A300FS => get_analyzer_results("ZHAnalyzeEEMT", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
+task :mmet_A300FS => get_analyzer_results("ZHAnalyzeMMET", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
+task :eeet_A300FS => get_analyzer_results("ZHAnalyzeEEET", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
+task :mmem_A300FS => get_analyzer_results("ZHAnalyzeMMEM", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
+task :eeem_A300FS => get_analyzer_results("ZHAnalyzeEEEM", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
+task :mmtt_A300FS => get_analyzer_results("ZHAnalyzeMMTT", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
+task :eett_A300FS => get_analyzer_results("ZHAnalyzeEETT", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
 
 task :mmmt_signal_only => get_analyzer_results("ZHAnalyzeMMMT", samples['signal'])
 task :eemt_signal_only => get_analyzer_results("ZHAnalyzeEEMT", samples['signal'])
