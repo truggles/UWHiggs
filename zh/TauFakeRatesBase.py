@@ -14,18 +14,13 @@ class TauFakeRatesBase(MegaBase):
         # Use the cython wrapper
         self.tree = wrapper(tree)
         self.out = outfile
-        #print "Outfile: %s" % outfile
-        #print "Tree: %s" % tree
-        #print "Dir: %s" % ROOT.gDirectory.pwd()
         # Histograms for each category
         self.histograms = {}
         self.is7TeV = '7TeV' in os.environ['jobid']
         self.numerators = ['LooseIso3Hits', 'MediumIso3Hits']
         self.eventSet = set() # to keep track of duplicate events
         self.hfunc   = { #maps the name of non-trivial histograms to a function to get the proper value, the function must have two args (evt and weight). Used in fill_histos later
-            'nTruePU' : lambda row, weight: row.nTruePU,
-            'weight'  : lambda row, weight: weight,
-            'Event_ID': lambda row, weight, NumDenomCode: array.array("f", [row.run,
+            'Event_ID': lambda row, weight, evtList = []: array.array("f", [row.run,
                                                               row.lumi,
                                                               int((row.evt)/10**5),
                                                               int((row.evt)%10**5),
@@ -36,21 +31,26 @@ class TauFakeRatesBase(MegaBase):
                                                               row.mva_metPhi,
                                                               row.pfMetEt,
                                                               row.pfMetPhi,
-                                                              NumDenomCode,
+                                                              evtList[0], # NumDenomCode
+                                                              evtList[1], # tAbsEta
+                                                              evtList[2], # tPt
+                                                              evtList[3], # tJetPt
+                                                              evtList[4], # LT
+                                                              evtList[5], # Mass
+                                                              evtList[6], # Pt
                                                               ] ),} 
-        #self.tauFRout = open("tauFR.out", "a")
 
     def begin(self):
         # Book histograms
         region = 'ztt'
+        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:tAbsEta:tPt:tJetPt:LT:Mass:Pt')
         for denom in ['pt10low', 'pt10high']:
             denom_key = (region, denom)
             denom_histos = {}
             self.histograms[denom_key] = denom_histos
-            #folder = region + "/" + denom
+            folder = region
             #print "Folder: %s" % folder
-            #self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi', type=ROOT.TNtuple)
-            self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode')
+            #self.book('', "Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:tAbsEta:tPt:tJetPt:LT:Mass:Pt', type=ROOT.TNtuple)
 
             for numerator in self.numerators:
                 num_key = (region, denom, numerator)
@@ -89,27 +89,16 @@ class TauFakeRatesBase(MegaBase):
 
     def process(self):
         # Generic filler function to fill plots after selection
-        def fill(self, the_histos, row, t, NumDenomCode):
+        def fill(self, the_histos, row, t, evtList = []):
             weight = 1.0
             the_histos['tauPt'].Fill(getattr( row,t+'Pt'), weight)
             the_histos['tauJetPt'].Fill(getattr( row,t+'JetPt'), weight)
             the_histos['tauAbsEta'].Fill(getattr( row,t+'AbsEta'), weight)
-            #tmpPath = "/".join( the_histos.iteritems() )
-            #print "tmpPath: %s" % tmpPath
-            #the_histos.iteritems()
-            #for key, value in the_histos.iteritems():
-               #print "the_Key: %s" % key
-               #print "the_Value: %s" % value
             for key, value in histos.iteritems():
                if str(value)[0] == "{": continue
-               #print "Value: %s" % value
-               #print "Key: %s" % key
                attr = key[ key.rfind('/') + 1 :]
-               #print "Attr: %s" % attr
                if attr in self.hfunc:
-                   #print "#########Found Attr: %s #########" % key
-                   value.Fill( self.hfunc[attr](row, weight, NumDenomCode) )
-                   #value.Fill( getattr(row,key), weight )
+                   value.Fill( self.hfunc[attr](row, weight, evtList) )
 
         def preselection(self, row):
             if not self.zSelection(row):     return False
@@ -140,35 +129,31 @@ class TauFakeRatesBase(MegaBase):
                 continue
             
             for t in self.tau_legs:
-                code = -1
-                pt10_ = '' # make a string to pass to our text output
                 if (getattr(row, t+'AbsEta') <= 1.4):
                     pt10 = pt10_low
-                    pt10_ = "pt10low"
-                    code = 1
+                    code = 0
                 elif (getattr(row, t+'AbsEta') > 1.4):
                     pt10 = pt10_high
-                    pt10_ = "pt10high"
-                    code = 11
+                    code = 10
                 eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Denom', '_NumPlace_') #'_NumPlace_' is place holders for below numerator values
                 if (eventTuple not in self.eventSet):
-                    fill(self, pt10, row, t, code) # fill denominator
-                    #self.tauFRout.write("%i %i %i %s %s %s %s %f %f %f\n" % (row.run, row.lumi, row.evt, self.tree, "ztt", pt10_, "denominator", getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt')) )
+                    evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                    fill(self, pt10, row, t, evtList) # fill denominator
                     self.eventSet.add(eventTuple)
                 for num in self.numerators:
                     if bool( getattr(row,t+num) ):
-                        #self.tauFRout.write("%i %i %i" % (row.run, row.lumi, row.evt) )
                         eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Num', num)
                         if (eventTuple not in self.eventSet):
                             if (getattr(row, t+'AbsEta') <= 1.4):
-                                code = code + 1
-                                fill(self, histos[('ztt', 'pt10low', num)], row, t, code) # fill numerator
-                                #print "Filled ztt_pt10low"
+                                if num == 'LooseIso3Hits' : code = 1
+                                else: code = 11
+                                evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                                fill(self, histos[('ztt', 'pt10low', num)], row, t, evtList) # fill numerator
                             elif (getattr(row, t+'AbsEta') > 1.4):
-                                code = code + 2
-                                fill(self, histos[('ztt', 'pt10high', num)], row, t, code) # fill numerator
-                                #print "Filled ztt_pt10high"
-                            #self.tauFRout.write("%i %i %i %s %s %s %f %f %f\n" % (row.run, row.lumi, row.evt, "ztt", pt10_, num, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt')) )
+                                if num == 'LooseIso3Hits': code = 2
+                                else: code = 12
+                                evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                                fill(self, histos[('ztt', 'pt10high', num)], row, t, evtList) # fill numerator
                             self.eventSet.add(eventTuple)
             #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
 
