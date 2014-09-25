@@ -5,6 +5,8 @@ Base analyzer for hadronic tau fake-rate estimation
 from FinalStateAnalysis.PlotTools.MegaBase import MegaBase
 import baseSelections as selections
 import os
+import array
+import ROOT
 
 class EMUFakeRatesBase(MegaBase):
     def __init__(self, tree, outfile, wrapper, **kwargs):
@@ -19,9 +21,30 @@ class EMUFakeRatesBase(MegaBase):
         self.lepton   = ''#self.leptonName()
         self.branchId = ''#self.branchIdentifier()
         self.eventSet = set() # to keep track of duplicate events
+        self.hfunc   = { #maps the name of non-trivial histograms to a function to get the proper value, the function must have two args (evt and weight). Used in fill_histos later
+            'Event_ID': lambda row, weight, evtList = []: array.array("f", [row.run,
+                                                              row.lumi,
+                                                              int((row.evt)/10**5),
+                                                              int((row.evt)%10**5),
+                                                              row.eVetoZH,
+                                                              row.muVetoZH,
+                                                              row.tauVetoZH,
+                                                              row.mva_metEt,
+                                                              row.mva_metPhi,
+                                                              row.pfMetEt,
+                                                              row.pfMetPhi,
+                                                              evtList[0], # NumDenomCode
+                                                              evtList[1], # tAbsEta
+                                                              evtList[2], # tPt
+                                                              evtList[3], # tJetPt
+                                                              evtList[4], # LT
+                                                              evtList[5], # Mass
+                                                              evtList[6], # Pt
+                                                              ] ),}
 
     def begin(self):
         # Book histograms
+        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:lAbsEta:lPt:lJetPt:LT:Mass:Pt')
         region = 'zlt'
         for denom in ['pt10']:
             denom_key = (region, denom)
@@ -47,11 +70,16 @@ class EMUFakeRatesBase(MegaBase):
     
     def process(self):
         # Generic filler function to fill plots after selection
-        def fill(the_histos, row):
+        def fill(self, the_histos, row, evtList):
             weight = 1.0
             the_histos[self.lepton+'Pt'].Fill(    getattr( row, self.branchId+'Pt'    ), weight)
             the_histos[self.lepton+'JetPt'].Fill( getattr( row, self.branchId+'JetPt'), weight)
             the_histos[self.lepton+'AbsEta'].Fill(getattr( row, self.branchId+'AbsEta'), weight)
+            for key, value in histos.iteritems():
+               if str(value)[0] == "{": continue
+               attr = key[ key.rfind('/') + 1 :]
+               if attr in self.hfunc:
+                   value.Fill( self.hfunc[attr](row, weight, evtList) )
 
         def preselection(self, row):
             if not self.zSelection(row):    return False
@@ -87,13 +115,19 @@ class EMUFakeRatesBase(MegaBase):
                 continue
             # Fill denominator
             #print 'PRESELECTION PASSED!'
-            fill(pt10, row)
+            code = 20
+            evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+            fill(self, pt10, row, evtList)
             if self.lepton_passes_loose_iso(row):
                 #print 'ISOLATION PASSED!'
-                fill(histos[('zlt', 'pt10', 'looseId')], row)
+                code = 21
+                evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+                fill(self, histos[('zlt', 'pt10', 'looseId')], row, evtList)
             if self.lepton_passes_tight_iso(row):
+                code = 22
+                evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
                 #print 'ISOLATION PASSED!'
-                fill(histos[('zlt', 'pt10', 'tightId')], row)
+                fill(self, histos[('zlt', 'pt10', 'tightId')], row, evtList)
             self.eventSet.add(eventTuple)
 
     def finish(self):
