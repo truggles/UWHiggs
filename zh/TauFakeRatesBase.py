@@ -65,8 +65,8 @@ class TauFakeRatesBase(MegaBase):
                     num_histos[name] = self.book(os.path.join(
                         region, denom, numerator), name, *args)
 
-                book_histo('tauPt', 'Tau Pt', 800, 0, 800)
-                book_histo('tauJetPt', 'Tau Jet Pt', 800, 0, 800)
+                book_histo('tauPt', 'Tau Pt', 150, 0, 150)
+                book_histo('tauJetPt', 'Tau Jet Pt', 150, 0, 150)
                 book_histo('tauAbsEta', 'Tau Abs Eta', 100, -2.5, 2.5)
                 book_histo('tauTauInvMass', ';M_{#tau #tau} [GeV/c^{2}];Events/10 [GeV/c^{2}]', 51, 0., 255)
 
@@ -128,22 +128,23 @@ class TauFakeRatesBase(MegaBase):
             if not preselection(self, row):
                 continue
             
-            for t in self.tau_legs:
-                if (getattr(row, t+'AbsEta') <= 1.4):
-                    pt10 = pt10_low
-                    code = 0
-                elif (getattr(row, t+'AbsEta') > 1.4):
-                    pt10 = pt10_high
-                    code = 10
-                eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Denom', '_NumPlace_') #'_NumPlace_' is place holders for below numerator values
-                if (eventTuple not in self.eventSet):
+            eventTuple = (row.run, row.lumi, row.evt) #'_NumPlace_' is place holders for below numerator values
+            if (eventTuple not in self.eventSet):
+                self.eventSet.add(eventTuple)
+                for t in self.tau_legs:
+                    if (getattr(row, t+'AbsEta') <= 1.4):
+                        pt10 = pt10_low
+                        code = 0
+                    elif (getattr(row, t+'AbsEta') > 1.4):
+                        pt10 = pt10_high
+                        code = 10
+                    #eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Denom', '_NumPlace_') #'_NumPlace_' is place holders for below numerator values
                     evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
                     fill(self, pt10, row, t, evtList) # fill denominator
-                    self.eventSet.add(eventTuple)
-                for num in self.numerators:
-                    if bool( getattr(row,t+num) ):
-                        eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Num', num)
-                        if (eventTuple not in self.eventSet):
+                    for num in self.numerators:
+                        if bool( getattr(row,t+num) ):
+                            #eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Num', num)
+                            #if (eventTuple not in self.eventSet):
                             if (getattr(row, t+'AbsEta') <= 1.4):
                                 if num == 'LooseIso3Hits' : code = 1
                                 else: code = 11
@@ -154,7 +155,7 @@ class TauFakeRatesBase(MegaBase):
                                 else: code = 12
                                 evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
                                 fill(self, histos[('ztt', 'pt10high', num)], row, t, evtList) # fill numerator
-                            self.eventSet.add(eventTuple)
+                            #self.eventSet.add(eventTuple)
             #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
 
             #if (row.t1AbsEta < 1.4):
