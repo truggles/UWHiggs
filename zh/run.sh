@@ -1,6 +1,11 @@
 #!/bin/bash
 # Run all of the analysis
 
+# FR_tracker.txt is a text file to track duplicate events through the TauFakeRate process.
+# We need to remove it to start fresh so that we can add new events.
+rm -rfv FR_tracker.txt
+echo "Removed FR_tracker.txt to start a fresh."
+
 set -o nounset
 set -o errexit
 
@@ -12,8 +17,8 @@ source jobid.sh
 #rake analyzezh
 
 export jobid=$jobid8
-#rake fakerates
-rake fits
+rake fakerates
+#rake fits
 #rake analyzezh_fullsim --trace
 #rake analyzezh_fullsim_madgraph
 #rake analyzezh_data
@@ -23,7 +28,7 @@ rake fits
 #rake analyzezh_ZZJetsTo4L
 #rake analyzezh_mg
 #rake analyzezh_A300FS
-#rake mmtt_A300FS
+#rake mmem_A300FS
 #rake analyzezh
 #rake mmmt_fs
 #rake eett_fs
