@@ -18,7 +18,7 @@ class TauFakeRatesMMMT(TauFakeRatesBase.TauFakeRatesBase):
         if not selections.generalCuts(row, 'm1','m2','m3','t'): return False
         if not selections.looseTauSelection(row, 't'): return False
         if not bool(row.tAntiMuonTight2): return False
-        if not bool(row.tAntiElectronLoose): return False
+        #if not bool(row.tAntiElectronLoose): return False
         if not selections.looseMuonSelection(row, 'm3'): return False
         return True
 
