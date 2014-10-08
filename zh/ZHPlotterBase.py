@@ -121,7 +121,7 @@ class ZHPlotterBase(Plotter):
         #self.samples = [ 'Zjets_M50', 'WplusJets_madgraph', 'WZ*', 'ZZ*', 'WW*', 'VH*', 'TTplusJets_madgraph','*A*Zh*']#'WH*',
         #self.samples = ['ZZ*','VH_H2Tau_M-125','*A*Zh*', 'VH*HWW*', 'ggZZ2L2L' ]
         self.samples = ['A*Zh-lltt-MadGraph','TTZJets','VHWW_lepdecay_125','VH_H2Tau_M-125','ZZJetsTo4L_pythia','ggZZ2L2L']
-        self.samples += ['WJetsToLNu']
+        #self.samples += ['WJetsToLNu']
         self.samples += ['data_DoubleMu*'] if channel[:2] == 'MM' else ['data_DoubleElectron*']
         self.jobid = os.environ['jobid']
         self.channel = channel
@@ -153,10 +153,10 @@ class ZHPlotterBase(Plotter):
     def make_signal_views(self, rebin, unblinded=True):
         ''' Make signal views with FR background estimation '''
 
-        WJetsToLNu_view = views.SubdirectoryView(
-            self.rebin_view(self.get_view('WJetsToLNu'), rebin),
-            'os/All_Passed/'
-        )
+        #WJetsToLNu_view = views.SubdirectoryView(
+        #    self.rebin_view(self.get_view('WJetsToLNu'), rebin),
+        #    'os/All_Passed/'
+        #)
         TTZJets_view = views.SubdirectoryView(
             self.rebin_view(self.get_view('TTZJets'), rebin),
             'os/All_Passed/'
@@ -223,7 +223,7 @@ class ZHPlotterBase(Plotter):
             'VHTauTau' : VHTauTau_view,
             'ZZJetsTo4L' : ZZJetsTo4L_view,
             'ggZZ2L2L' : ggZZ2L2L_view,
-            'WJetsToLNu' : WJetsToLNu_view,
+            #'WJetsToLNu' : WJetsToLNu_view,
             'data' : data_view,
             'cat0' : cat0_view,
             'cat1' : cat1_view,
@@ -283,7 +283,7 @@ class ZHPlotterBase(Plotter):
         VHTauTau = sig_view['VHTauTau'].Get(variable)
         ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
         ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
-        WJetsToLNu = sig_view['WJetsToLNu'].Get(variable)
+        #WJetsToLNu = sig_view['WJetsToLNu'].Get(variable)
         cat0 = sig_view['cat0'].Get(variable)
         cat1 = sig_view['cat1'].Get(variable)
         cat2 = sig_view['cat2'].Get(variable)
@@ -304,7 +304,7 @@ class ZHPlotterBase(Plotter):
             VHTauTau.SetName('VHTauTau')
             ZZJetsTo4L.SetName('ZZJetsTo4L')
             ggZZ2L2L.SetName('ggZZ2L2L')
-            WJetsToLNu.SetName('WJetsToLNu')
+            #WJetsToLNu.SetName('WJetsToLNu')
             cat0.SetName('cat0')
             cat1.SetName('cat1')
             cat2.SetName('cat2')
@@ -327,7 +327,7 @@ class ZHPlotterBase(Plotter):
             VHTauTau.SetName('VHTauTau_'+variable)
             ZZJetsTo4L.SetName('ZZJetsTo4L_'+variable)
             ggZZ2L2L.SetName('ggZZ2L2L_'+variable)
-            WJetsToLNu.SetName('WJetsToLNu_'+variable)
+            #WJetsToLNu.SetName('WJetsToLNu_'+variable)
             cat0.SetName('cat0_'+variable)
             cat1.SetName('cat1_'+variable)
             cat2.SetName('cat2_'+variable)
@@ -344,7 +344,7 @@ class ZHPlotterBase(Plotter):
         VHTauTau.Write()
         ZZJetsTo4L.Write()
         ggZZ2L2L.Write()
-        WJetsToLNu.Write()
+        #WJetsToLNu.Write()
         cat0.Write()
         cat1.Write()
         cat2.Write()
@@ -373,7 +373,7 @@ class ZHPlotterBase(Plotter):
         VHTauTau = sig_view['VHTauTau'].Get(variable)
         ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
         ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
-        WJetsToLNu = sig_view['WJetsToLNu'].Get(variable)
+        #WJetsToLNu = sig_view['WJetsToLNu'].Get(variable)
         cat0 = sig_view['cat0'].Get(variable)
         cat1 = sig_view['cat1'].Get(variable)
         cat2 = sig_view['cat2'].Get(variable)
@@ -389,7 +389,7 @@ class ZHPlotterBase(Plotter):
             'VHTauTau'   : VHTauTau.Integral(),
             'ZZJetsTo4L'   : ZZJetsTo4L.Integral(),
             'ggZZ2L2L'   : ggZZ2L2L.Integral(),
-            'WJetsToLNu'   : WJetsToLNu.Integral(),
+            #'WJetsToLNu'   : WJetsToLNu.Integral(),
             'cat0'   : cat0.Integral(),
             'cat1'   : cat1.Integral(),
             'cat2'   : cat2.Integral(),
@@ -510,7 +510,7 @@ class ZHPlotterBase(Plotter):
             sig_view['VHTauTau'],
             sig_view['ZZJetsTo4L'],
             sig_view['ggZZ2L2L'],
-            sig_view['WJetsToLNu'],
+            #sig_view['WJetsToLNu'],
             sig_view['cat0'],
             sig_view['cat1'],
             sig_view['cat2'],
@@ -536,7 +536,7 @@ class ZHPlotterBase(Plotter):
                 sig_view['VHTauTau'],
                 sig_view['ZZJetsTo4L'],
                 sig_view['ggZZ2L2L'],
-                sig_view['WJetsToLNu'],
+                #sig_view['WJetsToLNu'],
                 sig_view['cat0'],
                 sig_view['cat1'],
                 sig_view['cat2'],
@@ -645,13 +645,26 @@ for channel in channels:
     shape_file = ROOT.TFile( os.path.join(plotter.outputdir, '%s_shapes_%s.root' % (channel.lower(), plotter.period)), 'RECREATE')
     shape_dir  = shape_file.mkdir( channel.lower()+'_zh' )
     #plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 15, shape_dir, unblinded=True)
+    #plotter.write_shapes('A_SVfitMass', 20, shape_dir, unblinded=True)
     plotter.write_shapes('A_SVfitMass', 40, shape_dir, unblinded=True)
-    plotter.write_shapes('LT_Higgs', 40, shape_dir, unblinded=True)
-    plotter.write_shapes('Mass', 40, shape_dir, unblinded=True)
-    plotter.write_shapes('mva_metEt', 40, shape_dir, unblinded=True)
-    plotter.write_shapes('%s_%s_Mass' % Zprod, 40, shape_dir, unblinded=True)
-    plotter.write_shapes('%s_%s_Mass' % Hprod, 40, shape_dir, unblinded=True)
-    plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 40, shape_dir, unblinded=True)
+    plotter.write_shapes('LT_Higgs', 10, shape_dir, unblinded=True)
+    plotter.write_shapes('Mass', 20, shape_dir, unblinded=True)
+    plotter.write_shapes('mva_metEt', 10, shape_dir, unblinded=True)
+    plotter.write_shapes('%s_%s_Mass' % Zprod, 10, shape_dir, unblinded=True)
+    plotter.write_shapes('%s_%s_Mass' % Hprod, 10, shape_dir, unblinded=True)
+    plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 10, shape_dir, unblinded=True)
+    plotter.write_shapes('%sPt' % Zprod[0], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%sJetPt' % Zprod[0], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%sPt' % Zprod[1], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%sJetPt' % Zprod[1], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%s_%s_DR' % Zprod, 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%s_%s_Pt' % Zprod, 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%sPt' % Hprod[0], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%sJetPt' % Hprod[0], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%sPt' % Hprod[1], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%sJetPt' % Hprod[1], 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%s_%s_DR' % Hprod, 5, shape_dir, unblinded=True)
+    plotter.write_shapes('%s_%s_Pt' % Hprod, 5, shape_dir, unblinded=True)
     #plotter.write_cut_and_count('subMass', shape_dir, unblinded=True)
     shape_file.Close()
 
