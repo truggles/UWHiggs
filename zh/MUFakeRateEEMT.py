@@ -29,7 +29,7 @@ class MUFakeRateEEMT(EMUFakeRatesBase.EMUFakeRatesBase):
         if not selections.generalCuts(row, 'e1','e2','m','t') : return False
         if not selections.looseTauSelection(row,'t'): return False
         if not bool(row.tAntiMuonTight2): return False
-        if not bool(row.tAntiElectronLoose): return False
+        #if not bool(row.tAntiElectronLoose): return False
         return selections.looseMuonSelection(row,'m')
 
     def lepton_passes_tight_iso(self, row):
