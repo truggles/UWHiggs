@@ -357,8 +357,8 @@ class ZHAnalyzerBase(MegaBase):
         '''books pt/jetPt/absEta for any object'''
         IdToName = {'m' : 'Muon', 'e' : 'Electron', 't' : 'Tau'}
         number   = Id[1] if len(Id) == 2 else ''
-        self.book(folder, "%sPt" % Id,     "%s %s Pt" % (IdToName[Id[0]], number),     100, 0, 100)
-        self.book(folder, "%sJetPt" % Id,  "%s %s Jet Pt" % (IdToName[Id[0]], number), 100, 0, 200)
+        self.book(folder, "%sPt" % Id,     "%s %s Pt" % (IdToName[Id[0]], number),     300, 0, 300)
+        self.book(folder, "%sJetPt" % Id,  "%s %s Jet Pt" % (IdToName[Id[0]], number), 200, 0, 200)
         self.book(folder, "%sAbsEta" % Id, "%s %s AbsEta" % (IdToName[Id[0]], number), 100, 0, 2.4)
         self.book(folder, "%sEta" % Id, "%s %s Eta" % (IdToName[Id[0]], number), 200, -2.4, 2.4)
         return None      
@@ -377,10 +377,10 @@ class ZHAnalyzerBase(MegaBase):
         self.book(folder, "%s_%s_SVfitMass" % self.H_decay_products(), "H candidate SVMass", 300, 0, 300)
 
     def book_resonance_histos(self, folder, products, name):
-        self.book(folder, "%s_%s_Pt"     % products, "%s candidate Pt"              % name, 100, 0, 100)
+        self.book(folder, "%s_%s_Pt"     % products, "%s candidate Pt"              % name, 300, 0, 300)
         self.book(folder, "%s_%s_Eta" % products, "%s candidate Eta"          % name, 100, -2.4, 2.4)
         #self.book(folder, "%s_%s_SVfitMass"   % products, "%s candidate SVfit Mass"            % name, 10, 0, 150)
-        self.book(folder, "%s_%s_Mass"   % products, "%s candidate Mass"            % name, 200, 0, 200)
+        self.book(folder, "%s_%s_Mass"   % products, "%s candidate Mass"            % name, 300, 0, 300)
         self.book(folder, "%s_%s_DR"     % products, "%s decay products #DeltaR"    % name, 100, 0, 10)
         self.book(folder, "%s_%s_DPhi"   % products, "%s decay products #Delta#phi" % name, 180, 0, 7)
 
@@ -396,6 +396,7 @@ class ZHAnalyzerBase(MegaBase):
         #find all keys mathing
         folder_str = '/'.join(folder + ('',))
         for key, value in histos.iteritems():
+            #print "Key: %s Value: %s" % (key, value)
             location = key[ : key.rfind('/')]+'/'
             if folder_str != location:
                 continue
