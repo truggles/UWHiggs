@@ -64,8 +64,8 @@ class EMUFakeRatesBase(MegaBase):
                     num_histos[name] = self.book(os.path.join(
                         region, denom, numerator), name, *args)
 
-                book_histo(self.lepton+'Pt',     self.lepton+' Pt', 800, 0, 800)
-                book_histo(self.lepton+'JetPt',  self.lepton+' Jet Pt', 800, 0, 800)
+                book_histo(self.lepton+'Pt',     self.lepton+' Pt', 150, 0, 150)
+                book_histo(self.lepton+'JetPt',  self.lepton+' Jet Pt', 150, 0, 150)
                 book_histo(self.lepton+'AbsEta', self.lepton+' Abs Eta', 100, -2.5, 2.5)
     
     def process(self):
@@ -110,7 +110,8 @@ class EMUFakeRatesBase(MegaBase):
             if not preselection(self, row):
                 continue
 
-            eventTuple = (row.run, row.lumi, row.evt, self.lepton_passes_loose_iso(row), self.lepton_passes_tight_iso(row) ) 
+            #eventTuple = (row.run, row.lumi, row.evt, self.lepton_passes_loose_iso(row), self.lepton_passes_tight_iso(row) ) 
+            eventTuple = (row.run, row.lumi, row.evt) 
             if (eventTuple in self.eventSet):
                 continue
             # Fill denominator
