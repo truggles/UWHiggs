@@ -51,7 +51,7 @@ samples = Hash[
 
   "ZZ" => get_sample_names('ZZ'), #will include ZZJets4L and ggZZ2L2L
   #MCToAnalyze" => get_sample_names('VH_H2Tau_M-125') + get_sample_names('VHWW_lepdecay_125') + get_sample_names('ggZZ2L2L') + get_sample_names('TTZJets') + get_sample_names('ZZJetsTo4L_pythia'),
-  "MCToAnalyze" => Array['VH_H2Tau_M-125','VHWW_lepdecay_125','ggZZ2L2L','TTZJets','ZZJetsTo4L_pythia','WJetsToLNu'], 
+  "MCToAnalyze" => Array['VH_H2Tau_M-125','VHWW_lepdecay_125','ggZZ2L2L','TTZJets','ZZJetsTo4L_pythia'], 
   #"signal" => get_sample_names('VH') + get_sample_names('WH'),
   "signal" => Array['VH_H2Tau_M-125','VHWW_lepdecay_125', 'ggZZ2L2L'],
   #"VH_H2Tau_M-125" => Array['VH_H2Tau_M-125'],
@@ -106,6 +106,19 @@ fr_analyzer_sample_map = Hash[
   "TauFakeRatesMMET.py" => samples['MCToAnalyze'] + samples['data_mm'],
   "TauFakeRatesMMMT.py" => samples['MCToAnalyze'] + samples['data_mm'],
  ]
+
+#fr_analyzer_sample_map = Hash[
+#  "EFakeRateEEET.py"    => samples['data_ee'],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+#  "EFakeRateMMET.py"    => samples['data_mm'],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+#  "MUFakeRateEEMT.py"   => samples['data_ee'],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+#  "MUFakeRateMMMT.py"   => samples['data_mm'],# + samples["wjets"],# + Array["TTplusJets_madgraph"], # 
+#  "TauFakeRatesEETT.py" => samples['data_ee'],# + samples["wjets"],# + Array["TTplusJets_madgraph"],
+#  "TauFakeRatesMMTT.py" => samples['data_mm'],# + samples["wjets"],# + Array["TTplusJets_madgraph"],
+#  "TauFakeRatesEEMT.py" => samples['data_ee'],
+#  "TauFakeRatesEEET.py" => samples['data_ee'],
+#  "TauFakeRatesMMET.py" => samples['data_mm'],
+#  "TauFakeRatesMMMT.py" => samples['data_mm'],
+# ]
 
 fr_analyzer_dependencies = Hash[
   "EFakeRateEEET.py"    => Array["EMUFakeRatesBase.py","baseSelections.py",],  # "EEETauTree.py",   ],
