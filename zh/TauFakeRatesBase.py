@@ -92,7 +92,10 @@ class TauFakeRatesBase(MegaBase):
         def fill(self, the_histos, row, t, evtList = []):
             weight = 1.0
             the_histos['tauPt'].Fill(getattr( row,t+'Pt'), weight)
-            the_histos['tauJetPt'].Fill(getattr( row,t+'JetPt'), weight)
+            if ( getattr( row,t+'JetPt') < 10):
+                the_histos['tauJetPt'].Fill(getattr( row,t+'Pt'), weight)
+            else:
+                the_histos['tauJetPt'].Fill(getattr( row,t+'JetPt'), weight)
             the_histos['tauAbsEta'].Fill(getattr( row,t+'AbsEta'), weight)
             for key, value in histos.iteritems():
                if str(value)[0] == "{": continue
