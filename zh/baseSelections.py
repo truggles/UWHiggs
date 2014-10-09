@@ -28,6 +28,17 @@ def elIsoTight(row,el):
 def elIsoLoose(row,el):
     return objIsolation(row,el) < 0.30
 
+#We have a Tight Electron overlapping a BJet, subtract it later
+def bJetOverlapElec(row, name):
+    if not (tightElectronSelection(row, name)): return 0
+    if ( (getattr(row, getVar(name, 'JetPt') ) > 20) and (getattr(row, getVar(name, 'AbsEta') ) < 2.4) and (getattr( row, getVar(name, 'JetCSVBtag') ) > 0.679) ): return 1
+    else: return 0
+
+#We have a Tight Electron overlapping a BJet, subtract it later
+def bJetOverlapMu(row, name):
+    if not (tightMuonSelection(row, name)): return 0
+    if ( (getattr(row, getVar(name, 'JetPt') ) > 20) and (getattr(row, getVar(name, 'AbsEta') ) < 2.4) and (getattr( row, getVar(name, 'JetCSVBtag') ) > 0.679) ): return 1
+    else: return 0
 
 def MuTriggerMatching(row):
     '''
@@ -53,16 +64,11 @@ def Vetos(row):
     applies b-tag, muon, electron and tau veto
     '''
     #if (row.bjetTightCountZH > 0): return False
-    if (row.bjetCSVVetoZHLikeNoJetId_2 > 0): return False
-    
+    #if (row.bjetCSVVetoZHLikeNoJetId_2 > 0): return False
     # Doubl check that elminiating these next two vetos doesn't mess us up (new counting mthds in channel specific files
     if (row.muVetoZH > 0): return False
     if (row.eVetoZH > 0): return False
-      #print "eVetoZH killed an event"
-    #  return False
-    #if bool(row.t_tauHpsVetoPt15): return False
     return True
-    #return (row.bjetCSVVetoZHLikeNoJetId_2 <= 0 and row.muVetoZH <= 0 and row.eVetoZH <= 0)
 
 def overlap(row,*args):
     return any( map( lambda x: x < 0.1, [getattr(row,'%s_%s_DR' % (l1,l2) ) for l1 in args for l2 in args if l1 <> l2 and hasattr(row,'%s_%s_DR' % (l1,l2) )] ) ) 
