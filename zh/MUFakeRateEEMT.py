@@ -37,7 +37,7 @@ class MUFakeRateEEMT(EMUFakeRatesBase.EMUFakeRatesBase):
         return selections.looseMuonSelection(row,'m')
 
     def lepton_passes_tight_iso(self, row):
-        return selections.muIsoTight(row, 'm') and selections.muIDTight(row, 'm')
+        return selections.muIsoLoose(row, 'm') and selections.muIDTight(row, 'm')
 
     def lepton_passes_loose_iso(self, row):
         return selections.muIsoLoose(row, 'm') and selections.muIDLoose(row, 'm')        
