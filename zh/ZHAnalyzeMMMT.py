@@ -79,6 +79,9 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         if not bool(row.tAntiElectronLoose): return False
         if (row.m3Pt + row.tPt < 45): return False
         #X# if (row.eTightCountZH > 0): return False #THR
+        # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
+        removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2') + selections.bJetOverlapMu(row, 'm3')
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
         return selections.looseMuonSelection(row,'m3')
 
     def sign_cut(self, row):

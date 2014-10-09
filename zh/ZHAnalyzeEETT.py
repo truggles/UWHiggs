@@ -89,6 +89,9 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
 #        print "11"
         #X# if (row.muTightCountZH > 0): return False #THR
 #        print "12"
+        # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
+        removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2')
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
         return True
 
     def sign_cut(self, row):
