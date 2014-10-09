@@ -17,7 +17,7 @@ class TauFakeRatesEEMT(TauFakeRatesBase.TauFakeRatesBase):
         if not selections.generalCuts(row, 'e1','e2','m','t'): return False
         if not selections.looseTauSelection(row, 't'): return False
         if not bool(row.tAntiMuonTight2): return False
-        #if not bool(row.tAntiElectronLoose): return False
+        if not bool(row.tAntiElectronLoose): return False
         if not selections.looseMuonSelection(row, 'm'): return False
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2') + selections.bJetOverlapMu(row, 'm')
