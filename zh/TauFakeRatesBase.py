@@ -32,18 +32,19 @@ class TauFakeRatesBase(MegaBase):
                                                               row.pfMetEt,
                                                               row.pfMetPhi,
                                                               evtList[0], # NumDenomCode
-                                                              evtList[1], # tAbsEta
-                                                              evtList[2], # tPt
-                                                              evtList[3], # tJetPt
-                                                              evtList[4], # LT
-                                                              evtList[5], # Mass
-                                                              evtList[6], # Pt
+                                                              evtList[1], # Channel
+                                                              evtList[2], # Zmass
+                                                              evtList[3], # t1Pt
+                                                              evtList[4], # t1Eta
+                                                              evtList[5], # t1MtToMET
+                                                              evtList[6], # t2Pt
+                                                              evtList[7], # t2Eta
                                                               ] ),} 
 
     def begin(self):
         # Book histograms
         region = 'ztt'
-        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:tAbsEta:tPt:tJetPt:LT:Mass:Pt')
+        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:Channel:Zmass:t1Pt:t1Eta:t1MtToMET:t2Pt:t2Eta')
         for denom in ['pt10low', 'pt10high']:
             denom_key = (region, denom)
             denom_histos = {}
@@ -134,6 +135,125 @@ class TauFakeRatesBase(MegaBase):
             eventTuple = (row.run, row.lumi, row.evt) #'_NumPlace_' is place holders for below numerator values
             if (eventTuple not in self.eventSet):
                 self.eventSet.add(eventTuple)
+                
+                # Get variables to populate EventID with later
+                try:
+                    if (row.e1_e2_Mass): Zmass = row.e1_e2_Mass
+                except AttributeError: pass
+                try:
+                    if (row.m1_m2_Mass): Zmass = row.m1_m2_Mass
+                except AttributeError: pass
+                channel = 0
+                ## Channel
+                #try:
+                #  if (row.e1_e2_Mass):
+                #    try:
+                #      if (row.e3Pt):
+                #        try: 
+                #          if (row.tPt): channel = 1 # EEET
+                #        except AttributeError: pass
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                #try:
+                #  if (row.m1_m2_Mass):
+                #    try:
+                #      if (row.e3Pt):
+                #        try:
+                #          if (row.tPt): channel = 11 # MMET
+                #        except AttributeError: pass
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                #try:
+                #  if (row.e1_e2_Mass):
+                #    try:
+                #      if (row.m3Pt):
+                #        try: 
+                #          if (row.tPt): channel = 2 # EEMT
+                #        except AttributeError: pass
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                #try:
+                #  if (row.m1_m2_Mass):
+                #    try:
+                #      if (row.m3Pt):
+                #        try:
+                #          if (row.tPt): channel = 12 # MMMT
+                #        except AttributeError: pass
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                #try:
+                #  if (row.e1_e2_Mass):
+                #    try:
+                #      if (row.e3Pt):
+                #        try:
+                #          if (row.mPt): channel = 3 # EEEM
+                #        except AttributeError: pass
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                #try:
+                #  if (row.m1_m2_Mass):
+                #    try:
+                #      if (row.m3Pt):
+                #        try:
+                #          if (row.ePt): channel = 13 # MMEM
+                #        except AttributeError: pass
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                #try:
+                #  if (row.e1_e2_Mass):
+                #    try:
+                #      if (row.t2Pt): channel = 4 # EETT
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                #try:
+                #  if (row.m1_m2_Mass):
+                #    try:
+                #      if (row.t2Pt): channel = 14 # MMTT
+                #    except AttributeError: pass
+                #except AttributeError: pass
+                # Tau 1 = higgs leg 1
+                # Tau 1 Pt
+                try:
+                    if (row.e3Pt):
+                        tau1Pt = row.e3Pt
+                        tau1Eta = row.e3Eta
+                        tau1MtToMET = row.e3MtToMET
+                        tau2Pt = row.tPt
+                        tau2Eta = row.tEta
+                except AttributeError: pass
+                try:
+                    if (row.ePt):
+                        tau1Pt = row.ePt
+                        tau1Eta = row.eEta
+                        tau1MtToMET = row.eMtToMET
+                        tau2Pt = row.tPt
+                        tau2Eta = row.tEta
+                except AttributeError: pass
+                try:
+                    if (row.m3Pt):
+                        tau1Pt = row.m3Pt
+                        tau1Eta = row.m3Eta
+                        tau1MtToMET = row.m3MtToMET
+                        tau2Pt = row.tPt
+                        tau2Eta = row.tEta
+                except AttributeError: pass
+                try:
+                    if (row.mPt):
+                        tau1Pt = row.mPt
+                        tau1Eta = row.mEta
+                        tau1MtToMET = row.mMtToMET
+                        tau2Pt = row.tPt
+                        tau2Eta = row.tEta
+                except AttributeError: pass
+                try:
+                    if (row.t2Pt):
+                        tau1Pt = row.t1Pt
+                        tau1Eta = row.t1Eta
+                        tau1MtToMET = row.t1MtToMET
+                        tau2Pt = row.t2Pt
+                        tau2Eta = row.t2Eta
+                except AttributeError: pass
+                
                 for t in self.tau_legs:
                     if (getattr(row, t+'AbsEta') <= 1.4):
                         pt10 = pt10_low
@@ -142,7 +262,9 @@ class TauFakeRatesBase(MegaBase):
                         pt10 = pt10_high
                         code = 10
                     #eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Denom', '_NumPlace_') #'_NumPlace_' is place holders for below numerator values
-                    evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                    #evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                    #print "Channel: %i Zmass %f          " % (channel ,Zmass)
+                    evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
                     fill(self, pt10, row, t, evtList) # fill denominator
                     for num in self.numerators:
                         if bool( getattr(row,t+num) ):
@@ -151,12 +273,14 @@ class TauFakeRatesBase(MegaBase):
                             if (getattr(row, t+'AbsEta') <= 1.4):
                                 if num == 'LooseIso3Hits' : code = 1
                                 else: code = 11
-                                evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                                #evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
                                 fill(self, histos[('ztt', 'pt10low', num)], row, t, evtList) # fill numerator
                             elif (getattr(row, t+'AbsEta') > 1.4):
                                 if num == 'LooseIso3Hits': code = 2
                                 else: code = 12
-                                evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                                #evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
+                                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
                                 fill(self, histos[('ztt', 'pt10high', num)], row, t, evtList) # fill numerator
                             #self.eventSet.add(eventTuple)
             #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
