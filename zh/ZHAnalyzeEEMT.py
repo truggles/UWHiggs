@@ -48,7 +48,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_H_histos(folder)
 
     def tau1Selection(self, row): 
-         return selections.muIDTight(row, 'm') and selections.muIsoLoose(row, 'm')
+        return selections.muIDTight(row, 'm') and selections.muIsoLoose(row, 'm')
 
     def tau2Selection(self, row):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
