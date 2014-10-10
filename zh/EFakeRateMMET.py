@@ -38,7 +38,7 @@ class EFakeRateMMET(EMUFakeRatesBase.EMUFakeRatesBase):
         return selections.looseElectronSelection(row,'e')
     
     def lepton_passes_tight_iso(self, row):
-        return selections.elIsoTight(row, 'e') and selections.eleIDTight(row, 'e') #bool( row.eMVAIDH2TauWP ) ##THIS SEEMS too low        
+        return selections.elIsoTight(row, 'e') and selections.eleIDTight(row, 'e') and (row.eMissingHits==0) #bool( row.eMVAIDH2TauWP ) ##THIS SEEMS too low        
 
     def lepton_passes_loose_iso(self, row):
         return selections.elIsoLoose(row, 'e')  and selections.eleIDLoose(row, 'e') ##THIS SEEMS too low        
