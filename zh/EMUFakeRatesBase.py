@@ -34,17 +34,18 @@ class EMUFakeRatesBase(MegaBase):
                                                               row.pfMetEt,
                                                               row.pfMetPhi,
                                                               evtList[0], # NumDenomCode
-                                                              evtList[1], # tAbsEta
-                                                              evtList[2], # tPt
-                                                              evtList[3], # tJetPt
-                                                              evtList[4], # LT
-                                                              evtList[5], # Mass
-                                                              evtList[6], # Pt
+                                                              evtList[1], # Channel
+                                                              evtList[2], # Zmass
+                                                              evtList[3], # t1Pt
+                                                              evtList[4], # t1Eta
+                                                              evtList[5], # t1MtToMET
+                                                              evtList[6], # t2Pt
+                                                              evtList[7], # t2Eta
                                                               ] ),}
 
     def begin(self):
         # Book histograms
-        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:lAbsEta:lPt:lJetPt:LT:Mass:Pt')
+        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:Channel:Zmass:t1Pt:t1Eta:t1MtToMET:t2Pt:t2Eta')
         region = 'zlt'
         for denom in ['pt10']:
             denom_key = (region, denom)
@@ -112,6 +113,54 @@ class EMUFakeRatesBase(MegaBase):
         for row in self.tree:
             if not preselection(self, row):
                 continue
+            # Get variables to populate EventID with later
+            try:
+                if (row.e1_e2_Mass): Zmass = row.e1_e2_Mass
+            except AttributeError: pass
+            try:
+                if (row.m1_m2_Mass): Zmass = row.m1_m2_Mass
+            except AttributeError: pass
+            channel = 0
+            try:
+                if (row.e3Pt):
+                    tau1Pt = row.e3Pt
+                    tau1Eta = row.e3Eta
+                    tau1MtToMET = row.e3MtToMET
+                    tau2Pt = row.tPt
+                    tau2Eta = row.tEta
+            except AttributeError: pass
+            try:
+                if (row.ePt):
+                    tau1Pt = row.ePt
+                    tau1Eta = row.eEta
+                    tau1MtToMET = row.eMtToMET
+                    tau2Pt = row.tPt
+                    tau2Eta = row.tEta
+            except AttributeError: pass
+            try:
+                if (row.m3Pt):
+                    tau1Pt = row.m3Pt
+                    tau1Eta = row.m3Eta
+                    tau1MtToMET = row.m3MtToMET
+                    tau2Pt = row.tPt
+                    tau2Eta = row.tEta
+            except AttributeError: pass
+            try:
+                if (row.mPt):
+                    tau1Pt = row.mPt
+                    tau1Eta = row.mEta
+                    tau1MtToMET = row.mMtToMET
+                    tau2Pt = row.tPt
+                    tau2Eta = row.tEta
+            except AttributeError: pass
+            try:
+                if (row.t2Pt):
+                    tau1Pt = row.t1Pt
+                    tau1Eta = row.t1Eta
+                    tau1MtToMET = row.t1MtToMET
+                    tau2Pt = row.t2Pt
+                    tau2Eta = row.t2Eta
+            except AttributeError: pass
 
             #eventTuple = (row.run, row.lumi, row.evt, self.lepton_passes_loose_iso(row), self.lepton_passes_tight_iso(row) ) 
             eventTuple = (row.run, row.lumi, row.evt) 
@@ -120,16 +169,19 @@ class EMUFakeRatesBase(MegaBase):
             # Fill denominator
             #print 'PRESELECTION PASSED!'
             code = 20
-            evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+            #evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+            evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
             fill(self, pt10, row, evtList)
             if self.lepton_passes_loose_iso(row):
                 #print 'ISOLATION PASSED!'
                 code = 21
-                evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+                #evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
                 fill(self, histos[('zlt', 'pt10', 'looseId')], row, evtList)
             if self.lepton_passes_tight_iso(row):
                 code = 22
-                evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+                #evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
+                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
                 #print 'ISOLATION PASSED!'
                 fill(self, histos[('zlt', 'pt10', 'tightId')], row, evtList)
             self.eventSet.add(eventTuple)
