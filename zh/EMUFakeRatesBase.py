@@ -41,11 +41,12 @@ class EMUFakeRatesBase(MegaBase):
                                                               evtList[5], # t1MtToMET
                                                               evtList[6], # t2Pt
                                                               evtList[7], # t2Eta
+                                                              evtList[8], # tauCode
                                                               ] ),}
 
     def begin(self):
         # Book histograms
-        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:Channel:Zmass:t1Pt:t1Eta:t1MtToMET:t2Pt:t2Eta')
+        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:Channel:Zmass:t1Pt:t1Eta:t1MtToMET:t2Pt:t2Eta:tauCode')
         region = 'zlt'
         for denom in ['pt10']:
             denom_key = (region, denom)
@@ -90,7 +91,7 @@ class EMUFakeRatesBase(MegaBase):
             #if row.pfMet_mes_Et > 20:                            return False
             #if row.mva_metEt > 20: return False
             #print getattr(row,self.branchId+'MtToMET')
-            if getattr(row,self.branchId+'MtToMET') > 30: return False #AN --> 30
+            XXX if getattr(row,self.branchId+'MtToMVAMET') > 30: return False #AN --> 30. This was MtToMET previously, ULB claims to use MtToMVAMET
             #if row.jetVeto30 < 0.5: return False
             if not getattr(row,self.branchId+'_t_SS'):    return False
             #if not selections.signalTauSelection(row, 't'): return False        
@@ -113,6 +114,12 @@ class EMUFakeRatesBase(MegaBase):
         for row in self.tree:
             if not preselection(self, row):
                 continue
+
+            #eventTuple = (row.run, row.lumi, row.evt, self.lepton_passes_loose_iso(row), self.lepton_passes_tight_iso(row) ) 
+            eventTuple = (row.run, row.lumi, row.evt) 
+            if (eventTuple in self.eventSet):
+                continue
+
             # Get variables to populate EventID with later
             try:
                 if (row.e1_e2_Mass): Zmass = row.e1_e2_Mass
@@ -162,26 +169,28 @@ class EMUFakeRatesBase(MegaBase):
                     tau2Eta = row.t2Eta
             except AttributeError: pass
 
-            #eventTuple = (row.run, row.lumi, row.evt, self.lepton_passes_loose_iso(row), self.lepton_passes_tight_iso(row) ) 
-            eventTuple = (row.run, row.lumi, row.evt) 
-            if (eventTuple in self.eventSet):
-                continue
             # Fill denominator
             #print 'PRESELECTION PASSED!'
             code = 20
+            tauCode = -1
+            if self.branchId == "e": tauCode = 10
+            if self.branchId == "e3": tauCode = 11
+            if self.branchId == "m": tauCode = 20
+            if self.branchId == "m3": tauCode = 21
+            
             #evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
-            evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
+            evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta, tauCode]
             fill(self, pt10, row, evtList)
             if self.lepton_passes_loose_iso(row):
                 #print 'ISOLATION PASSED!'
                 code = 21
                 #evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
-                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
+                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta, tauCode]
                 fill(self, histos[('zlt', 'pt10', 'looseId')], row, evtList)
             if self.lepton_passes_tight_iso(row):
                 code = 22
                 #evtList = [code, getattr(row, self.branchId+'AbsEta'), getattr(row, self.branchId+'Pt'), getattr(row, self.branchId+'JetPt'), row.LT, row.Mass, row.Pt]
-                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
+                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta, tauCode]
                 #print 'ISOLATION PASSED!'
                 fill(self, histos[('zlt', 'pt10', 'tightId')], row, evtList)
             self.eventSet.add(eventTuple)
