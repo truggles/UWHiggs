@@ -64,34 +64,27 @@ class ZHAnalyzeEETT(ZHAnalyzerBase.ZHAnalyzerBase):
 
         Excludes FR object IDs and sign cut.
         '''
-#        print "0"
         if not selections.ZEESelection(row): return False
-#        print "1"
         if not selections.generalCuts(row, 'e1','e2','t1','t2') : return False
-#        print "2"
         if not selections.looseTauSelection(row,'t1'): return False
-#        print "3"
         if not selections.looseTauSelection(row,'t2'): return False
-#        print "4"
         if not bool(row.t1AntiMuonLoose2): return False
-#        print "5"
         if not bool(row.t1AntiElectronLoose): return False
-#        print "6"
         if not bool(row.t2AntiMuonLoose2): return False
-#        print "7"
         if not bool(row.t2AntiElectronLoose): return False
-#        print "8"
         if row.t1Pt < row.t2Pt: return False #Avoid double counting
-#        print "9"
         if (row.t1Pt + row.t2Pt < 70): return False
-#        print "10"
         #X# if not (row.eTightCountZH == 2): return False #THR
-#        print "11"
         #X# if (row.muTightCountZH > 0): return False #THR
-#        print "12"
+
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2')
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
+
+        # XXX Count test
+        if not row.eTightCountZH_0 == 2: return False
+        if row.muTightCountZH_0 > 0: return False
+
         return True
 
     def sign_cut(self, row):

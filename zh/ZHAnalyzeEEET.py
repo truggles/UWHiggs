@@ -76,6 +76,10 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
         #X# if (row.muTightCountZH > 0): return False #THR
         #X# if not (row.eTightCountZH == 3): return False #remove post- debug 
+
+        # XXX Count check
+        if row.muTightCountZH_0 > 0: return False
+
 	return True
 
     def sign_cut(self, row):
