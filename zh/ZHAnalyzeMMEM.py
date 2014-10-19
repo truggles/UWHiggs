@@ -77,6 +77,7 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2') + selections.bJetOverlapElec(row, 'e') + selections.bJetOverlapMu(row, 'm3')
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
+        # XXX Count Test - no requirements
         return True
         
 
