@@ -26,6 +26,11 @@ class TauFakeRatesEETT(TauFakeRatesBase.TauFakeRatesBase):
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2')
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
+
+        # XXX Count test
+        if not row.eTightCountZH_0 == 2: return False
+        if row.muTightCountZH_0 > 0: return False
+
         return True
 
     def sameSign(self, row):
