@@ -39,12 +39,13 @@ class TauFakeRatesBase(MegaBase):
                                                               evtList[5], # t1MtToMET
                                                               evtList[6], # t2Pt
                                                               evtList[7], # t2Eta
+                                                              evtList[8], # tauCode
                                                               ] ),} 
 
     def begin(self):
         # Book histograms
         region = 'ztt'
-        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:Channel:Zmass:t1Pt:t1Eta:t1MtToMET:t2Pt:t2Eta')
+        self.histograms["Event_ID"] = ROOT.TNtuple("Event_ID","Event ID",'run:lumi:evt1:evt2:eVetoZH:muVetoZH:tauVetoZH:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:NumDenomCode:Channel:Zmass:t1Pt:t1Eta:t1MtToMET:t2Pt:t2Eta:tauCode')
         for denom in ['pt10low', 'pt10high']:
             denom_key = (region, denom)
             denom_histos = {}
@@ -261,10 +262,14 @@ class TauFakeRatesBase(MegaBase):
                     elif (getattr(row, t+'AbsEta') > 1.4):
                         pt10 = pt10_high
                         code = 10
+                    tauCode = -1 # 0 = LT event, 1 = t1, 2 = t2 in TT events
+                    if t == "t": tauCode = 0
+                    if t == "t1": tauCode = 1
+                    if t == "t2": tauCode = 2
                     #eventTuple = (row.run, row.lumi, row.evt, getattr(row, t+'AbsEta') <= 1.4, getattr(row, t+'AbsEta') > 1.4, 'Denom', '_NumPlace_') #'_NumPlace_' is place holders for below numerator values
                     #evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
                     #print "Channel: %i Zmass %f          " % (channel ,Zmass)
-                    evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
+                    evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta, tauCode]
                     fill(self, pt10, row, t, evtList) # fill denominator
                     for num in self.numerators:
                         if bool( getattr(row,t+num) ):
@@ -274,13 +279,13 @@ class TauFakeRatesBase(MegaBase):
                                 if num == 'LooseIso3Hits' : code = 1
                                 else: code = 11
                                 #evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
-                                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
+                                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta, tauCode]
                                 fill(self, histos[('ztt', 'pt10low', num)], row, t, evtList) # fill numerator
                             elif (getattr(row, t+'AbsEta') > 1.4):
                                 if num == 'LooseIso3Hits': code = 2
                                 else: code = 12
                                 #evtList = [code, getattr(row, t+'AbsEta'), getattr(row, t+'Pt'), getattr(row, t+'JetPt'), row.LT, row.Mass, row.Pt]
-                                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta]
+                                evtList = [code, channel, Zmass, tau1Pt, tau1Eta, tau1MtToMET, tau2Pt, tau2Eta, tauCode]
                                 fill(self, histos[('ztt', 'pt10high', num)], row, t, evtList) # fill numerator
                             #self.eventSet.add(eventTuple)
             #pt10['tauTauInvMass'].Fill( row.t1_t2_Mass, 1.)
