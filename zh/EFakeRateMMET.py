@@ -32,10 +32,15 @@ class EFakeRateMMET(EMUFakeRatesBase.EMUFakeRatesBase):
         if not bool(row.tAntiElectronMVA3Tight): return False
         #if not bool(row.tAntiElectronTight): return False
         #if row.LT < 45: return False
+        if not selections.looseElectronSelection(row,'e'): return False
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2') + selections.bJetOverlapElec(row, 'e')
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
-        return selections.looseElectronSelection(row,'e')
+
+        # XXX Count Test
+        if not row.muTightCountZH_0 == 2: return False
+ 
+        return True
     
     def lepton_passes_tight_iso(self, row):
         return selections.elIsoTight(row, 'e') and selections.eleIDTight(row, 'e') and (row.eMissingHits==0) #bool( row.eMVAIDH2TauWP ) ##THIS SEEMS too low        

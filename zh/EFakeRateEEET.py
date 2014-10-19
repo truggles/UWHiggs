@@ -33,6 +33,9 @@ class EFakeRateEEET(EMUFakeRatesBase.EMUFakeRatesBase):
         removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2') + selections.bJetOverlapElec(row, 'e3')
 	if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
 
+        # XXX Count check
+        if row.muTightCountZH_0 > 0: return False
+
         return True
 
     def lepton_passes_tight_iso(self, row):
