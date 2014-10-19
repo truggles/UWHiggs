@@ -70,7 +70,16 @@ class ZHAnalyzerBase(MegaBase):
 							      row.mva_metEt,
 							      row.mva_metPhi,
 							      row.pfMetEt,
-							      row.pfMetPhi
+							      row.pfMetPhi,
+							      row.type1_pfMetEt,
+							      row.jetCountZH,
+							      row.muVetoZH4,
+							      row.muTightCountZH,
+							      row.muTightCountZH_0,
+							      row.eTightCountZH,
+							      row.eTightCountZH_0,
+							      getattr(row,'%sMtToMET' % self.H_decay_products()[0]),
+							      #getattr(row,'%sMissingHits' % self.H_decay_products()[0]),
 							      ] ),}
         #print '__init__->self.channel %s' % self.channel
         self.eventSet = set() # to keep track of duplicate events
@@ -170,7 +179,7 @@ class ZHAnalyzerBase(MegaBase):
             folder = "/".join(folders)
             self.book_histos(folder) # in subclass
             #if 'All_Passed' in folder: #if we are in the all passed region ONLY
-            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi', type=ROOT.TNtuple)
+            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:type1_pfMetEt:jetCountZH:muVetoZH4:muTightCountZH:muTightCountZH_0:eTightCountZH:eTightCountZH_0:tau1MtToMET', type=ROOT.TNtuple)
             # Each of the weight subfolders
             wToApply = regionInfo['weights']
             for w in wToApply:
