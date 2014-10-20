@@ -82,7 +82,9 @@ def generalCuts(row, *args):
 
 
     #if not Vetos(row): return False
-    return Vetos(row)
+    return True
+    # XXX Counting test
+    #return Vetos(row)
     #return not any( map( lambda x: x > 0.1, getattr(row,'%sDZ' % l for l in args) ) )
 
 def eleIDLoose(row, name):
