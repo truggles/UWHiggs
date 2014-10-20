@@ -473,6 +473,7 @@ fr_fits.each do |fit, fit_info|
       target = regexFile.sub('??','Z')
     else
       target = regexFile.sub('???', 'ZL')
+      regexFile = regexFile.sub('???', '{??M,??E}')
     end
     mergedTargets << target
     deps   = Dir.glob(regexFile)
