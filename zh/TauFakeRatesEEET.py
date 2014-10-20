@@ -2,11 +2,11 @@
 Base analyzer for hadronic tau fake-rate estimation: Z->mu mu
 '''
 
-import TauFakeRatesBase
+import TauFakeRatesBaseZLT
 from EEETauTree import EEETauTree
 import baseSelections as selections
 
-class TauFakeRatesEEET(TauFakeRatesBase.TauFakeRatesBase):
+class TauFakeRatesEEET(TauFakeRatesBaseZLT.TauFakeRatesBase):
     tree = 'eeet/final/Ntuple'
     tau_legs = ['t']
     def __init__(self, tree, outfile, **kwargs):

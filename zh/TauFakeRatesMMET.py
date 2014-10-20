@@ -2,12 +2,12 @@
 Base analyzer for hadronic tau fake-rate estimation: Z->mu mu
 '''
 
-import TauFakeRatesBase
+import TauFakeRatesBaseZLT
 import baseSelections as selections
 from MuMuETauTree import MuMuETauTree
 
 
-class TauFakeRatesMMET(TauFakeRatesBase.TauFakeRatesBase):
+class TauFakeRatesMMET(TauFakeRatesBaseZLT.TauFakeRatesBase):
     tree = 'emmt/final/Ntuple'
     tau_legs = ['t']
     def __init__(self, tree, outfile, **kwargs):
