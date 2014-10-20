@@ -39,7 +39,8 @@ samples = Hash[
   #"zjets" => Array['Zjets_M50'],
   #"zjets" => Array['Z1jet_M50'], 
   #"ttbar" => Array['TTplusJets_madgraph'],
-  "A300-Zh-lltt-FullSim_checkMVAMET" => get_sample_names('A300-Zh-lltt-FullSim_checkMVA'),  
+  #"A300-Zh-lltt-FullSim_checkMVAMET" => get_sample_names('A300-Zh-lltt-FullSim_checkMVA'),  
+  "A300-Zh-lltt-FullSim_checkMVAMET" => Array['A300-Zh-lltt-FullSim_checkMVAMET'],  
   #Important Backgrounds (Aug 6, 2014):
   "TTZJets" => Array['TTZJets'],
   "ggzz2l2l" => Array['ggZZ2L2L'],
@@ -127,10 +128,10 @@ fr_analyzer_dependencies = Hash[
   "MUFakeRateMMMT.py"   => Array["EMUFakeRatesBase.py","baseSelections.py",],  # "MuMuMuTauTree.py",],
   "TauFakeRatesEETT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],  # "EETauTauTree.py",],
   "TauFakeRatesMMTT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],  # "MuMuTauTauTree.py",],
-  "TauFakeRatesEEMT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
-  "TauFakeRatesEEET.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
-  "TauFakeRatesMMET.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
-  "TauFakeRatesMMMT.py" => Array["TauFakeRatesBase.py","baseSelections.py",],
+  "TauFakeRatesEEMT.py" => Array["TauFakeRatesBaseZLT.py","baseSelections.py",],
+  "TauFakeRatesEEET.py" => Array["TauFakeRatesBaseZLT.py","baseSelections.py",],
+  "TauFakeRatesMMET.py" => Array["TauFakeRatesBaseZLT.py","baseSelections.py",],
+  "TauFakeRatesMMMT.py" => Array["TauFakeRatesBaseZLT.py","baseSelections.py",],
 ]
 
 # Create an empty placeholder to enable tab-completion
