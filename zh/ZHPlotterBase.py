@@ -124,7 +124,12 @@ class ZHPlotterBase(Plotter):
         #self.samples += ['WJetsToLNu']
         self.samples += ['data_DoubleMu*'] if channel[:2] == 'MM' else ['data_DoubleElectron*']
         self.jobid = os.environ['jobid']
-        self.channel = channel
+        self.channelIn = channel
+        # Match MMEM => MMME for ULB style
+        self.channelOut = channel
+        if channel == 'MMEM':
+            self.channelOut = 'MMME'
+            print "Channel swap! MMEM -> MMME"
         self.period = '7TeV' if '7TeV' in jobid else '8TeV'
         self.sqrts = 7 if '7TeV' in jobid else 8
         files = []
@@ -133,7 +138,7 @@ class ZHPlotterBase(Plotter):
         for x in self.samples:
             files += glob.glob('results/%s/ZHAnalyze%s/%s.root' % (jobid, channel, x))
             lumifiles += glob.glob('inputs/%s/%s.lumicalc.sum' % (jobid, x))
-        self.outputdir = 'results/%s/plots/%s' % (jobid, channel.lower() )
+        self.outputdir = 'results/%s/plots/%s' % (jobid, self.channelOut.lower() )
         #pprint.pprint(files)
         blinder = None
         if blind:
@@ -300,7 +305,7 @@ class ZHPlotterBase(Plotter):
             obs.SetName('data_obs')
             Zjets.SetName('Zjets')
             TTZJets.SetName('TTZ')
-            VHWW.SetName('ZH_tt125')
+            VHWW.SetName('ZH_ww125')
             VHTauTau.SetName('ZH_tt125')
             ZZJetsTo4L.SetName('ZZ')
             ggZZ2L2L.SetName('GGToZZ2L2L')
@@ -447,7 +452,7 @@ class ZHPlotterBase(Plotter):
         pyfname = outputfileName.split('.')[0]+'.py'
         print 'saving passing events in: '+self.outputdir+'/'+pyfname
         with open(self.outputdir+'/'+pyfname,'w') as out:
-            out.write('#Printing events passing selections for channel ' + self.channel + ' (run, lumi, evt)\n')
+            out.write('#Printing events passing selections for channel ' + self.channelOut + ' (run, lumi, evt)\n')
             out.write('passing = ' + passing_evts.__repr__() + '\n')
         return
 
@@ -594,6 +599,8 @@ for channel in channels:
     texZprod = tuple( naming_map[p[0]] for p in Zprod )
     texHprod = tuple( naming_map[p[0]] for p in Hprod )
     plotter = ZHPlotterBase(channel)
+    channelOut = channel
+    if channel == 'MMEM': channelOut = 'MMME'
     
     ###########################################################################
     ##  Z control plots #####################################################
@@ -649,7 +656,7 @@ for channel in channels:
     ##  H control plots #####################################################
     ###########################################################################
     plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Pt' % Hprod, rebin=10, xaxis='p_{T%s%s} (GeV)' % texHprod, leftside=False)
-    plotter.save('%s_mcdata-os-all_passed_HPt' % channel.lower() )
+    plotter.save('%s_mcdata-os-all_passed_HPt' % channelOut.lower() )
 
     #plotter.plot_mc_vs_data('os/All_Passed', '%s_%s_Mass' % Hprod, rebin=10, xaxis='M_{%s%s} (GeV)' % texHprod, leftside=False)
     #plotter.save('%s_mcdata-os-all_passed_HMass' % channel.lower() )
@@ -665,8 +672,8 @@ for channel in channels:
     ##  Making shape file     #################################################
     ###########################################################################
 
-    shape_file = ROOT.TFile( os.path.join(plotter.outputdir, '%s_shapes_%s.root' % (channel.lower(), plotter.period)), 'RECREATE')
-    shape_dir  = shape_file.mkdir( channel.lower()+'_zh' )
+    shape_file = ROOT.TFile( os.path.join(plotter.outputdir, '%s_shapes_%s.root' % (channelOut.lower(), plotter.period)), 'RECREATE')
+    shape_dir  = shape_file.mkdir( channelOut.lower()+'_zh' )
     #plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 15, shape_dir, unblinded=True)
     #plotter.write_shapes('A_SVfitMass', 20, shape_dir, unblinded=True)
     plotter.write_shapes('A_SVfitMass', 40, shape_dir, unblinded=True)
