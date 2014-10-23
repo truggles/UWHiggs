@@ -828,6 +828,9 @@ cardmasses = Array[220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 3
 cardmasses.each do |mass|
   task :cards => make_datacard_task(mass, '4l', '')
   channels.each do |channel|
+      if channel == 'mmem'
+        channel = 'mmme'
+      end
       task :cards => make_datacard_task(mass, channel, channel+'_zh')
   end
 end
