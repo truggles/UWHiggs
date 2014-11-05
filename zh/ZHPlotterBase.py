@@ -120,7 +120,7 @@ class ZHPlotterBase(Plotter):
     def __init__(self, channel, blind=False):
         #self.samples = [ 'Zjets_M50', 'WplusJets_madgraph', 'WZ*', 'ZZ*', 'WW*', 'VH*', 'TTplusJets_madgraph','*A*Zh*']#'WH*',
         #self.samples = ['ZZ*','VH_H2Tau_M-125','*A*Zh*', 'VH*HWW*', 'ggZZ2L2L' ]
-        self.samples = ['A*Zh-lltt-MadGraph','TTZJets','VHWW_lepdecay_125','VH_H2Tau_M-125','ZZJetsTo4L_pythia','ggZZ2L2L']
+        self.samples = ['A*Zh-lltt-MadGraph','TTZJets','VHWW_lepdecay_125','VH_H2Tau_M-125','ZZJetsTo4L_pythia','ggZZ2L2L', 'ZZZ', 'WZZ', 'WWZ']
         #self.samples += ['WJetsToLNu']
         self.samples += ['data_DoubleMu*'] if channel[:2] == 'MM' else ['data_DoubleElectron*']
         self.jobid = os.environ['jobid']
@@ -182,6 +182,18 @@ class ZHPlotterBase(Plotter):
             self.rebin_view(self.get_view('ggZZ2L2L'), rebin),
             'os/All_Passed/'
         )
+        ZZZ_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('ZZZ'), rebin),
+            'os/All_Passed/'
+        )
+        WZZ_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('WZZ'), rebin),
+            'os/All_Passed/'
+        )
+        WWZ_view = views.SubdirectoryView(
+            self.rebin_view(self.get_view('WWZ'), rebin),
+            'os/All_Passed/'
+        )
         #zz_view = views.SubdirectoryView(
         #    self.rebin_view(self.get_view('ZZ*'), rebin),
         #    'os/All_Passed/'
@@ -206,12 +218,16 @@ class ZHPlotterBase(Plotter):
         cat2_view = views.SubdirectoryView(all_data_view, cat2)
         # View of weighted obj1&2-fails data
         cat0_view = views.SubdirectoryView(all_data_view, cat0)
+        subtract_cat0_view = views.ScaleView(cat0_view, -1)
+        cat1plus2min0_view = views.SumView(cat1_view, cat2_view, subtract_cat0_view)
 
         cat_red_view = views.SubdirectoryView(all_data_view, cat_red)
 
-        subtract_cat0_view = views.ScaleView(cat0_view, -1)
         # Corrected fake view
-        Zjets_view = views.SumView(cat1_view, cat2_view, subtract_cat0_view)
+        # THR - we're supposed to scale Reducible Bkg with 1 + 2 - 0
+        #Zjets_view = views.SumView(cat1_view, cat2_view, subtract_cat0_view) # THR - we're supposed to scale Reducible Bkg with 1 + 2 - 0
+        #Zjets_view = cat_red_view
+        
         #Zjets_view = views.TitleView(
         #    views.StyleView(Zjets_view, **data_styles['Zjets*']), 'Non-prompt')
 
@@ -220,7 +236,9 @@ class ZHPlotterBase(Plotter):
         #        views.SubdirectoryView(all_data_view, 'os/p1p2p3/c1'),
         #        **data_styles['TT*']), 'Charge mis-id')
 
+        Zjets_view = views.ScaleView(cat_red_view, cat1plus2min0_view.Get('A_SVfitMass').Integral() / cat_red_view.Get('A_SVfitMass').Integral() )
         #Zjets_view = views.ScaleView(cat_red_view, Zjets_view.Get('A_SVfitMass').Integral() / cat_red_view.Get('A_SVfitMass').Integral() )
+        WZ_view = views.SumView(cat1_view, cat2_view)
 
         output = {
             'TTZJets' : TTZJets_view,
@@ -228,12 +246,17 @@ class ZHPlotterBase(Plotter):
             'VHTauTau' : VHTauTau_view,
             'ZZJetsTo4L' : ZZJetsTo4L_view,
             'ggZZ2L2L' : ggZZ2L2L_view,
+            'ZZZ' : ZZZ_view,
+            'WZZ' : WZZ_view,
+            'WWZ' : WWZ_view,
             #'WJetsToLNu' : WJetsToLNu_view,
             'data' : data_view,
             'cat0' : cat0_view,
             'cat1' : cat1_view,
             'cat2' : cat2_view,
+            'cat1plus2min0' : cat1plus2min0_view,
             'cat_red' : cat_red_view,
+            'WZ' : WZ_view,
             'Zjets' : Zjets_view
             #'ggZZ2L2L' : ggzz_view
             #'charge_fakes' : charge_fakes
@@ -288,10 +311,15 @@ class ZHPlotterBase(Plotter):
         VHTauTau = sig_view['VHTauTau'].Get(variable)
         ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
         ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
+        ZZZ = sig_view['ZZZ'].Get(variable)
+        WZZ = sig_view['WZZ'].Get(variable)
+        WWZ = sig_view['WWZ'].Get(variable)
         #WJetsToLNu = sig_view['WJetsToLNu'].Get(variable)
         cat0 = sig_view['cat0'].Get(variable)
         cat1 = sig_view['cat1'].Get(variable)
         cat2 = sig_view['cat2'].Get(variable)
+        cat1plus2min0 = sig_view['cat1plus2min0'].Get(variable)
+        WZ = sig_view['WZ'].Get(variable)
         cat_red = sig_view['cat_red'].Get(variable)
         obs = sig_view['data'].Get(variable)
         Zjets = sig_view['Zjets'].Get(variable)
@@ -309,10 +337,15 @@ class ZHPlotterBase(Plotter):
             VHTauTau.SetName('ZH_tt125')
             ZZJetsTo4L.SetName('ZZ')
             ggZZ2L2L.SetName('GGToZZ2L2L')
+            ZZZ.SetName('ZZZ')
+            WZZ.SetName('WZZ')
+            WWZ.SetName('WWZ')
             #WJetsToLNu.SetName('WJetsToLNu')
             cat0.SetName('cat0')
             cat1.SetName('cat1')
             cat2.SetName('cat2')
+            cat1plus2min0.SetName('cat1plus2min0')
+            WZ.SetName('WZ')
             cat_red.SetName('cat_red')
             #wz.SetName('WZ')
             #zz.SetName('ZZ')
@@ -355,10 +388,15 @@ class ZHPlotterBase(Plotter):
             VHTauTau.SetName('VHTauTau_'+variable)
             ZZJetsTo4L.SetName('ZZJetsTo4L_'+variable)
             ggZZ2L2L.SetName('ggZZ2L2L_'+variable)
+            ZZZ.SetName('ZZZ_'+variable)
+            WZZ.SetName('WZZ_'+variable)
+            WWZ.SetName('WWZ_'+variable)
             #WJetsToLNu.SetName('WJetsToLNu_'+variable)
             cat0.SetName('cat0_'+variable)
             cat1.SetName('cat1_'+variable)
             cat2.SetName('cat2_'+variable)
+            cat1plus2min0.SetName('cat1plus2min0_'+variable)
+            WZ.SetName('WZ_'+variable)
             cat_red.SetName('cat_red_'+variable)
             for mass in [220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]:
                 signal = sig_view['AZhtt%i' % mass].Get(variable)
@@ -372,10 +410,15 @@ class ZHPlotterBase(Plotter):
         VHTauTau.Write()
         ZZJetsTo4L.Write()
         ggZZ2L2L.Write()
+        ZZZ.Write()
+        WZZ.Write()
+        WWZ.Write()
         #WJetsToLNu.Write()
         cat0.Write()
         cat1.Write()
         cat2.Write()
+        cat1plus2min0.Write()
+        WZ.Write()
         cat_red.Write()
         #vhtt.Write()
         #zz.Write()
@@ -401,10 +444,15 @@ class ZHPlotterBase(Plotter):
         VHTauTau = sig_view['VHTauTau'].Get(variable)
         ZZJetsTo4L = sig_view['ZZJetsTo4L'].Get(variable)
         ggZZ2L2L = sig_view['ggZZ2L2L'].Get(variable)
+        ZZZ = sig_view['ZZZ'].Get(variable)
+        WZZ = sig_view['WZZ'].Get(variable)
+        WWZ = sig_view['WWZ'].Get(variable)
         #WJetsToLNu = sig_view['WJetsToLNu'].Get(variable)
         cat0 = sig_view['cat0'].Get(variable)
         cat1 = sig_view['cat1'].Get(variable)
         cat2 = sig_view['cat2'].Get(variable)
+        cat1plus2min0 = sig_view['cat1plus2min0'].Get(variable)
+        WZ = sig_view['WZ'].Get(variable)
         cat_red = sig_view['cat_red'].Get(variable)
 
         return {
@@ -417,10 +465,15 @@ class ZHPlotterBase(Plotter):
             'VHTauTau'   : VHTauTau.Integral(),
             'ZZJetsTo4L'   : ZZJetsTo4L.Integral(),
             'ggZZ2L2L'   : ggZZ2L2L.Integral(),
+            'ZZZ'   : ZZZ.Integral(),
+            'WZZ'   : WZZ.Integral(),
+            'WWZ'   : WWZ.Integral(),
             #'WJetsToLNu'   : WJetsToLNu.Integral(),
             'cat0'   : cat0.Integral(),
             'cat1'   : cat1.Integral(),
             'cat2'   : cat2.Integral(),
+            'cat1plus2min0' : cat1plus2min0.Integral(),
+            'WZ'   : WZ.Integral(),
             'cat_red'   : cat_red.Integral(),
             }
 
@@ -538,10 +591,15 @@ class ZHPlotterBase(Plotter):
             sig_view['VHTauTau'],
             sig_view['ZZJetsTo4L'],
             sig_view['ggZZ2L2L'],
+            sig_view['ZZZ'],
+            sig_view['WZZ'],
+            sig_view['WWZ'],
             #sig_view['WJetsToLNu'],
             sig_view['cat0'],
             sig_view['cat1'],
             sig_view['cat2'],
+            sig_view['cat1plus2min0'],
+            sig_view['WZ'],
             sig_view['cat_red'],
          #   vh_10x,
         )
@@ -564,10 +622,15 @@ class ZHPlotterBase(Plotter):
                 sig_view['VHTauTau'],
                 sig_view['ZZJetsTo4L'],
                 sig_view['ggZZ2L2L'],
+                sig_view['ZZZ'],
+                sig_view['WZZ'],
+                sig_view['WWZ'],
                 #sig_view['WJetsToLNu'],
                 sig_view['cat0'],
                 sig_view['cat1'],
                 sig_view['cat2'],
+                sig_view['cat1plus2min0'],
+                sig_view['WZ'],
                 sig_view['cat_red'],
             )
             bkg_error = bkg_error_view.Get(variable)
