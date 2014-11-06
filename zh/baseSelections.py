@@ -71,7 +71,7 @@ def Vetos(row):
     return True
 
 def overlap(row,*args):
-    return any( map( lambda x: x < 0.1, [getattr(row,'%s_%s_DR' % (l1,l2) ) for l1 in args for l2 in args if l1 <> l2 and hasattr(row,'%s_%s_DR' % (l1,l2) )] ) ) 
+    return any( map( lambda x: x < 0.5, [getattr(row,'%s_%s_DR' % (l1,l2) ) for l1 in args for l2 in args if l1 <> l2 and hasattr(row,'%s_%s_DR' % (l1,l2) )] ) ) 
 
 def generalCuts(row, *args):
     if overlap(row, *args): return False
