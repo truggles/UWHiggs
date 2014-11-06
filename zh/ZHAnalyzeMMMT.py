@@ -63,8 +63,9 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         return bool(row.tLooseIso3Hits) ##Why not tMediumMVAIso
 
     def red_shape_cuts(self, row):
-        if (row.m3RelPFIsoDB > 2.0): return False
-        if (row.tMVA2IsoRaw <= 0.0): return False
+        if (row.m3RelPFIsoDB > 0.7): return False
+        if (row.tMVA2IsoRaw <= -0.95): return False
+        if not selections.muIDLoose(row, 'm3'): return False
         return True
 
     def preselection(self, row):
