@@ -91,7 +91,7 @@ class EMUFakeRatesBase(MegaBase):
             #if row.pfMet_mes_Et > 20:                            return False
             #if row.mva_metEt > 20: return False
             #print getattr(row,self.branchId+'MtToMET')
-            XXX if getattr(row,self.branchId+'MtToMVAMET') > 30: return False #AN --> 30. This was MtToMET previously, ULB claims to use MtToMVAMET
+            if getattr(row,self.branchId+'MtToMVAMET_noPhiCor') > 30: return False #AN --> 30. This was MtToMET previously, ULB claims to use MtToMVAMET
             #if row.jetVeto30 < 0.5: return False
             if not getattr(row,self.branchId+'_t_SS'):    return False
             #if not selections.signalTauSelection(row, 't'): return False        
