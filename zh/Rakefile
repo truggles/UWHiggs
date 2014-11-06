@@ -72,11 +72,11 @@ samples = Hash[
 
  #puts "diboson: " + samples["diboson"].inspect
  #puts "fullsim: " + samples["fullsim"].inspect
- puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
- puts "madgraph: " + samples["madgraph"].inspect
- puts "data_mm: " + samples["data_mm"].inspect
- puts "data_ee: " + samples["data_ee"].inspect
- puts "A300-Zh-lltt-FullSim_checkMVAMET: " + samples["A300-Zh-lltt-FullSim_checkMVAMET"].inspect
+# puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
+# puts "madgraph: " + samples["madgraph"].inspect
+# puts "data_mm: " + samples["data_mm"].inspect
+# puts "data_ee: " + samples["data_ee"].inspect
+# puts "A300-Zh-lltt-FullSim_checkMVAMET: " + samples["A300-Zh-lltt-FullSim_checkMVAMET"].inspect
 
 # Function to get the .root files for an analyzer and samples
 def get_analyzer_results(analyzer, the_samples)
