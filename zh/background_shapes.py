@@ -22,7 +22,7 @@ samples = { 'TTZ' : ("kGreen-7", "kCyan-2", 21),
             'ZH_ww125' : ("kCyan-7", "kYellow-2", 21),
             'ZH_tt125' : ("kMagenta-7", "kMagenta-2", 21),
             'ZZ' : ("kBlue-7", "kGreen+2", 21),
-            'ZZZ' : ("kGreen-4", "kGreen+2", 21),
+            'ZZZ' : ("kGreen+7", "kGreen+2", 21),
             'WZZ' : ("kGreen-1", "kGreen+2", 21),
             'WWZ' : ("kGreen+2", "kGreen+2", 21),
             'GGToZZ2L2L' : ("kRed-7", "kRed-2", 21), 
@@ -35,7 +35,7 @@ variables_map = {'LT_Higgs' : (20, 200, "L_{T} #tau1 #tau2", "(GeV)", "x"),
                  'Mass' : (40, 800, "Visible Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
                  #'Mass' : (20, 200, "SM higgs Visible Mass", "(GeV)", "h"),
                  #'Mass' : (20, 200, "Z Mass", "(GeV)", "z"),
-                 'mva_metEt' : (30, 300, "mva metEt", "(GeV)", "x"),
+                 'mva_metEt' : (15, 300, "mva metEt", "(GeV)", "x"),
                  'A_SVfitMass' : (20, 800, "Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
                  'SVfitMass' : (30, 300, "#tau1 #tau2 Mass", "(GeV)", "h"),
                  #'DR' : (20, 10, "dR of #tau1 #tau2", "(GeV)", "h"),
@@ -189,6 +189,8 @@ for key in run_map.keys():
                 pad1.SetGrid()
                 my_red.Draw("%s_%s" % (sampVar, channel) )
                 if run_map[key][i][0] == 'Pt': my_red.Rebin(4)
+                if run_map[key][i][0] == 'mva_metEt': my_red.Rebin(2)
+                #if run_map[key][i][0] == 'Mass' and run_map[key][i][2] == 'all': my_red.Rebin(4)
                 #my_red.SetLineColor(ROOT.kRed)
                 #my_red.SetMarkerColor(ROOT.kRed)
                 #my_red.SetFillColor(ROOT.kRed)
@@ -276,7 +278,9 @@ for key in run_map.keys():
         my_A300.Draw("hist same")
         #my_A300.GetYaxis().SetTitle("Events / %i %s" % ( (variables_map[variable][1]/variables_map[variable][0]), variables_map[variable][3] ) )
         #my_A300.GetXaxis().SetTitle("%s %s" % (variables_map[variable][2], variables_map[variable][3]) )
-        my_total.SetMaximum( 1.3 * my_data.GetMaximum() )
+        if my_data.GetMaximum() > my_total.GetMaximum():
+          my_total.SetMaximum( 1.3 * my_data.GetMaximum() )
+        else: my_total.SetMaximum( 1.3 * my_total.GetMaximum() )
         my_A300.SetStats(0)
         #print "Fill Style: %i" % my_A300.GetFillStyle()
         #my_total.Draw("hist same")
@@ -307,6 +311,7 @@ for key in run_map.keys():
 #          my_data.Rebin(4)
 #          my_A300.Rebin(4)
             #txtLow = my_total.GetXaxis().GetBinWidth(1) * 5 + 5
+        pad5.SetLogy()        
         c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s.png" % fileName)
 #        if run_map[key][i][0] == 'mva_metEt':
 #            pad5.SetLogy()
