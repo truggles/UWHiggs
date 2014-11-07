@@ -1,7 +1,7 @@
 # cgs.config: Specification of groups, categories, and samples
 
 $ GROUP signal AZh
-$ GROUP background TTZ, ZH_ww125, ZH_tt125, ZZ, GGToZZ2L2L
+$ GROUP background TTZ, ZH_ww125, ZH_tt125, ZZ, GGToZZ2L2L, Zjets, ZZZ, WZZ, WWZ
 
 categories: mmmt_zh,eemt_zh,mmme_zh,eeem_zh,mmet_zh,eeet_zh,mmtt_zh,eett_zh
 #categories: mmtt_zh
