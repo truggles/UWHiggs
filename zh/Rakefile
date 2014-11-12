@@ -68,12 +68,14 @@ samples = Hash[
   # Automagically figure out what data samples we have
   "data_mm" =>  get_sample_names('data_DoubleMu'),
   "data_ee" => get_sample_names('data_DoubleElectron'),
+  "A300-MG-svFit" => get_sample_names('A300-Zh-lltt-svFit-MadGraph-TES'),
 ]
 
  #puts "diboson: " + samples["diboson"].inspect
  #puts "fullsim: " + samples["fullsim"].inspect
 # puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
 # puts "madgraph: " + samples["madgraph"].inspect
+ puts "A300-MG-svFit: " + samples["A300-MG-svFit"].inspect
 # puts "data_mm: " + samples["data_mm"].inspect
 # puts "data_ee: " + samples["data_ee"].inspect
 # puts "A300-Zh-lltt-FullSim_checkMVAMET: " + samples["A300-Zh-lltt-FullSim_checkMVAMET"].inspect
@@ -537,6 +539,15 @@ analyzer_dependencies.each do |analyzer, deps|
   end
 end
 
+task :mmmt_A300_MG_svFit => get_analyzer_results("ZHAnalyzeMMMT", samples['A300-MG-svFit'])
+task :eemt_A300_MG_svFit => get_analyzer_results("ZHAnalyzeEEMT", samples['A300-MG-svFit'])
+task :mmet_A300_MG_svFit => get_analyzer_results("ZHAnalyzeMMET", samples['A300-MG-svFit'])
+task :eeet_A300_MG_svFit => get_analyzer_results("ZHAnalyzeEEET", samples['A300-MG-svFit'])
+task :mmem_A300_MG_svFit => get_analyzer_results("ZHAnalyzeMMEM", samples['A300-MG-svFit'])
+task :eeem_A300_MG_svFit => get_analyzer_results("ZHAnalyzeEEEM", samples['A300-MG-svFit'])
+task :mmtt_A300_MG_svFit => get_analyzer_results("ZHAnalyzeMMTT", samples['A300-MG-svFit'])
+task :eett_A300_MG_svFit => get_analyzer_results("ZHAnalyzeEETT", samples['A300-MG-svFit'])
+
 task :mmmt_A300FS => get_analyzer_results("ZHAnalyzeMMMT", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
 task :eemt_A300FS => get_analyzer_results("ZHAnalyzeEEMT", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
 task :mmet_A300FS => get_analyzer_results("ZHAnalyzeMMET", samples['A300-Zh-lltt-FullSim_checkMVAMET'])
@@ -640,6 +651,10 @@ end
 
 task :analyzezh_A300FS => [:mmmt_A300FS, :eemt_A300FS, :mmet_A300FS, :eeet_A300FS, :mmem_A300FS, :eeem_A300FS, :mmtt_A300FS, :eett_A300FS] do
   puts "called analyzezh_A300FS task from local rakefile"
+end
+
+task :analyzezh_A300_MG_svFit => [:mmmt_A300_MG_svFit, :eemt_A300_MG_svFit, :mmet_A300_MG_svFit, :eeet_A300_MG_svFit, :mmem_A300_MG_svFit, :eeem_A300_MG_svFit, :mmtt_A300_MG_svFit, :eett_A300_MG_svFit] do
+  puts "called analyzezh_A300_MG_svFit task from local rakefile"
 end
 
 task :analyzezh_ZZJetsTo4L => [:mmmt_ZZJetsTo4L, :eemt_ZZJetsTo4L, :mmet_ZZJetsTo4L, :eeet_ZZJetsTo4L, :mmem_ZZJetsTo4L, :eeem_ZZJetsTo4L, :mmtt_ZZJetsTo4L, :eett_ZZJetsTo4L] do

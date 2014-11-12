@@ -10,27 +10,29 @@ export jobid=$jobid8
 #export afile=`find $datasrc/$jobid | grep root | head -n 1`
 
 #make sure that this file is new if you made new variables in Ntuples, also run the top 8 "make_wrapper" functions and ls *pyx
-export afile='/nfs_scratch/truggles/2014-11-04-FinalNtups/2014-11-04_TES/ggZZ2L2L/make_ntuples_cfg-patTuple_cfg-FAA5CD06-C00A-E211-B1DE-180373FF93CE.root'
+#export afile='/nfs_scratch/truggles/2014-11-04-FinalNtups/2014-11-04_TES/ggZZ2L2L/make_ntuples_cfg-patTuple_cfg-FAA5CD06-C00A-E211-B1DE-180373FF93CE.root'
+# new svFit file
+export afile='/nfs_scratch/truggles/2014-11-08_svFit_A300_Ntups/2014-11-08_svFit_A300/A300-Zh-lltt-MadGraph/make_ntuples_cfg-patTuple_cfg-507951B3-DC0A-E411-BF3B-F04DA275C010.root'
 
-#echo "Building cython wrappers from file: $afile"
+echo "Building cython wrappers from file: $afile"
+
+rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
+rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
+rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
+rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
+rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
+rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
+rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
+rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
+
+## Legacy for 3lepton  channels
+##rake "make_wrapper[$afile, eem/final/Ntuple, EEMuTree]"
+##rake "make_wrapper[$afile, eee/final/Ntuple, EEETree]"
+##rake "make_wrapper[$afile, emm/final/Ntuple, MuMuETree]"
+##rake "make_wrapper[$afile, mmm/final/Ntuple, MuMuMuTree]"
 #
-#rake "make_wrapper[$afile, eeem/final/Ntuple, EEEMuTree]"
-#rake "make_wrapper[$afile, eeet/final/Ntuple, EEETauTree]"
-#rake "make_wrapper[$afile, eemt/final/Ntuple, EEMuTauTree]"
-#rake "make_wrapper[$afile, eett/final/Ntuple, EETauTauTree]"
-#rake "make_wrapper[$afile, emmm/final/Ntuple, EMuMuMuTree]"
-#rake "make_wrapper[$afile, emmt/final/Ntuple, MuMuETauTree]"
-#rake "make_wrapper[$afile, mmmt/final/Ntuple, MuMuMuTauTree]"
-#rake "make_wrapper[$afile, mmtt/final/Ntuple, MuMuTauTauTree]"
 #
-### Legacy for 3lepton  channels
-###rake "make_wrapper[$afile, eem/final/Ntuple, EEMuTree]"
-###rake "make_wrapper[$afile, eee/final/Ntuple, EEETree]"
-###rake "make_wrapper[$afile, emm/final/Ntuple, MuMuETree]"
-###rake "make_wrapper[$afile, mmm/final/Ntuple, MuMuMuTree]"
-##
-##
-#ls *pyx | sed "s|pyx|so|" | xargs rake 
+ls *pyx | sed "s|pyx|so|" | xargs rake 
 
 echo "done?"
 

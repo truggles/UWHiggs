@@ -55,7 +55,12 @@ class ZHAnalyzerBase(MegaBase):
 							      int((row.evt)/10**5),
 							      int((row.evt)%10**5),
 							      getattr(row,'%s_%s_Mass' % self.Z_decay_products()),
+                                                              #getZHSVMass(self, row),
+                                                              #getZHSVMass_tesUp(self, row),
+                                                              #getZHSVMass_tesDown(self, row),
 							      getattr(row,'%s_%s_SVfitMass' % self.H_decay_products()),
+							      getattr(row,'%s_%s_SVfitMass_tesUp' % self.H_decay_products()),
+							      getattr(row,'%s_%s_SVfitMass_tesDown' % self.H_decay_products()),
 							      row.eVetoZH,
 							      row.muVetoZH,
 							      row.tauVetoZH,
@@ -133,6 +138,47 @@ class ZHAnalyzerBase(MegaBase):
         A = Z + h_sv # pseudoscalar candidate 
         return A.M()
 
+    # Calculate the Tau Energy Systematics adjusted A mass
+    def getZHSVMass_tesDown(self, row):
+        # Get pt, eta, phi, mass of sv-fitted di-tau system and build 4-vec
+        sv_pt = getattr(row, "%s_%s_SVfitPt_tesDown" % self.H_decay_products() )
+        sv_eta = getattr(row, "%s_%s_SVfitEta_tesDown" % self.H_decay_products() )
+        sv_phi = getattr(row, "%s_%s_SVfitPhi_tesDown" % self.H_decay_products() )
+        sv_mass = getattr(row, "%s_%s_SVfitMass_tesDown" % self.H_decay_products() )
+        h_sv = ROOT.TLorentzVector() # Higgs candidate sv-reconstructed 4-vec
+        h_sv.SetPtEtaPhiM(sv_pt, sv_eta, sv_phi, sv_mass)
+
+        # Get pt, eta, phi, mass of Z candidate and build 4-vec
+        Z_pt = getattr(row, "%s_%s_Pt" % self.Z_decay_products() )
+        Z_eta = getattr(row, "%s_%s_Eta" % self.Z_decay_products() )
+        Z_phi = getattr(row, "%s_%s_Phi" % self.Z_decay_products() )
+        Z_mass = getattr(row, "%s_%s_Mass" % self.Z_decay_products() )
+        Z = ROOT.TLorentzVector() # Z candidate 4-vec
+        Z.SetPtEtaPhiM(Z_pt, Z_eta, Z_phi, Z_mass)
+        
+        A = Z + h_sv # pseudoscalar candidate 
+        return A.M()
+
+    # Calculate the Tau Energy Systematics adjusted A mass
+    def getZHSVMass_tesUp(self, row):
+        # Get pt, eta, phi, mass of sv-fitted di-tau system and build 4-vec
+        sv_pt = getattr(row, "%s_%s_SVfitPt_tesUp" % self.H_decay_products() )
+        sv_eta = getattr(row, "%s_%s_SVfitEta_tesUp" % self.H_decay_products() )
+        sv_phi = getattr(row, "%s_%s_SVfitPhi_tesUp" % self.H_decay_products() )
+        sv_mass = getattr(row, "%s_%s_SVfitMass_tesUp" % self.H_decay_products() )
+        h_sv = ROOT.TLorentzVector() # Higgs candidate sv-reconstructed 4-vec
+        h_sv.SetPtEtaPhiM(sv_pt, sv_eta, sv_phi, sv_mass)
+
+        # Get pt, eta, phi, mass of Z candidate and build 4-vec
+        Z_pt = getattr(row, "%s_%s_Pt" % self.Z_decay_products() )
+        Z_eta = getattr(row, "%s_%s_Eta" % self.Z_decay_products() )
+        Z_phi = getattr(row, "%s_%s_Phi" % self.Z_decay_products() )
+        Z_mass = getattr(row, "%s_%s_Mass" % self.Z_decay_products() )
+        Z = ROOT.TLorentzVector() # Z candidate 4-vec
+        Z.SetPtEtaPhiM(Z_pt, Z_eta, Z_phi, Z_mass)
+        
+        A = Z + h_sv # pseudoscalar candidate 
+        return A.M()
 
     def build_zh_folder_structure(self):
         # Build list of folders, and a mapping of
@@ -179,7 +225,7 @@ class ZHAnalyzerBase(MegaBase):
             folder = "/".join(folders)
             self.book_histos(folder) # in subclass
             #if 'All_Passed' in folder: #if we are in the all passed region ONLY
-            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:type1_pfMetEt:jetCountZH:muVetoZH4:muTightCountZH:muTightCountZH_0:eTightCountZH:eTightCountZH_0:tau1MtToMET', type=ROOT.TNtuple)
+            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:SVFit_h_Mass_tesUp:SVFit_h_Mass_tesDown:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:type1_pfMetEt:jetCountZH:muVetoZH4:muTightCountZH:muTightCountZH_0:eTightCountZH:eTightCountZH_0:tau1MtToMET', type=ROOT.TNtuple)
             # Each of the weight subfolders
             wToApply = regionInfo['weights']
             for w in wToApply:
@@ -358,6 +404,8 @@ class ZHAnalyzerBase(MegaBase):
         self.book(folder, "Mass", "A Candidate Mass", 800, 0, 800)
         self.book(folder, "LT_Higgs", "scalar PT sum of Higgs candidate legs", 200, 0, 200)
         self.book(folder, "A_SVfitMass", "A candidate reconstructed sv Mass", 800, 0, 800)
+        self.book(folder, "A_SVfitMass_tesDown", "A candidate reconstructed sv Mass TES Down", 800, 0, 800)
+        self.book(folder, "A_SVfitMass_tesUp", "A candidate reconstructed sv Mass TES Up", 800, 0, 800)
         self.book(folder, "mva_metEt", "MVA MET", 300, 0, 300)
         self.book(folder, "mva_metPhi", "MVA MET PHI", 70, -3.5, 3.5) 
         return None
@@ -399,6 +447,8 @@ class ZHAnalyzerBase(MegaBase):
     def book_H_histos(self, folder):
         self.book_resonance_histos(folder, self.H_decay_products(), 'H')
         self.book(folder, "%s_%s_SVfitMass"   % self.H_decay_products(), "H candidate SVfit Mass", 300, 0, 300)
+        self.book(folder, "%s_%s_SVfitMass_tesUp"   % self.H_decay_products(), "H candidate SVfit Mass TES up", 300, 0, 300)
+        self.book(folder, "%s_%s_SVfitMass_tesDown"   % self.H_decay_products(), "H candidate SVfit Mass TES down", 300, 0, 300)
             
     def fill_histos(self, histos, folder, row, weight):
         '''fills histograms'''
@@ -431,6 +481,17 @@ class ZHAnalyzerBase(MegaBase):
                 value.Fill(pt_Tau1 + pt_Tau2, weight)
             elif attr == 'A_SVfitMass':
                 value.Fill( self.getZHSVMass(row), weight )
+            elif attr == 'A_SVfitMass_tesUp':
+                value.Fill( self.getZHSVMass_tesDown(row), weight )
+            # Make sure that for low Pt taus, who drop below the 20 GeV cut off, we don't fill the Histo
+            elif attr == 'A_SVfitMass_tesDown':
+              toFill = True
+              if self.H_decay_products()[0] == 't' or self.H_decay_products()[0] == 't1':
+                if getattr(row,'%sPt_tesDown' % self.H_decay_products()[0]) < 20: toFill = False
+              if self.H_decay_products()[1] == 't' or self.H_decay_products()[1] == 't2':
+                if getattr(row,'%sPt_tesDown' % self.H_decay_products()[1]) < 20: toFill = False
+              if toFill == True:
+                value.Fill( self.getZHSVMass_tesUp(row), weight )
             else:
                 # general case, we can just do getattr(row, "variable") i.e. row.variable
                 value.Fill( getattr(row,attr), weight )

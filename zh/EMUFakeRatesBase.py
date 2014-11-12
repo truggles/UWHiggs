@@ -91,7 +91,11 @@ class EMUFakeRatesBase(MegaBase):
             #if row.pfMet_mes_Et > 20:                            return False
             #if row.mva_metEt > 20: return False
             #print getattr(row,self.branchId+'MtToMET')
-            if getattr(row,self.branchId+'MtToMVAMET_noPhiCor') > 30: return False #AN --> 30. This was MtToMET previously, ULB claims to use MtToMVAMET
+
+            # Nov12,2014, Cecile and I agree to use MtToPFMET to see if we can sync FRs
+            # I am sure she is using no PhiCorrection in her PFMET, however, I do not have it calculated without a PhiCorrection
+            if getattr(row,self.branchId+'MtToPFMET') > 30: return False
+            
             #if row.jetVeto30 < 0.5: return False
             if not getattr(row,self.branchId+'_t_SS'):    return False
             #if not selections.signalTauSelection(row, 't'): return False        
