@@ -211,41 +211,56 @@ def tightMuonSelection(row, muId):
     return True
     
 
-def looseTauSelection(row, tauId, ptThr = 20):
+def looseTauSelection(row, tauId, ptThr = 21):
     '''
     Basic selection for signal hadronic (the ones coming from Higgs). No Isolation is applied, but DecayMode is
     '''
     if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
-    #print "0.1"
     if getattr( row, getVar(tauId, 'Pt') )  < ptThr:                   return False
-    #print "0.2"
     if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
-    #print "0.3"
-    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679: return False#  and abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) != 1:      return False
-    #print "0.4"
-    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	
-#        print "LooseTauSelection failed MuOverlapZHLoose"
-        return False
+    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:            return False#  and abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) != 1:      return False
+    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	       return False
     if getattr( row, getVar(tauId, 'ElecOverlapZHTight') ) > 0:	
-#        print "LooseTauSelection failed ElecOverlapZHLoose"
         return False
     return True
 
-def tightTauSelection(row, tauId, ptThr = 20):
+def tightTauSelection(row, tauId, ptThr = 21):
     
     if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
     if getattr( row, getVar(tauId, 'Pt') )  < ptThr:                   return False
     if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
-    if not bool( getattr( row, getVar(tauId, 'AntiMuonLoose2') ) ):      return False
-    if not bool( getattr( row, getVar(tauId, 'AntiElectronLoose') ) ):      return False
-    if not bool( getattr( row, getVar(tauId, 'LooseIso3Hits') ) ):      return False
-    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:      return False
-    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	
-#        print "TightTauSelec failed MuOverlapZ
-        return False
+    if not bool( getattr( row, getVar(tauId, 'AntiMuonLoose2') ) ):    return False
+    if not bool( getattr( row, getVar(tauId, 'AntiElectronLoose') ) ): return False
+    if not bool( getattr( row, getVar(tauId, 'LooseIso3Hits') ) ):     return False
+    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:            return False
+    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	       return False
+    if getattr( row, getVar(tauId, 'ElecOverlapZHTight') ) > 0:	       return False
+    return True
+
+def looseTauSelectionTESUp(row, tauId, ptThr = 21):
+    '''
+    Basic selection for signal hadronic (the ones coming from Higgs). No Isolation is applied, but DecayMode is
+    '''
+    if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
+    if getattr( row, getVar(tauId, 'Pt_tesUp') )  < ptThr:                   return False
+    if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
+    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:            return False#  and abs(getattr( row, getVar(tauId, 'JetCSVBtag') ) ) != 1:      return False
+    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	       return False
     if getattr( row, getVar(tauId, 'ElecOverlapZHTight') ) > 0:	
-#        print "TightTauSelection failed ElecOverlapZHTight"
         return False
+    return True
+
+def tightTauSelectionTESUp(row, tauId, ptThr = 21):
+    
+    if not bool( getattr( row, getVar(tauId, 'DecayFinding') ) ):      return False
+    if getattr( row, getVar(tauId, 'Pt_tesUp') )  < ptThr:                   return False
+    if getattr( row, getVar(tauId, 'AbsEta') )  > 2.3:                 return False
+    if not bool( getattr( row, getVar(tauId, 'AntiMuonLoose2') ) ):    return False
+    if not bool( getattr( row, getVar(tauId, 'AntiElectronLoose') ) ): return False
+    if not bool( getattr( row, getVar(tauId, 'LooseIso3Hits') ) ):     return False
+    if getattr( row, getVar(tauId, 'JetCSVBtag') ) > 0.679:            return False
+    if getattr( row, getVar(tauId, 'MuOverlapZHTight') ) > 0:	       return False
+    if getattr( row, getVar(tauId, 'ElecOverlapZHTight') ) > 0:	       return False
     return True
 
 
