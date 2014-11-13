@@ -65,10 +65,14 @@ class ZHAnalyzerBase(MegaBase):
 							      row.muVetoZH,
 							      row.tauVetoZH,
 							      getattr(row,'%sPt' % self.H_decay_products()[0]),
+							      getattr(row,'%sPt_tesUp' % self.H_decay_products()[0]),
+							      getattr(row,'%sPt_tesDown' % self.H_decay_products()[0]),
 							      getattr(row,'%sEta' % self.H_decay_products()[0]),
 							      getattr(row,'%sMass' % self.H_decay_products()[0]),
 							      getattr(row,'%sJetPt' % self.H_decay_products()[0]),
 							      getattr(row,'%sPt' % self.H_decay_products()[1]),
+							      getattr(row,'%sPt_tesUp' % self.H_decay_products()[1]),
+							      getattr(row,'%sPt_tesDown' % self.H_decay_products()[1]),
 							      getattr(row,'%sEta' % self.H_decay_products()[1]),
 							      getattr(row,'%sMass' % self.H_decay_products()[1]),
 							      getattr(row,'%sJetPt' % self.H_decay_products()[1]),
@@ -225,7 +229,7 @@ class ZHAnalyzerBase(MegaBase):
             folder = "/".join(folders)
             self.book_histos(folder) # in subclass
             #if 'All_Passed' in folder: #if we are in the all passed region ONLY
-            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:SVFit_h_Mass_tesUp:SVFit_h_Mass_tesDown:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Eta:t1Mass:t1JetPt:t2Pt:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:type1_pfMetEt:jetCountZH:muVetoZH4:muTightCountZH:muTightCountZH_0:eTightCountZH:eTightCountZH_0:tau1MtToMET', type=ROOT.TNtuple)
+            self.book(folder, "Event_ID","Event ID",'run:lumi:evt1:evt2:Z_Mass:SVFit_h_Mass:SVFit_h_Mass_tesUp:SVFit_h_Mass_tesDown:eVetoZH:muVetoZH:tauVetoZH:t1Pt:t1Pt_tesUp:t1Pt_tesDown:t1Eta:t1Mass:t1JetPt:t2Pt:t2Pt_tesUp:t2Pt_tesDown:t2Eta:t2Mass:t2JetPt:mva_metEt:mva_metPhi:pfMetEt:pfMetPhi:type1_pfMetEt:jetCountZH:muVetoZH4:muTightCountZH:muTightCountZH_0:eTightCountZH:eTightCountZH_0:tau1MtToMET', type=ROOT.TNtuple)
             # Each of the weight subfolders
             wToApply = regionInfo['weights']
             for w in wToApply:
