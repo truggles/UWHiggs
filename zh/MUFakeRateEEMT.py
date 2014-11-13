@@ -37,6 +37,7 @@ class MUFakeRateEEMT(EMUFakeRatesBase.EMUFakeRatesBase):
 
         #XXX Count Test
         if not row.eTightCountZH_0 == 2: return False
+        if not row.muTightCountZH_0 == 1: return False
 
         return True
 
@@ -44,5 +45,5 @@ class MUFakeRateEEMT(EMUFakeRatesBase.EMUFakeRatesBase):
         return selections.muIsoLoose(row, 'm') and selections.muIDTight(row, 'm')
 
     def lepton_passes_loose_iso(self, row):
-        return bool(row.mIsPFMuon)        
+        return selections.muIsoLoose(row, 'm') and selections.muIDLoose(row, 'm')        
     
