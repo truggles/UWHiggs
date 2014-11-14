@@ -13,14 +13,14 @@ samples = { 'TTZJets' : 'TTZ',
 }
 
 my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
-official_shapes = ROOT.TFile("/cms/truggles/zh_proj/june23_sync_setup/src/UWHiggs/zh/For_Tyler/TotalRootForLimit_SVMass__8TeV.root", "r")
+official_shapes = ROOT.TFile("/cms/truggles/zh_proj/june23_sync_setup/src/UWHiggs/zh/Nov13_For_Tyler/inputFile_12nov.root", "r")
 
 #my_red_combined = ROOT.THStack("my_red_combined", "combined shape", 20, 0, 800)
 #off_red_combined = ROOT.THStack("off_red_combined", "combined shape", 20, 0, 800)
 #off_red_combined_2 = ROOT.THStack("off_red_combined_2", "combined shape", 20, 0, 800)
 
 ROOT.gROOT.SetBatch(True)
-for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L', 'data_obs']:
+for sample in ['TTZ', 'ZH_ww125', 'ZH_tt125', 'ZZ', 'GGToZZ2L2L', 'ZZZ', 'WZZ', 'WWZ', 'Zjets', 'data_obs']:
 
     my_red_combined = ROOT.THStack("my_red_combined", "combined shape")
     off_red_combined = ROOT.THStack("off_red_combined", "combined shape")
@@ -32,14 +32,12 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
         #my_shapes.cd("%s_zh" % channel)
         #official_shapes.cd("%s_zh" % channel)
         print channel
-        if (channel == 'mmme'):
-            my_red = my_shapes.Get("mmem_zh/%s" % sample)
-        else: my_red = my_shapes.Get("%s_zh/%s" % (channel, sample))
+        my_red = my_shapes.Get("%s_zh/%s" % (channel, sample))
 
-        ''' Normalize histos b/c we don't have properly normalized histos from ULB (9/9/14) '''
+        #''' Normalize histos b/c we don't have properly normalized histos from ULB (9/9/14) '''
         if (my_red.Integral() > 0):
             my_red.Scale( 1/my_red.Integral() )
-        off_red = official_shapes.Get("%s_zh/%s" % (channel, samples[sample]))
+        off_red = official_shapes.Get("%s_zh/%s" % (channel, sample) )
         if (off_red.Integral() > 0):
             off_red.Scale( 1/off_red.Integral() )
         c1 = ROOT.TCanvas("c1", "a canvas")
@@ -57,9 +55,9 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
         off_red.SetLineColor(ROOT.kBlue)
 
         off_red.Draw("hist")
-        off_red_2 = official_shapes.Get("%s_zh/%s" % (channel, samples[sample]))
-        if off_red_2.Integral() > 0:
-            off_red_2.Scale( 1/off_red_2.Integral() )
+        off_red_2 = official_shapes.Get("%s_zh/%s" % (channel, sample) )
+        #if off_red_2.Integral() > 0:
+        #    off_red_2.Scale( 1/off_red_2.Integral() )
         off_red_2.Draw("AP same")
         my_red.Draw("AP same")
 
@@ -93,7 +91,9 @@ for sample in ['Zjets', 'TTZJets', 'VHWW', 'VHTauTau', 'ZZJetsTo4L', 'ggZZ2L2L',
         HDiff.SetStats(0)
         line = ROOT.TLine()
         line.DrawLine(HDiff.GetXaxis().GetXmin(),1,HDiff.GetXaxis().GetXmax(),1)
-    
+ 
+        print sample
+        print channel   
         c1.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/shape_comparisons/%s/%s.png" % (sample, channel))
         pad1.Close()
         pad2.Close()
