@@ -67,7 +67,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         #Z Selection
         if not selections.ZEESelection(row): return False
         if not selections.generalCuts(row, 'e1','e2','m','t') : return False
-        if not selections.looseTauSelection(row,'t'): return False
+        if not selections.looseTauSelectionTESUp(row,'t'): return False
         if not bool(row.tAntiMuonTight2): return False
         if not bool(row.tAntiElectronLoose): return False
         if (row.mPt + row.tPt < 45): return False
