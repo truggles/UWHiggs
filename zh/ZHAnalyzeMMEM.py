@@ -79,6 +79,9 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
         removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2') + selections.bJetOverlapElec(row, 'e') + selections.bJetOverlapMu(row, 'm3')
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
         # XXX Count Test - no requirements
+        if row.muTightCountZH_0 > 3: return False
+        if row.eTightCountZH_0 > 1 and row.eMuOverlapZHTight == 0: return False
+
         return True
         
 

@@ -74,6 +74,8 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
 
         # XXX Count Test - no requirements
+        if row.muTightCountZH_0 > 1: return False
+        if row.eTightCountZH_0 > 3: return False
 
         return True
 

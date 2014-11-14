@@ -87,6 +87,7 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         # XXX Count Test
         if not row.muTightCountZH_0 == 2: return False
         if row.eTightCountZH_0 > 0: return False
+
         return True
 
     def sign_cut(self, row):
