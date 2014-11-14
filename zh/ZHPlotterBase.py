@@ -306,6 +306,8 @@ class ZHPlotterBase(Plotter):
         sig_view = self.make_signal_views(rebin, unblinded)
         outdir.cd()
        
+        # Not the repetition for the A_SVfitMass for Tau Energy Systemtaics (TES)
+
         TTZJets = sig_view['TTZJets'].Get(variable)
         VHWW = sig_view['VHWW'].Get(variable)
         VHTauTau = sig_view['VHTauTau'].Get(variable)
@@ -330,6 +332,45 @@ class ZHPlotterBase(Plotter):
         #vhww = sig_view['VH_120_HWW'].Get(variable)
 
         if variable == "A_SVfitMass":
+            # Prep for Tau Energy Systematics
+            variableUp = variable + "_tesUp"
+            variableDown = variable + "_tesDown"
+
+            TTZJetsUp = sig_view['TTZJets'].Get(variableUp)
+            VHWWUp = sig_view['VHWW'].Get(variableUp)
+            VHTauTauUp = sig_view['VHTauTau'].Get(variableUp)
+            ZZJetsTo4LUp = sig_view['ZZJetsTo4L'].Get(variableUp)
+            ggZZ2L2LUp = sig_view['ggZZ2L2L'].Get(variableUp)
+            ZZZUp = sig_view['ZZZ'].Get(variableUp)
+            WZZUp = sig_view['WZZ'].Get(variableUp)
+            WWZUp = sig_view['WWZ'].Get(variableUp)
+            cat0Up = sig_view['cat0'].Get(variableUp)
+            cat1Up = sig_view['cat1'].Get(variableUp)
+            cat2Up = sig_view['cat2'].Get(variableUp)
+            cat1plus2min0Up = sig_view['cat1plus2min0'].Get(variableUp)
+            WZUp = sig_view['WZ'].Get(variableUp)
+            cat_redUp = sig_view['cat_red'].Get(variableUp)
+            obsUp = sig_view['data'].Get(variableUp)
+            ZjetsUp = sig_view['Zjets'].Get(variableUp)
+    
+            TTZJetsDown = sig_view['TTZJets'].Get(variableDown)
+            VHWWDown = sig_view['VHWW'].Get(variableDown)
+            VHTauTauDown = sig_view['VHTauTau'].Get(variableDown)
+            ZZJetsTo4LDown = sig_view['ZZJetsTo4L'].Get(variableDown)
+            ggZZ2L2LDown = sig_view['ggZZ2L2L'].Get(variableDown)
+            ZZZDown = sig_view['ZZZ'].Get(variableDown)
+            WZZDown = sig_view['WZZ'].Get(variableDown)
+            WWZDown = sig_view['WWZ'].Get(variableDown)
+            cat0Down = sig_view['cat0'].Get(variableDown)
+            cat1Down = sig_view['cat1'].Get(variableDown)
+            cat2Down = sig_view['cat2'].Get(variableDown)
+            cat1plus2min0Down = sig_view['cat1plus2min0'].Get(variableDown)
+            WZDown = sig_view['WZ'].Get(variableDown)
+            cat_redDown = sig_view['cat_red'].Get(variableDown)
+            obsDown = sig_view['data'].Get(variableDown)
+            ZjetsDown = sig_view['Zjets'].Get(variableDown)
+
+            # Normal, Non-systematics version 
             obs.SetName('data_obs')
             Zjets.SetName('Zjets')
             TTZJets.SetName('TTZ')
@@ -352,11 +393,101 @@ class ZHPlotterBase(Plotter):
             #vhtt.SetName('VHtautau')
             #vhww.SetName('VHww')
             #ggzz.SetName('ggZZ2L2L')
+
+            # TES Up
+            obsUp.SetName('data_obs_CMS_scale_t_lltt_8TeVUp')
+            ZjetsUp.SetName('Zjets_CMS_scale_t_lltt_8TeVUp')
+            TTZJetsUp.SetName('TTZ_CMS_scale_t_lltt_8TeVUp')
+            VHWWUp.SetName('ZH_ww125_CMS_scale_t_lltt_8TeVUp')
+            VHTauTauUp.SetName('ZH_tt125_CMS_scale_t_lltt_8TeVUp')
+            ZZJetsTo4LUp.SetName('ZZ_CMS_scale_t_lltt_8TeVUp')
+            ggZZ2L2LUp.SetName('GGToZZ2L2L_CMS_scale_t_lltt_8TeVUp')
+            ZZZUp.SetName('ZZZ_CMS_scale_t_lltt_8TeVUp')
+            WZZUp.SetName('WZZ_CMS_scale_t_lltt_8TeVUp')
+            WWZUp.SetName('WWZ_CMS_scale_t_lltt_8TeVUp')
+            #WJetsToLNu.SetName('WJetsToLNu_CMS_scale_t_lltt_8TeVUp')
+            cat0Up.SetName('cat0_CMS_scale_t_lltt_8TeVUp')
+            cat1Up.SetName('cat1_CMS_scale_t_lltt_8TeVUp')
+            cat2Up.SetName('cat2_CMS_scale_t_lltt_8TeVUp')
+            cat1plus2min0Up.SetName('cat1plus2min0_CMS_scale_t_lltt_8TeVUp')
+            WZUp.SetName('WZ_CMS_scale_t_lltt_8TeVUp')
+            cat_redUp.SetName('cat_red_CMS_scale_t_lltt_8TeVUp')
+
+            # Tau Energy Systematics Down
+            obsDown.SetName('data_obs_CMS_scale_t_lltt_8TeVDown')
+            ZjetsDown.SetName('Zjets_CMS_scale_t_lltt_8TeVDown')
+            TTZJetsDown.SetName('TTZ_CMS_scale_t_lltt_8TeVDown')
+            VHWWDown.SetName('ZH_ww125_CMS_scale_t_lltt_8TeVDown')
+            VHTauTauDown.SetName('ZH_tt125_CMS_scale_t_lltt_8TeVDown')
+            ZZJetsTo4LDown.SetName('ZZ_CMS_scale_t_lltt_8TeVDown')
+            ggZZ2L2LDown.SetName('GGToZZ2L2L_CMS_scale_t_lltt_8TeVDown')
+            ZZZDown.SetName('ZZZ_CMS_scale_t_lltt_8TeVDown')
+            WZZDown.SetName('WZZ_CMS_scale_t_lltt_8TeVDown')
+            WWZDown.SetName('WWZ_CMS_scale_t_lltt_8TeVDown')
+            #WJetsToLNuDown.SetName('WJetsToLNu_CMS_scale_t_lltt_8TeVDown')
+            cat0Down.SetName('cat0_CMS_scale_t_lltt_8TeVDown')
+            cat1Down.SetName('cat1_CMS_scale_t_lltt_8TeVDown')
+            cat2Down.SetName('cat2_CMS_scale_t_lltt_8TeVDown')
+            cat1plus2min0Down.SetName('cat1plus2min0_CMS_scale_t_lltt_8TeVDown')
+            WZDown.SetName('WZ_CMS_scale_t_lltt_8TeVDown')
+            cat_redDown.SetName('cat_red_CMS_scale_t_lltt_8TeVDown')
+    
+            obsUp.Write()
+            ZjetsUp.Write()
+            TTZJetsUp.Write()
+            VHWWUp.Write()
+            VHTauTauUp.Write()
+            ZZJetsTo4LUp.Write()
+            ggZZ2L2LUp.Write()
+            ZZZUp.Write()
+            WZZUp.Write()
+            WWZUp.Write()
+            #WJetsToLNuUp.Write()
+            cat0Up.Write()
+            cat1Up.Write()
+            cat2Up.Write()
+            cat1plus2min0Up.Write()
+            WZUp.Write()
+            cat_redUp.Write()
+    
+            obsDown.Write()
+            ZjetsDown.Write()
+            TTZJetsDown.Write()
+            VHWWDown.Write()
+            VHTauTauDown.Write()
+            ZZJetsTo4LDown.Write()
+            ggZZ2L2LDown.Write()
+            ZZZDown.Write()
+            WZZDown.Write()
+            WWZDown.Write()
+            #WJetsToLNuDown.Write()
+            cat0Down.Write()
+            cat1Down.Write()
+            cat2Down.Write()
+            cat1plus2min0Down.Write()
+            WZDown.Write()
+            cat_redDown.Write()
+
+            # Normal
             for mass in [220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]:
                 signal = sig_view['AZhtt%i' % mass].Get(variable)
                 signal.SetName('AZh%i' % mass)
                 signal.Write()
-        
+
+            # Write TES UP        
+            for mass in [220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]:
+                signalUp = sig_view['AZhtt%i' % mass].Get(variableUp)
+                #signalUp.SetName('AZh%i_CMS_scale_t_lltt_8TeVUp' % mass)
+                signalUp.SetName('AZh%i_CMS_scale_t_lltt_8TeVUp' % mass)
+                signalUp.Write()
+
+            # Write TES Down
+            for mass in [220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]:
+                signalDown = sig_view['AZhtt%i' % mass].Get(variableDown)
+                #signalDown.SetName('AZh%i_CMS_scale_t_lltt_8TeVDown' % mass)
+                signalDown.SetName('AZh%i_CMS_scale_t_lltt_8TeVDown' % mass)
+                signalDown.Write()
+
         else:
             obs.SetName('data_obs_'+variable)
             Zjets.SetName('Zjets_'+variable)
