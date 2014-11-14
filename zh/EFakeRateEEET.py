@@ -35,7 +35,7 @@ class EFakeRateEEET(EMUFakeRatesBase.EMUFakeRatesBase):
 
         # XXX Count check
         if row.muTightCountZH_0 > 0: return False
-        if row.eTightCountZH_0 == 3: return False
+        if row.eTightCountZH_0 > 3: return False
 
         return True
 
