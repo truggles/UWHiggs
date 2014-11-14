@@ -12,10 +12,10 @@ sample_map = {  1 : ('4objFR_Ele_NumLoose_0_Jet', 'e_zlt_pt10_looseId_electronJe
 		6 : ('4objFR_Mu_Denum_0_Jet', 'm_zlt_pt10_looseId_muonJetPt', 'denominator', 10),
 		7 : ('4objFR_Mu_NumTight_0_Jet', 'm_zlt_pt10_tightId_muonJetPt', 'numerator', 10),
 		#8 : ('4objFR_Mu_Denum_0', 'm_zlt_pt10_tightId_muonJetPt', 'denominator', 1),
-		9 : ('FakeRate_LT_Tau_Pt_After_Loose_CloseJet_E', 't_ztt_pt10high_LooseIso3Hits_tauJetPt_ltau', 'numerator', 5),
-		10 : ('FakeRate_LT_Tau_Pt_After_Loose_CloseJet_B', 't_ztt_pt10low_LooseIso3Hits_tauJetPt_ltau', 'numerator', 5),
-		11 : ('FakeRate_TT_Tau_Pt_After_Loose_CloseJet_B', 't_ztt_pt10low_LooseIso3Hits_tauJetPt_tautau', 'numerator', 5),
-		12 : ('FakeRate_TT_Tau_Pt_After_Loose_CloseJet_E', 't_ztt_pt10high_LooseIso3Hits_tauJetPt_tautau', 'numerator', 5),
+		9 : ('FakeRate_LT_Tau_Pt_After_Loose_CloseJet_E', 't_ztt_pt10high_LooseIso3Hits_tauJetPt_ltau', 'numerator', 10),
+		10 : ('FakeRate_LT_Tau_Pt_After_Loose_CloseJet_B', 't_ztt_pt10low_LooseIso3Hits_tauJetPt_ltau', 'numerator', 10),
+		11 : ('FakeRate_TT_Tau_Pt_After_Loose_CloseJet_B', 't_ztt_pt10low_MediumIso3Hits_tauJetPt_tautau', 'numerator', 10),
+		12 : ('FakeRate_TT_Tau_Pt_After_Loose_CloseJet_E', 't_ztt_pt10high_MediumIso3Hits_tauJetPt_tautau', 'numerator', 10),
 }
 
 ROOT.gROOT.SetBatch(True)
@@ -65,6 +65,7 @@ for sample in sample_map.keys():
     else:
         max = myShape.GetMaximum()
     herShape.SetMaximum( 1.2 * max )
+    herShape.SetBins(15, 0, 150)
 
     herShape.SetName("ULB")
     myShape.SetName("UW")
