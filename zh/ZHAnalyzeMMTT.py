@@ -71,8 +71,8 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         '''
         if not selections.ZMuMuSelection(row): return False
         if not selections.generalCuts(row, 'm1','m2','t1','t2') : return False
-        if not selections.looseTauSelection(row,'t1'): return False
-        if not selections.looseTauSelection(row,'t2'): return False
+        if not selections.looseTauSelectionTESUp(row,'t1'): return False
+        if not selections.looseTauSelectionTESUp(row,'t2'): return False
         if not bool(row.t1AntiMuonLoose2): return False
         if not bool(row.t1AntiElectronLoose): return False
         if not bool(row.t2AntiMuonLoose2): return False
