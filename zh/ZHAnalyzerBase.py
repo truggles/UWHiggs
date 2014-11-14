@@ -464,41 +464,56 @@ class ZHAnalyzerBase(MegaBase):
             if folder_str != location:
                 continue
             attr = key[ key.rfind('/') + 1 :]
-            if attr in self.hfunc:
-                value.Fill(
-                    self.hfunc[attr](row, weight)
-                    )
-            elif attr == 'kinematicDiscriminant1':
-                # special case - move me to hfunc, eventually
-                pt_ZH = row.Pt
-                pt_Z = getattr(row, "%s_%s_Pt" % self.Z_decay_products())
-                pt_H = getattr(row, "%s_%s_Pt" % self.H_decay_products())
-                value.Fill(pt_ZH / (pt_Z + pt_H), weight)
-            elif attr == 'kinematicDiscriminant2':
-                pt_H = getattr(row, "%s_%s_Pt" % self.H_decay_products())
-                pt_Tau1 = getattr(row, "%sPt" % self.H_decay_products()[0]) 
-                pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
-                value.Fill(pt_H / (pt_Tau1 + pt_Tau2), weight)
-            elif attr == 'LT_Higgs':
-                pt_Tau1 = getattr(row, "%sPt" % self.H_decay_products()[0])
-                pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
-                value.Fill(pt_Tau1 + pt_Tau2, weight)
-            elif attr == 'A_SVfitMass':
-                value.Fill( self.getZHSVMass(row), weight )
-            elif attr == 'A_SVfitMass_tesUp':
+
+            # Always fill SV Mass tesUp (because our cuts are now based on loose/tightTauSelectionTESUp)
+            if attr == 'A_SVfitMass_tesUp':
                 value.Fill( self.getZHSVMass_tesDown(row), weight )
-            # Make sure that for low Pt taus, who drop below the 20 GeV cut off, we don't fill the Histo
-            elif attr == 'A_SVfitMass_tesDown':
-              toFill = True
-              if self.H_decay_products()[0] == 't' or self.H_decay_products()[0] == 't1':
-                if getattr(row,'%sPt_tesDown' % self.H_decay_products()[0]) < 20: toFill = False
-              if self.H_decay_products()[1] == 't' or self.H_decay_products()[1] == 't2':
-                if getattr(row,'%sPt_tesDown' % self.H_decay_products()[1]) < 20: toFill = False
-              if toFill == True:
-                value.Fill( self.getZHSVMass_tesUp(row), weight )
-            else:
-                # general case, we can just do getattr(row, "variable") i.e. row.variable
-                value.Fill( getattr(row,attr), weight )
+
+            # Check if NORMAL Hadronic Tau Pt > 21
+            toFillNorm = True
+            if self.H_decay_products()[0] == 't' or self.H_decay_products()[0] == 't1':
+              if getattr(row,'%sPt' % self.H_decay_products()[0]) < 21: toFillNorm = False
+            if self.H_decay_products()[1] == 't' or self.H_decay_products()[1] == 't2':
+              if getattr(row,'%sPt' % self.H_decay_products()[1]) < 21: toFillNorm = False
+            if toFillNorm == True:
+
+                if attr in self.hfunc:
+                    value.Fill(
+                        self.hfunc[attr](row, weight)
+                        )
+                elif attr == 'kinematicDiscriminant1':
+                    # special case - move me to hfunc, eventually
+                    pt_ZH = row.Pt
+                    pt_Z = getattr(row, "%s_%s_Pt" % self.Z_decay_products())
+                    pt_H = getattr(row, "%s_%s_Pt" % self.H_decay_products())
+                    value.Fill(pt_ZH / (pt_Z + pt_H), weight)
+                elif attr == 'kinematicDiscriminant2':
+                    pt_H = getattr(row, "%s_%s_Pt" % self.H_decay_products())
+                    pt_Tau1 = getattr(row, "%sPt" % self.H_decay_products()[0]) 
+                    pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
+                    value.Fill(pt_H / (pt_Tau1 + pt_Tau2), weight)
+                elif attr == 'LT_Higgs':
+                    pt_Tau1 = getattr(row, "%sPt" % self.H_decay_products()[0])
+                    pt_Tau2 = getattr(row, "%sPt" % self.H_decay_products()[1])
+                    value.Fill(pt_Tau1 + pt_Tau2, weight)
+                elif attr == 'A_SVfitMass':
+                    value.Fill( self.getZHSVMass(row), weight )
+
+                # Make sure that for low Pt taus, who drop below the 20 GeV cut off, we don't fill the Histo
+                elif attr == 'A_SVfitMass_tesDown':
+                  toFillTESDown = True
+                  if self.H_decay_products()[0] == 't' or self.H_decay_products()[0] == 't1':
+                    if getattr(row,'%sPt_tesDown' % self.H_decay_products()[0]) < 21: toFillTESDown = False
+                  if self.H_decay_products()[1] == 't' or self.H_decay_products()[1] == 't2':
+                    if getattr(row,'%sPt_tesDown' % self.H_decay_products()[1]) < 21: toFillTESDown = False
+                  if toFillTESDown == True:
+                    value.Fill( self.getZHSVMass_tesUp(row), weight )
+
+                # This is because the new "If" string wants to iterate over A_SVFitMass_tesUp
+                elif attr == 'A_SVfitMass_tesUp': pass
+                else:
+                    # general case, we can just do getattr(row, "variable") i.e. row.variable
+                    value.Fill( getattr(row,attr), weight )
         return None
 
     def finish(self):
