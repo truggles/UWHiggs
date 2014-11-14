@@ -75,7 +75,7 @@ class EMUFakeRatesBase(MegaBase):
         def fill(self, the_histos, row, evtList):
             weight = 1.0
             the_histos[self.lepton+'Pt'].Fill(    getattr( row, self.branchId+'Pt'    ), weight)
-            if ( getattr( row, self.branchId+'JetPt') < 10 ):
+            if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
                 the_histos[self.lepton+'JetPt'].Fill( getattr( row, self.branchId+'Pt'), weight)
             else:
                 the_histos[self.lepton+'JetPt'].Fill( getattr( row, self.branchId+'JetPt'), weight)
