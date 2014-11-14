@@ -26,6 +26,7 @@ class TauFakeRatesMMMT(TauFakeRatesBaseZLT.TauFakeRatesBase):
 
         # XXX Count Test
         if row.eTightCountZH_0 > 0: return False
+        if row.muTightCountZH_0 > 3: return False
 
         return True
 

@@ -26,6 +26,7 @@ class TauFakeRatesMMET(TauFakeRatesBaseZLT.TauFakeRatesBase):
 
         # XXX Count Test
         if not row.muTightCountZH_0 == 2: return False
+        if row.eTightCountZH_0 > 1 and row.eMuOverlapZHTight == 0: return False
  
         return True
         
