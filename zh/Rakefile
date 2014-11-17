@@ -64,7 +64,7 @@ samples = Hash[
   "fullsim300" => Array['A300-Zh-lltt-FullSim'],
   "fullsim_madgraph" => get_sample_names('AToZhToLLTauTau-MadGraph'),
   #"madgraph" => get_sample_names('Zh-lltt-MadGraph'),
-  "madgraph" => get_sample_names('A300-Zh-lltt-MadGraph'),
+  "madgraph" => get_sample_names('Zh-lltt-MadGraph'),
   #"signal_125" => Array['VH_H2Tau_M-125'],
   # Automagically figure out what data samples we have
   "data_mm" =>  get_sample_names('data_DoubleMu'),
@@ -76,7 +76,7 @@ samples = Hash[
  #puts "fullsim: " + samples["fullsim"].inspect
 # puts "MCToAnalyze: " + samples["MCToAnalyze"].inspect
 # puts "madgraph: " + samples["madgraph"].inspect
- puts "A300-MG-svFit: " + samples["A300-MG-svFit"].inspect
+# puts "A300-MG-svFit: " + samples["A300-MG-svFit"].inspect
 # puts "data_mm: " + samples["data_mm"].inspect
 # puts "data_ee: " + samples["data_ee"].inspect
 # puts "A300-Zh-lltt-FullSim_checkMVAMET: " + samples["A300-Zh-lltt-FullSim_checkMVAMET"].inspect
