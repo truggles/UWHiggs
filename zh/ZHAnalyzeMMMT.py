@@ -85,7 +85,7 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
         if not selections.looseMuonSelection(row,'m3'): return False
         # XXX Count Test
-        if row.eTightCountZH_0 > 0: return False
+        if row.eTightCountZH > 0: return False
         if row.muTightCountZH_0 > 3: return False
 
         return True

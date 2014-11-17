@@ -86,7 +86,7 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
         # XXX Count Test
         if not row.muTightCountZH_0 == 2: return False
-        if row.eTightCountZH_0 > 0: return False
+        if row.eTightCountZH > 0: return False
 
         return True
 
