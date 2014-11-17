@@ -57,7 +57,7 @@ mmmt_zh      ZH_ww125,ZH_tt125                                       QCDscale_VH
 mmmt_zh      ZH_ww125,ZH_tt125                                       pdf_qqbar                                  1.025
 mmmt_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_lt_extrap_8TeV        1.20
 mmmt_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_emu_extrap_8TeV       1.10
-mmmt_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_lltt_8TeV                      1.00 # was 1.03
+mmmt_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_llmt_8TeV                      1.00 # was 1.03
 mmmt_zh      GGToZZ2L2L                                              CMS_zh2l2tau_GGZZ2L2LBkg_8TeV              1.44
 mmmt_zh      TTZ                                                     CMS_zh2l2tau_TTZBkg_8TeV                   1.50
 mmmt_zh      GGToZZ2L2L                                              CMS_vhtt_ggZZNorm_mt_8TeV                  1.05
@@ -82,7 +82,7 @@ eemt_zh      ZH_ww125,ZH_tt125                                       QCDscale_VH
 eemt_zh      ZH_ww125,ZH_tt125                                       pdf_qqbar                                  1.025
 eemt_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_lt_extrap_8TeV        1.20
 eemt_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_emu_extrap_8TeV       1.10
-eemt_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_lltt_8TeV                      1.00 # was 1.03
+eemt_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_llmt_8TeV                      1.00 # was 1.03
 eemt_zh      GGToZZ2L2L                                              CMS_zh2l2tau_GGZZ2L2LBkg_8TeV              1.44
 eemt_zh      TTZ                                                     CMS_zh2l2tau_TTZBkg_8TeV                   1.50
 eemt_zh      GGToZZ2L2L                                              CMS_vhtt_ggZZNorm_mt_8TeV                  1.05
@@ -107,7 +107,7 @@ mmet_zh      ZH_ww125,ZH_tt125                                       QCDscale_VH
 mmet_zh      ZH_ww125,ZH_tt125                                       pdf_qqbar                                  1.025
 mmet_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_lt_extrap_8TeV        1.20
 mmet_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_emu_extrap_8TeV       1.10
-mmet_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_lltt_8TeV                      1.000 # was 1.03
+mmet_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_llet_8TeV                      1.000 # was 1.03
 mmet_zh      GGToZZ2L2L                                              CMS_zh2l2tau_GGZZ2L2LBkg_8TeV              1.44
 mmet_zh      TTZ                                                     CMS_zh2l2tau_TTZBkg_8TeV                   1.50
 mmet_zh      GGToZZ2L2L                                              CMS_vhtt_ggZZNorm_et_8TeV                  1.05
@@ -131,7 +131,7 @@ eeet_zh      ZH_ww125,ZH_tt125                                       QCDscale_VH
 eeet_zh      ZH_ww125,ZH_tt125                                       pdf_qqbar                                  1.025
 eeet_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_lt_extrap_8TeV        1.20
 eeet_zh      Zjets                                                   CMS_zh2l2tau_ZjetBkg_emu_extrap_8TeV       1.10
-eeet_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_lltt_8TeV                      1.00 # was 1.03
+eeet_zh      signal,ZZ,GGToZZ2L2L,TTZ,ZH_ww125,ZH_tt125,WWZ,WZZ,ZZZ  CMS_scale_t_llet_8TeV                      1.00 # was 1.03
 eeet_zh      GGToZZ2L2L                                              CMS_zh2l2tau_GGZZ2L2LBkg_8TeV              1.44
 eeet_zh      TTZ                                                     CMS_zh2l2tau_TTZBkg_8TeV                   1.50
 eeet_zh      GGToZZ2L2L                                              CMS_vhtt_ggZZNorm_et_8TeV                  1.05
