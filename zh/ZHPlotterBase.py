@@ -395,57 +395,47 @@ class ZHPlotterBase(Plotter):
             #ggzz.SetName('ggZZ2L2L')
 
             # need to rename CMS_scale_t_lltt_8TeVUp based on final state 'h' products
-            l3 = ''
-            if Hprod[0] == 'e3': l3 = 'e'
-            if Hprod[0] == 'e': l3 = 'e'
-            if Hprod[0] == 'm3': l3 = 'm'
-            if Hprod[0] == 'm': l3 = 'm'
-            if Hprod[0] == 't': l3 = 't'
-            if Hprod[0] == 't1': l3 = 't'
-            l4 = ''
-            if Hprod[1] == 'm3': l4 = 'm'
-            if Hprod[1] == 'm': l4 = 'm'
-            if Hprod[1] == 't2': l4 = 't'
-            if Hprod[1] == 't': l4 = 't'
+            l3 = Hprod[0][0]
+            l4 = Hprod[1][0] 
             lInsert = l3 + l4
 
             # TES Up
-            obsUp.SetName('data_obs_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            ZjetsUp.SetName('Zjets_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            TTZJetsUp.SetName('TTZ_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            VHWWUp.SetName('ZH_ww125_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            VHTauTauUp.SetName('ZH_tt125_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            ZZJetsTo4LUp.SetName('ZZ_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            ggZZ2L2LUp.SetName('GGToZZ2L2L_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            ZZZUp.SetName('ZZZ_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            WZZUp.SetName('WZZ_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            WWZUp.SetName('WWZ_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            #WJetsToLNu.SetName('WJetsToLNu_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            cat0Up.SetName('cat0_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            cat1Up.SetName('cat1_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            cat2Up.SetName('cat2_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            cat1plus2min0Up.SetName('cat1plus2min0_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            WZUp.SetName('WZ_CMS_scale_t_ll%st_8TeVUp' % lInsert)
-            cat_redUp.SetName('cat_red_CMS_scale_t_ll%st_8TeVUp' % lInsert)
+            obsUp.SetName('data_obs_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            ZjetsUp.SetName('Zjets_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            TTZJetsUp.SetName('TTZ_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            VHWWUp.SetName('ZH_ww125_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            VHTauTauUp.SetName('ZH_tt125_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            ZZJetsTo4LUp.SetName('ZZ_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            ggZZ2L2LUp.SetName('GGToZZ2L2L_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            ZZZUp.SetName('ZZZ_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            WZZUp.SetName('WZZ_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            WWZUp.SetName('WWZ_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            #WJetsToLNu.SetName('WJetsToLNu_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            cat0Up.SetName('cat0_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            cat1Up.SetName('cat1_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            cat2Up.SetName('cat2_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            cat1plus2min0Up.SetName('cat1plus2min0_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            WZUp.SetName('WZ_CMS_scale_t_ll%s_8TeVUp' % lInsert)
+            cat_redUp.SetName('cat_red_CMS_scale_t_ll%s_8TeVUp' % lInsert)
 
             # Tau Energy Systematics Down
-            obsDown.SetName('data_obs_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            ZjetsDown.SetName('Zjets_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            TTZJetsDown.SetName('TTZ_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            VHWWDown.SetName('ZH_ww125_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            VHTauTauDown.SetName('ZH_tt125_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            ZZJetsTo4LDown.SetName('ZZ_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            ggZZ2L2LDown.SetName('GGToZZ2L2L_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            ZZZDown.SetName('ZZZ_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            WZZDown.SetName('WZZ_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            WWZDown.SetName('WWZ_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            #WJetsToLNuDown.SetName('WJetsToLNu_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            cat0Down.SetName('cat0_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            cat1Down.SetName('cat1_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            cat2Down.SetName('cat2_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            cat1plus2min0Down.SetName('cat1plus2min0_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            WZDown.SetName('WZ_CMS_scale_t_ll%st_8TeVDown' % lInsert)
-            cat_redDown.SetName('cat_red_CMS_scale_t_ll%st_8TeVDown' % lInsert)
+            obsDown.SetName('data_obs_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            ZjetsDown.SetName('Zjets_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            TTZJetsDown.SetName('TTZ_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            VHWWDown.SetName('ZH_ww125_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            VHTauTauDown.SetName('ZH_tt125_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            ZZJetsTo4LDown.SetName('ZZ_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            ggZZ2L2LDown.SetName('GGToZZ2L2L_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            ZZZDown.SetName('ZZZ_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            WZZDown.SetName('WZZ_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            WWZDown.SetName('WWZ_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            #WJetsToLNuDown.SetName('WJetsToLNu_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            cat0Down.SetName('cat0_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            cat1Down.SetName('cat1_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            cat2Down.SetName('cat2_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            cat1plus2min0Down.SetName('cat1plus2min0_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            WZDown.SetName('WZ_CMS_scale_t_ll%s_8TeVDown' % lInsert)
+            cat_redDown.SetName('cat_red_CMS_scale_t_ll%s_8TeVDown' % lInsert)
     
             obsUp.Write()
             ZjetsUp.Write()
@@ -492,15 +482,15 @@ class ZHPlotterBase(Plotter):
             # Write TES UP        
             for mass in [220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]:
                 signalUp = sig_view['AZhtt%i' % mass].Get(variableUp)
-                #signalUp.SetName('AZh%i_CMS_scale_t_ll%st_8TeVUp' % (mass, lInsert) )
-                signalUp.SetName('AZh%i_CMS_scale_t_ll%st_8TeVUp' % (mass, lInsert) )
+                #signalUp.SetName('AZh%i_CMS_scale_t_ll%s_8TeVUp' % (mass, lInsert) )
+                signalUp.SetName('AZh%i_CMS_scale_t_ll%s_8TeVUp' % (mass, lInsert) )
                 signalUp.Write()
 
             # Write TES Down
             for mass in [220, 230, 240, 250, 260, 270, 280, 290, 300, 310, 320, 330, 340, 350]:
                 signalDown = sig_view['AZhtt%i' % mass].Get(variableDown)
-                #signalDown.SetName('AZh%i_CMS_scale_t_ll%st_8TeVDown' % (mass, lInsert) )
-                signalDown.SetName('AZh%i_CMS_scale_t_ll%st_8TeVDown' % (mass, lInsert) )
+                #signalDown.SetName('AZh%i_CMS_scale_t_ll%s_8TeVDown' % (mass, lInsert) )
+                signalDown.SetName('AZh%i_CMS_scale_t_ll%s_8TeVDown' % (mass, lInsert) )
                 signalDown.Write()
 
         else:
