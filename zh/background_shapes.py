@@ -5,7 +5,7 @@ import ROOT
 import os
 import pyplotter.plot_functions as plotter
 
-
+#blind = False
 blind = True
 A300Scaling = 20
 ROOT.gROOT.SetBatch(True)
@@ -35,12 +35,12 @@ samples = { 'TTZ' : ("kGreen-7", "kCyan-2", 21),
 }
 
 variables_map = {'LT_Higgs' : (20, 200, "L_{T} #tau1 #tau2", "(GeV)", "x"),
-                 'Mass' : (40, 800, "Visible Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
+                 'Mass' : (20, 800, "Visible Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
                  #'Mass' : (20, 200, "SM higgs Visible Mass", "(GeV)", "h"),
                  #'Mass' : (20, 200, "Z Mass", "(GeV)", "z"),
                  'mva_metEt' : (15, 300, "mva metEt", "(GeV)", "x"),
                  'A_SVfitMass' : (20, 800, "Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
-                 'SVfitMass' : (30, 300, "#tau1 #tau2 Mass", "(GeV)", "h"),
+                 'SVfitMass' : (15, 300, "#tau1 #tau2 Mass", "(GeV)", "h"),
                  #'DR' : (20, 10, "dR of #tau1 #tau2", "(GeV)", "h"),
                  'DR' : (20, 10, "dR of lepton1 lepton2", "radians", "z"),
                  'Pt' : (15, 300, "temp", "(GeV)", 0),
@@ -132,7 +132,8 @@ for key in run_map.keys():
     nPlots = len( run_map[key] )
     for i in range(1, nPlots):
         variable = run_map[key][i][0]
-        #print variable
+        print variable
+        if not (variable == 'A_SVfitMass'): continue # or variable == 'Mass'): continue
         if variable == 'Mass' and run_map[key][i][2] != 'all':
             varRange = 300
             varBin = 30
@@ -154,11 +155,13 @@ for key in run_map.keys():
         my_Zjets = ROOT.TH1F("my_Zjets", "Zjets (Red bkg)", varBin, 0, varRange)
         my_A300 = ROOT.TH1F("my_A300", "%i x A300, xsec=1fb" % A300Scaling, varBin, 0, varRange)
         
-        for sample in ['ZH_ww125', 'ZH_tt125', 'TTZ', 'GGToZZ2L2L', 'ZZ', 'Zjets', 'data_obs', 'AZh300', 'ZZZ', 'WZZ', 'WWZ']:
-            #print sample
+        for sample in ['ZH_ww125', 'ZH_tt125', 'TTZ', 'GGToZZ2L2L', 'ZZ', 'Zjets', 'ZZZ', 'WZZ', 'WWZ', 'AZh300', 'data_obs']:
+            print sample
             my_red_combined = ROOT.THStack("%s combined" % sample, "%s combined" % sample)
         
-            for channel in run_map[key][0]:
+            #for channel in run_map[key][0]:
+            for channel in override:
+                #print channel
                 if run_map[key][i][2] == "all":
                     if variable == 'A_SVfitMass': sampVar = sample
                     else: sampVar = sample + "_" + variable
@@ -187,10 +190,15 @@ for key in run_map.keys():
                 pad1.Draw()    
                 pad1.cd() 
                 pad1.SetGrid()
+                #print "sampVar: %s, channel %s" % (sampVar, channel)
                 my_red.Draw("%s_%s" % (sampVar, channel) )
+
+                ''' Rebin for better viewing! '''
                 if run_map[key][i][0] == 'Pt': my_red.Rebin(4)
                 if run_map[key][i][0] == 'mva_metEt': my_red.Rebin(2)
-                #if run_map[key][i][0] == 'Mass' and run_map[key][i][2] == 'all': my_red.Rebin(4)
+                if run_map[key][i][0] == 'Mass' and run_map[key][i][2] == 'all': my_red.Rebin(2)
+                if run_map[key][i][0] == 'SVfitMass' and run_map[key][i][2] == 'h': my_red.Rebin(2)
+                if run_map[key][i][0] == 'A_SVfitMass' and run_map[key][i][2] == 'all': my_red.Rebin(2)
                 my_red.GetXaxis().SetTitle("%s (GeV), %s" % (variable, channel) )
         
                 ''' Set reasonable maximums on histos '''        
@@ -230,15 +238,30 @@ for key in run_map.keys():
                 #print "# of Bins: %i" % my_data.GetSize()
                 #print "Bin Width %i" % my_data.GetBinWidth(1)
                 #print "Max: %i" % ( (my_data.GetSize() - 2) * my_data.GetBinWidth(1) )
-                if (variable == 'Mass' or variable == 'A_SVfitMass') and blind:
+                if (variable == 'Mass' or variable == 'A_SVfitMass') and not (run_map[key][i][2] == 'h' or run_map[key][i][2] == 'z') and blind:
+                    print "Var: %s append %s" % (variable, run_map[key][i][2] )
                     print "We made it to blind section"
                     numBins = my_data.GetSize() - 2
+                    print "numBins = %i" % numBins 
                     binWidth = my_data.GetBinWidth(1)
-                    # we will blind 240 - 360 GeV as a first run in both Mass and SVFitMass
-                    lowBlind = int(((240/binWidth) + 1)) # +1 b/c of overflow low bin
-                    binsToNull = [lowBlind]#, lowBlind + 1, lowBlind + 2]#,lowBlind + 3,lowBlind + 4, lowBlind + 5]
+                    print "Bin Width = %i" % binWidth
+                    # we will blind 240 - 360 GeV for SVFitMass
+                    if variable == 'A_SVfitMass':
+                        lowBlind = int(((240/binWidth) + 1)) # +1 b/c of overflow low bin
+                        highBlind = int((360/binWidth)) # +1 b/c of overflow low bin
+                    # we will blind 160 - 280 GeV for Visible Mass
+                    if variable == 'Mass':
+                        lowBlind = int(((160/binWidth) + 1)) # +1 b/c of overflow low bin
+                        highBlind = int((280/binWidth)) # +1 b/c of overflow low bin
+                    print "low: %s, high: %s" % (lowBlind, highBlind)
+                    binsToNull = []
+                    for j in range (lowBlind, highBlind + 1):
+                        
+                        binsToNull.append(j)# = [lowBlind]#, lowBlind + 1, lowBlind + 2]#,lowBlind + 3,lowBlind + 4, lowBlind + 5]
                     #tGraph = ROOT.TGraph( my_data, "e1")
+                    print binsToNull
                     for bin in binsToNull:
+                        print "bin: %i" % bin
                         my_data.SetBinError(bin, 0)
                         my_data.SetBinContent(bin, 0)
             if sample == 'AZh300':
@@ -301,6 +324,7 @@ for key in run_map.keys():
         ROOT.gPad.Update()
 
         c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s.pdf" % fileName)
+        c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/png/%s.png" % fileName)
 #        if run_map[key][i][0] == 'mva_metEt':
 #            pad5.SetLogy()
 #            my_total.SetMinimum( 0.001 )
