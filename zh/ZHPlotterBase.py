@@ -236,6 +236,7 @@ class ZHPlotterBase(Plotter):
         #        views.SubdirectoryView(all_data_view, 'os/p1p2p3/c1'),
         #        **data_styles['TT*']), 'Charge mis-id')
 
+        #Zjets_view = views.ScaleView(cat_red_view, cat1plus2min0_view.Get('Mass').Integral() / cat_red_view.Get('Mass').Integral() )
         Zjets_view = views.ScaleView(cat_red_view, cat1plus2min0_view.Get('A_SVfitMass').Integral() / cat_red_view.Get('A_SVfitMass').Integral() )
         #Zjets_view = views.ScaleView(cat_red_view, Zjets_view.Get('A_SVfitMass').Integral() / cat_red_view.Get('A_SVfitMass').Integral() )
         WZ_view = views.SumView(cat1_view, cat2_view)
@@ -332,6 +333,7 @@ class ZHPlotterBase(Plotter):
         #vhww = sig_view['VH_120_HWW'].Get(variable)
 
         if variable == "A_SVfitMass":
+        #if variable == "Mass":
             # Prep for Tau Energy Systematics
             variableUp = variable + "_tesUp"
             variableDown = variable + "_tesDown"
@@ -851,8 +853,9 @@ for channel in channels:
     shape_file = ROOT.TFile( os.path.join(plotter.outputdir, '%s_shapes_%s.root' % (channelOut.lower(), plotter.period)), 'RECREATE')
     shape_dir  = shape_file.mkdir( channelOut.lower()+'_zh' )
     #plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 15, shape_dir, unblinded=True)
-    #plotter.write_shapes('A_SVfitMass', 20, shape_dir, unblinded=True)
-    plotter.write_shapes('A_SVfitMass', 40, shape_dir, unblinded=True)
+    plotter.write_shapes('A_SVfitMass', 20, shape_dir, unblinded=True)
+    #plotter.write_shapes('A_SVfitMass', [0,40,80,120,160,200,240,280,320,360,400,440,480,520,560,600,700,800], shape_dir, unblinded=True)
+    #plotter.write_shapes('A_SVfitMass', 160, shape_dir, unblinded=True)
     plotter.write_shapes('LT_Higgs', 10, shape_dir, unblinded=True)
     plotter.write_shapes('Mass', 20, shape_dir, unblinded=True)
     plotter.write_shapes('mva_metEt', 10, shape_dir, unblinded=True)
