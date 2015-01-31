@@ -34,7 +34,7 @@ samples = { 'TTZ' : ("kGreen-7", "kCyan-2", 21),
             'data_obs' : ("","")
 }
 
-variables_map = {'LT_Higgs' : (20, 200, "L_{T} #tau1 #tau2", "(GeV)", "x"),
+variables_map = {'LT_Higgs' : (10, 200, "L_{T} #tau1 #tau2", "(GeV)", "x"),
                  'Mass' : (20, 800, "Visible Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
                  #'Mass' : (20, 200, "SM higgs Visible Mass", "(GeV)", "h"),
                  #'Mass' : (20, 200, "Z Mass", "(GeV)", "z"),
@@ -125,6 +125,9 @@ run_map = { "AllChannels" : (AllChannels, ('Mass', 'Visible Mass_{l^{+}l^{-}#tau
                                           ('Pt', 'Vector Sum Pt_{#tau^{+}#tau^{-}}', 'h'), ),
 }
 
+#$#for channel in AllChannels:
+   #$#override = channel
+   #$#print override
 for key in run_map.keys():
     if key == "AllChannels": pass
     else: break
@@ -133,10 +136,13 @@ for key in run_map.keys():
     for i in range(1, nPlots):
         variable = run_map[key][i][0]
         print variable
-        if not (variable == 'A_SVfitMass'): continue # or variable == 'Mass'): continue
+        #if not (variable == 'A_SVfitMass'): continue # or variable == 'Mass'): continue
         if variable == 'Mass' and run_map[key][i][2] != 'all':
             varRange = 300
             varBin = 30
+#$$        if variable == 'Mass' and run_map[key][i][2] == 'h':
+#$$            varRange = 300
+#$$            varBin = 10
         else:
             varRange = variables_map[variable][1]
             varBin = variables_map[variable][0]
@@ -156,12 +162,13 @@ for key in run_map.keys():
         my_A300 = ROOT.TH1F("my_A300", "%i x A300, xsec=1fb" % A300Scaling, varBin, 0, varRange)
         
         for sample in ['ZH_ww125', 'ZH_tt125', 'TTZ', 'GGToZZ2L2L', 'ZZ', 'Zjets', 'ZZZ', 'WZZ', 'WWZ', 'AZh300', 'data_obs']:
-            print sample
+            #print sample
             my_red_combined = ROOT.THStack("%s combined" % sample, "%s combined" % sample)
         
-            #for channel in run_map[key][0]:
-            for channel in override:
-                #print channel
+            for channel in run_map[key][0]:
+            #$#for iii in range (0,1):
+            #$#    channel = override
+            #$#    print channel
                 if run_map[key][i][2] == "all":
                     if variable == 'A_SVfitMass': sampVar = sample
                     else: sampVar = sample + "_" + variable
@@ -199,6 +206,8 @@ for key in run_map.keys():
                 if run_map[key][i][0] == 'Mass' and run_map[key][i][2] == 'all': my_red.Rebin(2)
                 if run_map[key][i][0] == 'SVfitMass' and run_map[key][i][2] == 'h': my_red.Rebin(2)
                 if run_map[key][i][0] == 'A_SVfitMass' and run_map[key][i][2] == 'all': my_red.Rebin(2)
+                if run_map[key][i][0] == 'LT_Higgs': my_red.Rebin(2)
+#$$                if variable == 'Mass' and run_map[key][i][2] == 'h': my_red.Rebin(3)
                 my_red.GetXaxis().SetTitle("%s (GeV), %s" % (variable, channel) )
         
                 ''' Set reasonable maximums on histos '''        
@@ -270,7 +279,7 @@ for key in run_map.keys():
             if sample != 'data_obs' and sample != 'AZh300':
                 color = "ROOT.%s" % samples[sample][0]
                 fillColor = "ROOT.%s" % samples[sample][1]
-        	my_red_combined.GetStack().Last().SetFillColor( eval(color) )
+                my_red_combined.GetStack().Last().SetFillColor( eval(color) )
                 my_red_combined.GetStack().Last().SetLineColor( eval(color) )
                 call = "my_%s.Add ( my_red_combined.GetStack().Last().Clone() )" % sample
                 eval( call )
@@ -295,6 +304,9 @@ for key in run_map.keys():
         if my_data.GetMaximum() > my_total.GetMaximum():
           my_total.SetMaximum( 1.3 * my_data.GetMaximum() )
         else: my_total.SetMaximum( 1.3 * my_total.GetMaximum() )
+        ###if my_data.GetMaximum() > my_total.GetMaximum():
+        ###  my_total.SetMaximum( 3.2 * my_data.GetMaximum() )
+        ###else: my_total.SetMaximum( 3.2 * my_total.GetMaximum() )
         my_A300.SetStats(0)
         #print "My Total Int: %f" % my_total.GetStack().Last().Integral()
         my_data.Draw("e1 same")
@@ -305,6 +317,7 @@ for key in run_map.keys():
         leg.SetFillColor(0)
         leg.SetBorderSize(0)
         leg.Draw()
+        #$#fileName = "%s/%s_%s_%s" % ( key, override, run_map[key][i][2], run_map[key][i][0])
         fileName = "%s/%s_%s" % ( key, run_map[key][i][2], run_map[key][i][0])
 
         #c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/total_bkg_%s.pdf" % saveVar)
@@ -325,9 +338,12 @@ for key in run_map.keys():
 
         c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s.pdf" % fileName)
         c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/png/%s.png" % fileName)
-#        if run_map[key][i][0] == 'mva_metEt':
-#            pad5.SetLogy()
-#            my_total.SetMinimum( 0.001 )
+        if run_map[key][i][0] == 'mva_metEt':
+            pad5.SetLogy()
+            if my_data.GetMaximum() > my_total.GetMaximum():
+              my_total.SetMaximum( 15 * my_data.GetMaximum() )
+            else: my_total.SetMaximum( 15 * my_total.GetMaximum() )
+            my_total.SetMinimum( 0.01 )
 #
 #        if txtLabel:
 #            if key == 'AllChannels': chan = "All"
@@ -335,6 +351,6 @@ for key in run_map.keys():
 #            txt = ROOT.TText(txtLow, my_data.GetMaximum()*1.2, "Channels: %s" % chan )
 #            #txt.Draw()
 #
-#            c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s_log.png" % fileName)
+            c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s_log.root" % fileName)
         pad5.Close()
         c3.Close()
