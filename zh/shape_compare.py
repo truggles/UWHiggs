@@ -2,6 +2,9 @@ from ROOT import gROOT
 from ROOT import gStyle
 import ROOT
 import os
+import GeneralPlotScript as Plots
+
+ROOT.gStyle.SetOptStat(101111)
 
 samples = { 'TTZJets' : 'TTZ',
             'VHWW' : 'ZH_ww125',
@@ -27,6 +30,8 @@ for sample in ['TTZ', 'ZH_ww125', 'ZH_tt125', 'ZZ', 'GGToZZ2L2L', 'ZZZ', 'WZZ', 
     off_red_combined_2 = ROOT.THStack("off_red_combined_2", "combined shape")
 
     for channel in ['mmtt', 'eett', 'mmmt', 'eemt', 'mmet', 'eeet', 'mmme', 'eeem']:
+        my_red = ROOT.TH1F("myHist", "%s_%s" % (channel, sample), 20, 0, 800)
+        off_red = ROOT.TH1F("herHist", "%s_%s" % (channel, sample), 20, 0, 800)
     #for channel in ["eeem"]:
     #for channel in ["mmmt", "eemt", "mmet", "eeet", "mmme", "eeem"]:
         #my_shapes.cd("%s_zh" % channel)
@@ -34,12 +39,12 @@ for sample in ['TTZ', 'ZH_ww125', 'ZH_tt125', 'ZZ', 'GGToZZ2L2L', 'ZZZ', 'WZZ', 
         print channel
         my_red = my_shapes.Get("%s_zh/%s" % (channel, sample))
 
-        #''' Normalize histos b/c we don't have properly normalized histos from ULB (9/9/14) '''
-        if (my_red.Integral() > 0):
-            my_red.Scale( 1/my_red.Integral() )
+        ''' Normalize histos b/c we don't have properly normalized histos from ULB (9/9/14) '''
+        #if (my_red.Integral() > 0):
+        #    my_red.Scale( 1/my_red.Integral() )
         off_red = official_shapes.Get("%s_zh/%s" % (channel, sample) )
-        if (off_red.Integral() > 0):
-            off_red.Scale( 1/off_red.Integral() )
+        #if (off_red.Integral() > 0):
+        #    off_red.Scale( 1/off_red.Integral() )
         c1 = ROOT.TCanvas("c1", "a canvas")
         pad1 = ROOT.TPad("pad1","",0,0.2,1,1) # compare distributions
         pad2 = ROOT.TPad("pad2","",0,0,1,0.2) # ratio plot
@@ -50,16 +55,43 @@ for sample in ['TTZ', 'ZH_ww125', 'ZH_tt125', 'ZZ', 'GGToZZ2L2L', 'ZZZ', 'WZZ', 
         pad1.cd() 
         my_red.SetLineColor(ROOT.kRed)
         my_red.SetMarkerColor(ROOT.kRed)
-        off_red.GetXaxis().SetTitle(" A SVMass (GeV), %s" % channel)
+        my_red.GetXaxis().SetTitle(" A SVMass (GeV), %s" % channel)
         #off_red.Sumw2()
         off_red.SetLineColor(ROOT.kBlue)
 
-        off_red.Draw("hist")
-        off_red_2 = official_shapes.Get("%s_zh/%s" % (channel, sample) )
+        my_red.Draw("hist")
+        #off_red.Draw("hist")
+        #off_red_2 = official_shapes.Get("%s_zh/%s" % (channel, sample) )
         #if off_red_2.Integral() > 0:
         #    off_red_2.Scale( 1/off_red_2.Integral() )
-        off_red_2.Draw("AP same")
-        my_red.Draw("AP same")
+###        off_red_2.Draw("AP same")
+        cx = ROOT.TCanvas("cx", "a canvas")
+        padx = ROOT.TPad("pad1","",0,0.2,1,1)
+        padx.Draw()
+        padx.cd()
+        off_red.Draw("AP")
+        off_red.SetTitle("ULB")
+        padx.Update()
+        stats1 = Plots.getStatBox( off_red )
+        Plots.moveStatBox( stats1, 0.7, 0.98, 0.98, 0.80)
+        pad1.cd()
+        off_red.Draw("AP same")
+
+        #my_red.Draw("AP same")
+
+        off_red.SetName("ULB")
+        my_red.SetName("UW")
+        my_red.SetTitle("UW")
+        off_red.SetStats(1)
+        my_red.SetStats(1)
+        pad1.Update()
+        stats2 = Plots.getStatBox( my_red )
+        Plots.moveStatBox( stats2, 0.7, 0.80, 0.98, 0.62)
+        leg = pad1.BuildLegend(.7, .52, .98, .62)
+        leg.SetFillColor(0)
+        leg.Draw()
+        pad1.Update()
+
 
         ''' Set reasonable maximums on histos '''        
         off_red_max = off_red.GetMaximum()
@@ -105,12 +137,12 @@ for sample in ['TTZ', 'ZH_ww125', 'ZH_tt125', 'ZZ', 'GGToZZ2L2L', 'ZZZ', 'WZZ', 
         #off_red_2.SetFillStyle(3005)
         new_my_red = my_red.Clone()
         new_off_red = off_red.Clone()
-        new_off_red_2 = off_red_2.Clone()
+        #new_off_red_2 = off_red_2.Clone()
         
         # add to combined shape
         my_red_combined.Add(new_my_red)
         off_red_combined.Add(new_off_red)
-        off_red_combined_2.Add(new_off_red_2)
+        #off_red_combined_2.Add(new_off_red_2)
         
     
     c2 = ROOT.TCanvas("c2", "a canvas")
@@ -121,7 +153,10 @@ for sample in ['TTZ', 'ZH_ww125', 'ZH_tt125', 'ZZ', 'GGToZZ2L2L', 'ZZZ', 'WZZ', 
     
     pad1.cd()
     off_red_combined.GetStack().Last().Draw("hist")
-    off_red_combined_2.GetStack().Last().Draw("AP same")
+    pad1.Update()
+    #off_red_combined_2.GetStack().Last().Draw("AP same")
+    #stats1 = Plots.getStatBox( off_red_combined )
+    #Plots.moveStatBox( stats1, 0.8, 0.98, 0.98, 0.85)
     my_red_combined.GetStack().Last().Draw("AP same")
     
     #my_red_combined.SetLineColor(ROOT.kRed)
