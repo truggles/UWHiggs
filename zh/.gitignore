@@ -1,4 +1,4 @@
-inputs/*/
+inputs/*
 event_lists/*
 results/analysis/*/*.events
 Archive*
@@ -11,3 +11,6 @@ mc_shape_comparisons
 CMS_lumi.py
 myMacro.py
 tdrstyle.py
+*.root
+
+pick_fsa_events.py
