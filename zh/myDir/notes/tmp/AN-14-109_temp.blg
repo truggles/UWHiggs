@@ -1,0 +1,46 @@
+This is BibTeX, Version 0.99d (TeX Live 2010)
+Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
+The top-level auxiliary file: /afs/hep.wisc.edu/cms/truggles/zh_proj/june23_sync_setup/src/UWHiggs/zh/myDir/notes/tmp/AN-14-109_temp.aux
+The style file: auto_generated.bst
+Database file #1: auto_generated.bib
+You've used 17 entries,
+            2537 wiz_defined-function locations,
+            735 strings with 10134 characters,
+and the built_in function-call counts, 4150 in all, are:
+= -- 416
+> -- 82
+< -- 2
++ -- 31
+- -- 14
+* -- 358
+:= -- 526
+add.period$ -- 23
+call.type$ -- 17
+change.case$ -- 0
+chr.to.int$ -- 0
+cite$ -- 17
+duplicate$ -- 275
+empty$ -- 486
+format.name$ -- 17
+if$ -- 1078
+int.to.chr$ -- 0
+int.to.str$ -- 17
+missing$ -- 39
+newline$ -- 70
+num.names$ -- 12
+pop$ -- 116
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 117
+stack$ -- 0
+substring$ -- 116
+swap$ -- 86
+text.length$ -- 2
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 0
+while$ -- 22
+width$ -- 19
+write$ -- 191

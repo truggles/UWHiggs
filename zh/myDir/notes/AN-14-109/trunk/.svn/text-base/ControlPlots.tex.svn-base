@@ -1,0 +1,61 @@
+\section{Control plots}
+\label{sec:controlPlots}
+
+
+This section presents some background distributions in control regions. 
+
+Fig.~\ref{fig:SS} shows the mass plots when the selection is the same as in Sec.~\ref{sec:eventSelection}, except that the two taus 
+are required to have the same charge. This region is dominated by reducible background. Within the limited statistics, the data agrees 
+well with the predictions.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SS_llem.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SS_llet.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SS_llmt.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SS_lltt.pdf}
+\caption[dummy text]{Mass plots when the taus are required to have the same sign, in all considered di-tau final states.}
+\label{fig:SS}
+\end{center}
+\end{figure}
+
+In order to increase the statistics, the previous plots can be reproduced by relaxing some cuts: the $L_T$ cuts are removed in all final 
+states and the tau isolation in $ll\tau_h\tau_h$ final states is relaxed from Medium to Loose. The results are shown in Fig.~\ref{fig:SSloose}.
+
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SS_noLT_looseTau_lltt.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SS_noLT_looseTau_zh.pdf}
+\caption[dummy text]{Mass plots when the taus are required to have the same sign, without $L_T$ cut and with loose tau isolation. $ll\tau_h\tau_h$ channels are shown in the left-hand side while all final states combined are shown in the right-hand side.}
+\label{fig:SSloose}
+\end{center}
+\end{figure}
+
+A way to check the estimation of the reducible background in the SS region is to relax the tau isolation. A much looser isolation 
+working point is chosen: MVA identification with lifetime information very loose. The prediction from the fake rate method is shown by the 
+blue solid line, while predictions from Monte Carlo, which are very limited statistically, are also illustrated. The fake rate method gives 
+a good agreement with data in $ll\tau_h\tau_h$, whereas the agreement is reasonable in the less populated $lle\tau_h$ final states, see Fig.~\ref{fig:SSMVAvL}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SSrelaxed_llet.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/control/SSrelaxed_lltt.pdf}
+\caption[dummy text]{Predictions from the fake rate method (blue line) and from Monte Carlo (filled couloured areas) in a SS region with MVA with lifetime information very Loose isolation for all hadronic taus. The fake rate method agrees well with data in $lle\tau_h$ (left) and $ll\tau_h\tau_h$ (right) final states.}
+\label{fig:SSMVAvL}
+\end{center}
+\end{figure}
+
+The Monte Carlo estimation of ZZ diboson production can be checked in $llee$ and $ll\mu\mu$ events. As shown in Fig.~\ref{fig:ZZ}, 
+the ZZ prediction described data well in those two final states.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/control/ZZ_llee.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/control/ZZ_llmm.pdf}
+\caption[dummy text]{ZZ prediction and observed data in a region with two pairs of opposite sign light leptons.}
+\label{fig:ZZ}
+\end{center}
+\end{figure}
+
+

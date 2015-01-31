@@ -1,0 +1,161 @@
+\section {Event selection}
+\label{sec:eventSelection}
+
+Eight final states are analyzed, according to the decay mode of the Z boson, and to the decay mode of the taus 
+originating from the h boson. 
+
+The  Z boson consists of a pair of well identified and isolated light leptons ($\mu$ or $e$), which are expected to fire the trigger.
+The h boson is reconstructed from two taus; leptonic and hadronic decays of taus are considered. 
+
+The first step consists in selecting a same-flavour light lepton pair to reconstruct the Z boson, and then identifying the two taus from the h boson.
+
+Details about the event selection follow.
+
+
+\subsection{Z boson selection}
+ The  Z boson candidate is reconstructed from two same-flavour light leptons of opposite charge, satisfying the criteria described below. If 
+more than one combination of same-flavour light leptons exist, the one with the invariant mass closest to the Z mass is chosen.
+
+\paragraph*{\large $Z \rightarrow \mu^+ \mu^-$ \\}
+The characteristics of the two muons selected to form a Z candidate are:
+\begin{itemize}
+\item Opposite--charge;
+\item Global and tracker muons passing Particle Flow identification;
+\item $p_{T} > 20 (10)$\GeV for the leading (subleading) muon, $|\eta| < 2.4$; 
+\item Combined PF Relative Isolation $\Delta \beta $ corrected $ < 0.30$;
+\item Invariant mass of the two muons between $60$ and $120$ GeV.
+\end{itemize}
+
+\paragraph*{\large $Z \rightarrow e^+ e^-$ \\}
+The characteristics of the two muons selected to form a Z candidate are:
+\begin{itemize}
+\item Opposite--charge;
+\item "Very loose" identification working point;
+\item $p_{T} > 20(10)$\GeVc for the leading (subleading) electron, $|\eta| < 2.5$;
+\item Not more than one missing inner tracker hit for each electron;
+\item Combined PF Relative Isolation $\Delta \beta $ corrected $ < 0.30$;
+\item Invariant mass of the two electrons between $60$ and $120$ GeV.
+\end{itemize}
+
+\subsection{h boson  Selection}
+
+After having selected two light leptons to form a Z candidate, the h candidate is reconstructed from two additional leptons. 
+
+A cut on the scalar pT sum of h legs, $L_{\rm T}^{\rm h}$, is applied to lower the reducible background as well as the irreducible 
+background from ZZ diboson production. The thresholds of this cut depend on the final state and have been chosen 
+in such a way as to optimize the sensitivity of the analysis to the presence of an $A \to Zh$ signal for A masses between 220 and 350 GeV. 
+
+ 
+\paragraph*{\large $h \rightarrow \mu\tau_{had}$ \\}
+
+In this mode one tau from the h boson decays hadronically while the other decays leptonically to a muon plus neutrinos.
+The presence of the muon makes this channel relatively clean but small background remains from
+Z+jets or WZ+jets events, where a Z decays into a pair of electrons or muons, an additional real muon comes from
+either a $b$ jet or a W boson and, finally, a jet fakes the hadronic $\tau$. The following
+selection is applied:
+
+\begin{itemize}
+\item One loosely identified muon with $p_{T} >$ 10 GeV and $|\eta| < 2.4$, passing relative isolation $ < 0.30$;
+\item One hadronic tau with transverse momentum greater than 21 GeV and $|\eta| < 2.3$, passing ``decay mode finding'', ``against muon 2 tight'' and ``against electron loose'' discriminators, and satisfying the ``loose Combined 3 Hits isolation'' conditions;
+\item Charge of the muon and tau must be opposite;
+\item $L_{\rm T}^{\rm h} > $ 45 GeV.
+\end{itemize}
+
+\paragraph*{\large $ h \rightarrow e\tau_{had}$ \\}
+In this mode one tau from the h boson decays hadronically while the other decays leptonically to an electron plus neutrinos.
+These channels are expected to have more backgrounds from Z+jets or WZ+jets than
+ the $\mu\tau$ channels since a charged pion or a photon may also fake the electron.
+The following selection is applied:
+
+\begin{itemize}
+\item One tightly identified electron with $p_{T} >$ 10 GeV and $|\eta| < 2.5$, with no missing inner tracker hits, and having a relative isolation $ < 0.3$;
+\item One tau with transverse momentum greater than 21 GeV and $|\eta| < 2.3$, passing ``decay mode finding'', ``against muon 2 loose'' and ``against electron tight MVA'' discriminators, and satisfying the ``loose Combined 3 Hits'' isolation crieria;
+\item Charge of the electron and tau must be opposite;
+\item $L_{\rm T}^{\rm h} > $ 30 GeV.
+\end{itemize}
+
+\paragraph*{\large $h \rightarrow \tau_{had}\tau_{had}$ \\}
+In this mode both taus from h decay hadronically.
+
+This mode has the largest background due to hadronic jets being reconstructed as taus.
+The main background source is Z production in
+association with two or more jets.  
+The following cuts are applied:
+
+\begin{itemize}
+\item Two opposite--charge $\tau$ with $p_T >$ 21 GeV and $|\eta| <$ 2.3;
+\item Taus pass ``decay mode finding'' discriminator, ``against muon 2 loose'' working point, ``against electron loose'' working point;
+\item $L_{\rm T}^{\rm h} > $ 70 GeV.
+\end{itemize}
+
+\paragraph*{\large $h \rightarrow e\mu$ \\}
+This channel is clean but has the lowest branching ratio in $h \rightarrow \tau\tau$ decay.
+The following cuts are applied:
+\begin{itemize}
+\item One loosely identified  muon with $p_{T} >$ 10 GeV and $|\eta| < 2.4$;
+\item One loosely identified  electron with $p_{T} >$ 10 GeV and $|\eta| < 2.5$, with no more than 1 missing inner tracker hit;
+\item Combined PF Relative Isolation $\Delta \beta $ corrected for muon and electron $ < 0.30$;
+\item The charge of the electron and the muon must be opposite;
+\item $L_{\rm T}^{\rm h} > $ 25 GeV.
+\end{itemize}
+
+\subsection{$L_{\rm T}^{\rm h}$ cut optimization}
+$L_{\rm T}^{\rm h}$ represents the scalar \PT sum of the leptons originating from the h boson. Its distribution significantly differs 
+between the signal and the backgrounds (reducible as well as irreducible) as shown in 
+Fig~\ref{fig:lt}, which permits to increase the $S/\sqrt{B}$ ratio by cutting on it.
+Special emphasis should be given to optimizing the $L_{\rm T}^{\rm h}$ thresholds depending on the h final state. The thresholds minimizing the expected limits at most A masses are chosen. It can be shown, as in Fig~\ref{fig:LTopti}, that the optimal thresholds are exactly the same as those defined 
+in the SM ZH analysis. This result is expected because of the very similar $L_{\rm T}^{\rm h}$ shapes for MSSM $A\to Zh$ and SM ZH processes (Fig.~\ref{fig:lt}). As presented in the paragraphs here-above, $L_{\rm T}^{\rm h}$ thresholds of 25, 35, 45 and 70 GeV are chosen in $lle\mu$, $lle\tau_h$, $ll\mu\tau_h$ and $ll\tau_h\tau_h$ final states respectively.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.48]{Plots/eventSelection/llem.png}
+\includegraphics[angle=0,scale=0.48]{Plots/eventSelection/llet.png}
+\includegraphics[angle=0,scale=0.48]{Plots/eventSelection/llmt.png}
+\includegraphics[angle=0,scale=0.48]{Plots/eventSelection/lltt.png}
+\caption[dummy text]{Expected 95\% CL limit on the product of the production cross-section and the branching ratio for $A\to Zh \to ll\tau\tau$ 
+as a function of $m_A$ for different $L_{\rm T}^{\rm h}$ thresholds, in $lle\mu$ (top left), $lle\tau_h$ (top right), 
+$ll\mu\tau_h$ (bottom left) and $ll\tau_h\tau_h$ final states. The chosen thresholds are respectively 25, 30, 45 and 70 GeV.
+}
+\label{fig:LTopti}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.58]{Plots/eventSelection/LTshapes.png}
+\caption[dummy text]{$L_{\rm T}^{\rm h}$ normalized distributions for the signal at different A masses, and backgrounds, in the $ll\mu\tau_h$ 
+final state.
+}
+\label{fig:lt}
+\end{center}
+\end{figure}
+
+\subsection{Additional requirements}
+Some common cuts are applied to all final states. 
+To remove $t\bar{t}$ background, the event should not contain any b-jet with $p_{T} >$ 20 GeV, $|\eta| < 2.4$, bDiscriminator('combinedSecondaryVertexBJetTags') $>$ 0.679. 
+A 1\% yield uncertainty due to the b-jet veto is considered (see Sec.~\ref{sec:Systematic}).
+
+Events that contain more well identified and isolated electrons and muons than expected in the considered final state are vetoed. A well-identified and isolated electron is defined as:
+\begin{itemize}
+\item \PT $>$ 10 GeV, $|\eta|<$ 2.5;
+\item relative isolation $<$ 0.3;
+\item very loose MVA electron identification,
+\end{itemize}
+while well-identified and isolated muons are defined as:
+\begin{itemize}
+\item \PT $>$ 10 GeV, $|\eta|<$ 2.4;
+\item relative isolation $<$ 0.3;
+\item loose muon identification.
+\end{itemize}
+This extra lepton veto ensures that there is no event overlap between the different categories. It may be worth noticing that there is no condition 
+on extra identified and isolated taus in the events.
+
+All four objects are further required to be separated from each other by \DR\ larger than 0.5, 
+and to come from the same primary vertex ($\Delta z < $ 0.1 cm). Some cleaning conditions are applied to the objects: electrons are required not to
+overlap with any well identified and isolated muon (as defined above) within \DR $<$ 0.1, while taus are required not to overlap with 
+any well identified and identified muon
+or any well identified and isolated electron within \DR $<$ 0.1. Furthermore, b-jets are also required 
+not to overlap with 
+any well identified and identified muon
+or any well identified and isolated electron within \DR $<$ 0.4.
+

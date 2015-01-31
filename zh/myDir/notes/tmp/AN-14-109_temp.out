@@ -1,0 +1,29 @@
+\BOOKMARK [1][-]{section.1}{1 Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{2 Data and simulations}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{2.1 Samples}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{2.2 Comparison between Pythia and MadGraph signal samples}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{2.3 Comparison between Pythia and Madgraph ZZ diboson samples}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{3 Particle identification}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{3.1 Electron selection}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{3.2 Muon identification}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.3}{3.3 Light lepton isolation}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.4}{3.4 Hadronic tau identification}{section.3}% 10
+\BOOKMARK [1][-]{section.4}{4 Reconstruction of A mass}{}% 11
+\BOOKMARK [1][-]{section.5}{5 Event selection}{}% 12
+\BOOKMARK [2][-]{subsection.5.1}{5.1 Z boson selection}{section.5}% 13
+\BOOKMARK [2][-]{subsection.5.2}{5.2 h boson Selection}{section.5}% 14
+\BOOKMARK [2][-]{subsection.5.3}{5.3 LTh cut optimization}{section.5}% 15
+\BOOKMARK [2][-]{subsection.5.4}{5.4 Additional requirements}{section.5}% 16
+\BOOKMARK [1][-]{section.6}{6 Background estimation}{}% 17
+\BOOKMARK [2][-]{subsection.6.1}{6.1 Irreducible background}{section.6}% 18
+\BOOKMARK [2][-]{subsection.6.2}{6.2 Reducible background}{section.6}% 19
+\BOOKMARK [1][-]{section.7}{7 Control plots}{}% 20
+\BOOKMARK [1][-]{section.8}{8 Scale factors and event-by-event weights}{}% 21
+\BOOKMARK [2][-]{subsection.8.1}{8.1 Trigger efficiency}{section.8}% 22
+\BOOKMARK [2][-]{subsection.8.2}{8.2 Lepton identification and isolation efficiency}{section.8}% 23
+\BOOKMARK [2][-]{subsection.8.3}{8.3 Pileup reweighting}{section.8}% 24
+\BOOKMARK [1][-]{section.9}{9 Systematic uncertainties}{}% 25
+\BOOKMARK [1][-]{section.10}{10 Results}{}% 26
+\BOOKMARK [1][-]{section.11}{11 Summary}{}% 27
+\BOOKMARK [1][-]{appendix.A}{A MVA rejection of ZZ irreducible background}{}% 28
+\BOOKMARK [1][-]{appendix.B}{B llee and ll final states}{}% 29

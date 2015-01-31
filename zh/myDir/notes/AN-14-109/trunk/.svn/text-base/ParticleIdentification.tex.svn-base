@@ -1,0 +1,96 @@
+\section{Particle identification}
+
+Electrons, muons, and hadronic taus are selected using the criteria defined in the Standard Model H $\rightarrow \tau\tau$ search \cite{Chatrchyan:2014nva,CMS_AN_2013-188}. 
+These selections have been optimized to obtain the best possible sensitivity for a Standard Model Higgs boson. 
+Since the A decays to a Z boson and a Standard Model-like Higgs boson h, 
+these selections should provide good sensitivity for this MSSM search as well.
+ 
+\subsection{Electron selection}
+
+Electron identification uses a Boosted Decision Tree (BDT) discriminator~\cite{Hocker:2007ht}. The BDT is trained with selected data to separate electrons from jets, 
+and takes many kinematic variables as input. For a more complete description of these techniques refer to the relevant references \cite{Hocker:2007ht}.
+
+\subsubsection{Very loose electron identification}
+\label{sec:loose_el_id}
+
+In addition to the selection criteria used in the inclusive Standard Model H $\rightarrow \tau\tau$ search, this analysis uses a looser electron working point. It is defined in Table~\ref{tab:ElectronID-Loose}.
+
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+\multicolumn{1}{c}{ }      & \multicolumn{3}{c}{\bf BDT Discriminator Value ($>$)}             \\
+\cline{2-4}
+\multicolumn{1}{c|}{ }     & $|\eta|<0.8$      & $0.8 \leq |\eta| < 1.479$  & $1.479 \leq |\eta|$  \\
+\hline
+$p_{T}>    10$ GeV    & $0.50$            & $0.12$                     & $0.60$               \\
+\hline
+\end{tabular}
+\caption{
+  Thresholds for the very loose ID BDT discriminator. For an identified electron the discriminator
+  value has to fall above the indicated threshold.}
+\label{tab:ElectronID-Loose}
+\end{center}
+\end{table}
+
+\subsubsection{Loose electron identification}
+\label{sec:tight_el_id}
+
+In some cases electrons are more selectively identified. These tighter selections, which correspond to the
+standard electron identification used in the Standard Model Higgs $\rightarrow \tau\tau$ search, are outlined
+in Table~\ref{tab:ElectronID-Tight}.
+
+\begin{table}[!ht]
+\begin{center}
+\begin{tabular}{|l|c|c|c|}
+%\cline{2-4}
+\multicolumn{1}{c}{ }      & \multicolumn{3}{c}{\bf BDT Discriminator Value ($>$)}             \\
+\cline{2-4}
+\multicolumn{1}{c|}{ }     & $|\eta|<0.8$      & $0.8 \leq |\eta| < 1.479$  & $1.479 \leq |\eta|$  \\
+\hline
+$p_{T}\leq    20$ GeV         & $0.925$            & $0.915$                     & $0.965$               \\
+$p_{T}>    20$ GeV          & $0.905$            & $0.955$                     & $0.975$               \\
+\hline
+\end{tabular}
+\caption{
+  Thresholds for the loose electron ID BDT discriminator. For an identified electron the discriminator
+  value has to fall above the indicated threshold.}
+\label{tab:ElectronID-Tight}
+\end{center}
+\end{table}
+
+\subsection{Muon identification}
+
+Muons are selected using the particle-flow algorithm detailed in \cite{CMS-PAS-PFT-09-001}.
+ 
+\subsubsection{Loose Muon Identification}
+\label{sec:loose_mu_id}
+
+"Loose" muons must be identified as
+'Global' or 'Tracker' muons via the algorithms outlined in \cite{CMS-PAS-MUO-10-002}.
+
+\subsubsection{Tight muon identification}
+\label{sec:tight_mu_id}
+
+"Tight" muons must pass tight particle-flow selections, as recommended by the 2012 Muon POG \cite{CMS-PAS-PFT-09-001}:
+\begin{itemize}
+\item Reconstructed as global and PF muons;
+\item At least one pixel hit associated to the track;
+\item At least 6 tracker layers with hits;
+\item At least one hit in the muon system;
+\item At least two matched segments;
+\item $\chi^2 / N_{DOF} < $ 10.0 for global track fit;
+\item Transverse impact parameter of track reconstructed in pixel plus strip silicon detector $d_{IP} < 2$ mm.
+\end{itemize}
+
+\subsection{Light lepton isolation}
+
+The relative isolation of electrons and muons is computed with $\Delta\beta$ corrections.
+
+\subsection{Hadronic tau identification}
+\label{sec:tau_id}
+
+Hadronic taus are identified using the "Hadron Plus Strips" (HPS) algorithm~\cite{CMS_AN_2014-008,1748-0221-7-01-P01001}.
+They are required to pass the decay mode finding discriminator, a specific isolation working point of the Combined 3-Hits isolation, and some light lepton rejections. 
+The exact identification conditions depend on the final state and will be presented in Section \ref{section:eventSelection}.
+
+

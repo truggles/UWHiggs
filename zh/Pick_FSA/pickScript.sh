@@ -1,0 +1,1 @@
+for channel in eeem eemt mmmt; do python pick_fsa_events.py --infiles /nfs_scratch/truggles/2014-11-12-FinalNtuples/2014-11-04_svFitTES2/data_DoubleElectron_Run2012?_22Jan2013_v1/*.root --pickfile ceciles_extra_events.txt --outputfile C_extra_$channel.root --treepath=$channel/final/Ntuple; done

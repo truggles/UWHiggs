@@ -10,7 +10,7 @@ samples = { 'TTZJets' : ("kCyan", "kCyan-2", 21),
             'ZZJetsTo4L' : ("kGreen", "kGreen-2", 21),
             'ggZZ2L2L' : ("kRed", "kRed-2", 21), 
             'Zjets' : ("kMagenta+3", "kMagenta+1", 21),
-            'AHttZll300' : ("kBlue", "kBlue", 21),
+            'AZh300' : ("kBlue", "kBlue", 21),
             'data_obs' : ("","")
 }
 
@@ -30,7 +30,7 @@ ROOT.gROOT.SetBatch(True)
 
 for variable in variables:
     #print variable
-    my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
+    my_total = ROOT.THStack("my_total", "CMS Preliminary       19.7 fb^{-1} at #sqrt{S} = 8 TeV")
     my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
     my_A220 = ROOT.TH1F("my_A220", "A220, xsec=1fb", variables_map[variable][0], 0, variables_map[variable][1])
     my_A240 = ROOT.TH1F("my_A240", "A240, xsec=1fb", variables_map[variable][0], 0, variables_map[variable][1])
@@ -40,7 +40,8 @@ for variable in variables:
     my_A320 = ROOT.TH1F("my_A320", "A320, xsec=1fb", variables_map[variable][0], 0, variables_map[variable][1])
     my_A340 = ROOT.TH1F("my_A340", "A340, xsec=1fb", variables_map[variable][0], 0, variables_map[variable][1])
     
-    for sample in ['AHttZll220', 'AHttZll240', 'AHttZll260', 'AHttZll280', 'AHttZll300', 'AHttZll320', 'AHttZll340']:
+    #for sample in ['AZh220', 'AZh240', 'AZh260', 'AZh280', 'AZh300', 'AZh320', 'AZh340']:
+    for sample in ['AZh220', 'AZh240', 'AZh260', 'AZh280', 'AZh300', 'AZh320', 'AZh340']:
         #print sampVar
         #print variable
         #print sample
@@ -48,7 +49,7 @@ for variable in variables:
         #print "sample: %s" % sample
         my_red_combined = ROOT.THStack("%s combined" % sample, "%s combined" % sample)
     
-        for channel in ['mmtt', 'eett', 'mmmt', 'eemt', 'mmet', 'eeet', 'mmem', 'eeem']:
+        for channel in ['mmtt', 'eett', 'mmmt', 'eemt', 'mmet', 'eeet', 'mmme', 'eeem']:
             if variables_map[ variable][4] == "x":
                 #print "no var"
                 if variable == 'A_SVfitMass': sampVar = sample
@@ -114,19 +115,19 @@ for variable in variables:
     
         gROOT.cd()
     
-        if sample == 'AHttZll220':
+        if sample == 'AZh220':
             my_A220.Add( my_red_combined.GetStack().Last().Clone() )
-        if sample == 'AHttZll240':
+        if sample == 'AZh240':
             my_A240.Add( my_red_combined.GetStack().Last().Clone() )
-        if sample == 'AHttZll260':
+        if sample == 'AZh260':
             my_A260.Add( my_red_combined.GetStack().Last().Clone() )
-        if sample == 'AHttZll280':
+        if sample == 'AZh280':
             my_A280.Add( my_red_combined.GetStack().Last().Clone() )
-        if sample == 'AHttZll300':
+        if sample == 'AZh300':
             my_A300.Add( my_red_combined.GetStack().Last().Clone() )
-        if sample == 'AHttZll320':
+        if sample == 'AZh320':
             my_A320.Add( my_red_combined.GetStack().Last().Clone() )
-        if sample == 'AHttZll340':
+        if sample == 'AZh340':
             my_A340.Add( my_red_combined.GetStack().Last().Clone() )
     
     c3 = ROOT.TCanvas("c3", "a canvas")

@@ -1,0 +1,72 @@
+\section{Systematic uncertainties}
+\label{sec:Systematic}
+
+The sources of systematic uncertainties that are common for all final states are summarized in
+the top part of the Table~\ref{table:uncertainties}.
+The pp integrated luminosity uncertainty amounts to $2.6\%$ for 2012~\cite{lumi-uncertainty-2012}.
+
+The main uncertainty on the estimation of the ZZ background arises from the theoretical uncertainty on the ZZ production cross section. 
+The results obtained for PDF and QCD scale uncertainties, summarized in the Table~\ref{table:uncertainties}, are treated as uncorrelated for each production mode considered.
+
+The uncertainty on reducible background is estimated by evaluating an individual uncertainty
+for each lepton fake rate and  applying it to the background calculation.
+
+One part of the uncertainty on the tau fake rate is due to the uncertainty on the fit of the fake rate.
+As mentioned earlier, the dependency of the fake rate on the associated jet $p_T$ is fitted with an exponential function.
+The uncertainties on the fitted parameters are used to compute upper and lower bounds for the fitting function. 
+Additionally,
+ it is shown that 20\% uncertainty band on tau fake rate, can cover the fit uncertainty as well as statistical fluctuation.
+
+The same procedure is applied for electron and muon fake rates.
+The presence of an attidional tau in the event leads to a lower rate since it induces a greater hadronic activity in the event. To compensate for the slightly different topologies in which these fake rates are extracted and applied,
+we assign a 30\% uncertainty. This band also covers the fit uncertainty and statistical fluctuations.
+
+The 20\% uncertainty on tau fake rate and 30\% correlated uncertainty on the electron and muon fake rates are
+propagated through the background calculation to derive individual systematic uncertainties for each decay channel.
+By propagating these uncertainties on the fake rate and re-calculating the reducible backgrounds for all eight final states, it can be seen that the total amount of reducible has a total uncertainty between 10 to 30\%, depending on the channel. Tau fake rate uncertainty in tautau final states, tau fake rate uncertainty in l-tau final state and electron/muon fake rate in l-tau and ll final states are  accounted to be uncorrelated with each other, as they have been measured differently in different control regions. However they are accounted as correlated among all relevant final states.
+
+The muon and electron trigger efficiencies, identification, isolation values are measured from data with tag--and--probe methods.
+
+The hadronic tau identification uncertainty has been determined 6\% by CMS using the tag--and--probe type measurement. The energy scale of the hadronic 
+tau is varied within 3\% ~\cite{CMS_AN_2014-008}. The hadronic tau energy scale affects the $m_{A}$ shape distribution and is considered 
+as a shape systematic in the limit calculation. 
+
+\begin{table}[htbp]
+\begin{center}
+\caption{Systematic uncertainties.
+The uncertainties on
+$e$ and $\mu$ reconstruction and identification,
+are isolation are combined; for $\tauh$, the energy-scale
+uncertainty is reported separately.}
+\label{table:uncertainties}
+\begin{tabular}{|c||cccc|}
+\hline
+\multicolumn{5}{|c|}{Systematic uncertainties common to all channels.}\\
+\hline
+\hline
+Source & \multicolumn{4}{c|}{Uncertainty} \\
+\hline
+Luminosity measurement     & \multicolumn{4}{c|}{2.2-2.6\%}    \\
+Muon trigger efficiency & \multicolumn{4}{c|}{$ 1$\%} \\
+Muon ID/Iso/ES & \multicolumn{4}{c|}{$ 2$\%} \\
+Electron trigger efficiency & \multicolumn{4}{c|}{$ 1$\%} \\
+Electron ID/Iso/ES & \multicolumn{4}{c|}{$ 2$\%} \\
+Tau ID/Iso & \multicolumn{4}{c|}{$ 6$\%($12$\%)} \\
+Tau ES & \multicolumn{4}{c|}{$ 3$\%($6$\%)} \\
+Btag  & \multicolumn{4}{c|}{1\%}   \\
+PDF for $q\bar q\to ZZ$ & \multicolumn{4}{c|}{5\%}  \\
+PDF for $gg\to ZZ$ & \multicolumn{4}{c|}{10\%}  \\
+QCD scale for $q\bar q\toZZ$  & \multicolumn{4}{c|}{2.6-6.7\%}  \\
+QCD scale for $gg\to ZZ$  & \multicolumn{4}{c|}{24-44\%}  \\
+QCD scale for VHs & \multicolumn{4}{c|}{2.9\%}  \\
+Reducible background estimate & \multicolumn{4}{c|}{15-30\%}  \\
+$\sigma_{TTZ}$  & \multicolumn{4}{c|}{50\%}   \\
+$\sigma_{WWZ}$  & \multicolumn{4}{c|}{50\%}   \\
+$\sigma_{WZZ}$  & \multicolumn{4}{c|}{50\%}   \\
+$\sigma_{ZZZ}$  & \multicolumn{4}{c|}{50\%}   \\
+\hline
+\end{tabular}
+\end{center}
+%\end{adjustwidth}
+\end{table}
+

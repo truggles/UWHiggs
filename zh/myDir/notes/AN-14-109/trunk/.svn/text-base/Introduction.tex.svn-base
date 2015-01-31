@@ -1,0 +1,39 @@
+\section{Introduction}
+\label{sec:introduction}
+In the Yang-Mills theory of weak physics, all the gauge bosons are required to be massless. 
+However, it was clear experimentally that the masses of the weak force mediators (W$^{+/-}$, Z) are on the order of 80 GeV. 
+The process of electroweak symmetry breaking was proposed in order to provide mass to the weak force mediators. 
+This theory introduces a new complex doublet. Through the process of spontaneous symmetry breaking, the degrees of freedom in this complex doublet 
+are reduced from four to one. This remaining degree of freedom corresponds to a new scalar field with a non-zero vacuum expectation value, the Higgs field. 
+The Higgs field implied the existence of new particle, the Higgs boson, which is an excitation of the Higgs field. 
+However, the mass of the Higgs boson is an unspecified parameter in the theory.  
+Since its proposal, experimental physicists have been searching for evidence of a Higgs boson. 
+Until very recently, however, the particle remained elusive.
+
+On July 4, 2012 the CMS and ATLAS experiments at the LHC confirmed the observation of a standard model Higgs-like boson with a mass of about 125 GeV \cite{Chatrchyan:2012ufa}. 
+
+Supersymmetry provides an elegant and simple solution to many open questions in particle physics, such as the unification of coupling constants or the hierarchy problem. 
+The supersymmetric model predicts the existence of a bosonic superpartner for each standard model fermion 
+and a fermionic superpartner for each standard model boson. 
+This new symmetry of nature effectively doubles the number of particles in the universe. If this symmetry were unbroken, each standard model particle would have a superpartner with the same mass. If this were the case, however, supersymmetric particles would have been discovered long ago. It is therefore necessary that supersymmetry is a broken symmetry. Unfortunately, this makes the masses of the supersymmetric particles unspecified. There are compelling arguments, however, that suggest that the lightest supersymmetric particles should have masses on the 1 TeV scale \cite{Haber:1993wf}. For this reason, many physicists expect to experimentally observe signs of supersymmetric particles during LHC runs.
+
+The most basic extension of the standard model that includes supersymmetry is the Minimal Supersymmetric Standard Model (MSSM). 
+MSSM requires the existence of two complex scalar Higgs fields. This leads to two neutral CP-even Higgs particles, h and H, 
+a CP-odd Higgs particle A, and two charged and CP-even Higgs particles, H$^{+}$ and H$^{-}$. 
+The masses of these five Higgs particles can be specified by two independent parameters, the mass of the A and tan$\beta$, defined as: 
+
+\begin{equation}
+tan\beta = v_{1}/v_{2}
+\end{equation}
+
+where v$_{1}$ and v$_{2}$ are the vacuum expectation values for the neutral component of the Higgs field which couples to up and down quarks,
+ respectively \cite{Haber:1993wf}. 
+MSSM predicts that the decay of the A into a Z boson and h has a relatively high branching fraction in the mass range between 260 GeV and 340 GeV. For an A mass less than 260 GeV, the A predominately decays to neutralinos. For an A mass greater than 340 GeV, A decay is dominated by $t\bar{t}$. Therefore, it is convenient to probe this mass range using the A $\rightarrow$ Zh mode. A masses between 220 and 350 GeV are probed in this analysis.
+
+
+The presence of the light leptons orginating from the Z boson helps isolating the signal from standard model backgrounds. The highest sensitivity to $A\toZh$ signal is therefore achieved for $h$ final states with large branching ratios. Limits on $A \to Zh \to llbb$ have been set in~\cite{CMS_AN_2013-302}.
+The present analysis searches for an A which decays to a Z and an h, where the Z boson decays to $e^{+}e^{-}$ or $\mu^{+}\mu^{-}$ 
+and the Higgs boson decays to $\tau^{+}\tau^{-}$. The methodology of this analysis is very similar to the search for standard model Higgs associated 
+production with a Z boson using tau final states \cite{Chatrchyan:2014nva}. 
+
+

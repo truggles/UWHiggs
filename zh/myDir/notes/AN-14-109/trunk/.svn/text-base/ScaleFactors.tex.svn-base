@@ -1,0 +1,17 @@
+\section{Scale factors and event-by-event weights}
+\label{section:sf}
+
+\subsection{Trigger efficiency}
+To compensate the difference in trigger efficiency between data and MC, both data and MC
+ trigger efficiencies are fitted with a Crystalball function and the scale factor is obtained by
+ dividing these two functions.
+
+\subsection{Lepton identification and isolation efficiency}
+
+Scale factors are applied to correct the difference in efficiency between the identification and
+isolation of electrons and muons between data and MC. 
+
+\subsection{Pileup reweighting}
+
+Simulated events are reweighted to account for the difference in the distribution of reconstructed vertices between data and MC. 
+

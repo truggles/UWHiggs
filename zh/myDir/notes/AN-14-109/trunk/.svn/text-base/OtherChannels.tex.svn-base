@@ -1,0 +1,65 @@
+\section{$llee$ and $ll\mu\mu$ final states}
+\label{sec:otherChannels}
+
+Six di-tau final states are possible: $\tau_h\tau_h$, $e\tau_h$, $\mu\tau_h$, $e\mu$, $ee$ and $\mu\mu$.
+The first four have been analyzed in this search for $A\to Zh$. Historically, $ee$ and $\mu\mu$ were not considered 
+in the SM ZH analysis because of the overlap with $H\toZZ\to4l$ analysis. The potential of these two channels 
+has been evaluated in the context of $A\toZh$ analysis.
+
+Similarly as is the case for $lle\mu$ final states, the contribution from reducible backgrounds is small in $llee$ and $ll\mu\mu$ channels.
+However ZZ diboson contribution is strongly enhanced because it is impossible to discriminate electrons from Z decays, from electrons from tau decays. 
+A useful handle to reduce the ZZ irreducible background in these final states is the transverse missing energy. Indeed, 
+$ZZ\to llll$ events are not supposed to contain a large MET, whereas four neutrinos are produced in the searched $A\to Zh\to llll$ decay. 
+Fig.~\ref{fig:met_eemm} illustrates the MET distribution in signal and background events. A threshold of 30 GeV has been chosen 
+for all $llee$ and $ll\mu\mu$ channels, which is a compromise between the signal acceptance at low mass and the ZZ reduction.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.60]{Plots/eemm/comp_eeee_zh.pdf}
+\caption[dummy text]{MET distributions for signal at different masses and backgrounds, in the $eeee$ final state. A cut on the MET variable 
+may increase the $S/\sqrt{B}$ ratio.}
+\label{fig:met_eemm}
+\end{center}
+\end{figure}
+
+The final plots for $llee$ and $ll\mu\mu$ final states are shown in Fig.~\ref{fig:eemm_plots}. As expected, the background 
+is dominated by ZZ diboson production, in larger quantities than for $lle\mu$ final states. The corresponding expected limits, compared 
+to the other channels, are presented in Fig.~\ref{fig:eemm_limits}, while the improvement in the combined limit obtained by adding the 
+four extra channels is shown in the right-hand side of the same figure. The limits in $llee$ and $ll\mu\mu$ final states are much worse than 
+those of the other channels, especially at low mass, which is due to the MET cut. The general improvement in combined limit is less than 5\%, 
+which justifies the fact that these channels have not been treated in the core analysis.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/eemm/llee.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/eemm/llmm.pdf}
+\caption[dummy text]{Mass plots in $llee$ and $ll\mu\mu$ final states, blinded between 280 and 360 GeV.
+}
+\label{fig:eemm_plots}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/eemm/all_30.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/eemm/46_30.pdf}
+\caption[dummy text]{Comparison of expected limits by channel.
+}
+\label{fig:eemm_limits}
+\end{center}
+\end{figure}
+ 
+Since the general improvement is anyway small at low mass, a higher MET cut can be applied to enhance the limit at high mass.
+With a 50 GeV cut, the limit gets up to 10\% tighter at high A mass, as shown in Fig.~\ref{fig:eemm_limits50}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/eemm/all_50.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/eemm/46_50.pdf}
+\caption[dummy text]{Comparison of expected limits by channel.
+}
+\label{fig:eemm_limits50}
+\end{center}
+\end{figure}
+
+

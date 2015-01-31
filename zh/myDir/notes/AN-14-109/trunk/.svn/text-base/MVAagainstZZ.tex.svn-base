@@ -1,0 +1,54 @@
+\section{MVA rejection of ZZ irreducible background}
+\label{sec:MVAagainstZZ}
+
+ZZ diboson production is an irreducible background because, as is the case for the signal, it can result in four real 
+leptons in the final state. In the analysis presented here, it is reduced by a cut on the scalar \PT sum of the taus originating from the h boson. 
+However there are many more handles that permit to discriminate it from the signal $A\to Zh\to ll\tau\tau$. These discriminating 
+variables may be combined in a Boosted Decision Tree (BDT) to enhance the ZZ/signal discrimination.
+
+Twelve powerful variables have been identified, and are listed here by order of discriminative potential:
+\begin{itemize}
+\item ST, the scalar \PT sum of all four leptons and MET;
+\item $\DeltaR(\tau,\tau)$, the distance in the ($\eta,\phi$) plane between the two taus;
+\item A centrality, the ratio between the vectorial \PT sum of the reconstructed h and Z bosons, and their scalar sum;
+\item $\DeltaR(Z,h)$, the distance in the ($\eta,\phi$) plane between the reconstructed Z and h boson;
+\item $LT^Z$, the scalar \PT sum of the leptons originating from the reconstructed Z boson;
+\item $\cos \theta_1$, the angle between the negatively charged lepton from the Z and the Z flight direction in the Z rest frame;
+\item h centrality, the ratio between the vectorial \PT sum of the reconstructed taus, and their scalar sum;
+\item twist(Z,h), $\atan \Delta\phi(Z,h) / \atan \Delta \eta(Z,h)$;
+\item h \PT;
+\item $\cos \theta^*$, the angle between the Z flight direction and the beam axis, in the A rest frame;
+\item A \PT;
+\item twist($\tau_1,\tau_2$), $\atan \Delta\phi(\tau_1,\tau_2) / \atan \Delta \eta(\tau_1,\tau_2)$.
+\end{itemize}
+
+The BDT is trained with a mix of signal events with A masses between 290 and 350 GeV. The distributions of the above-mentioned 
+variables are shown in Fig~\ref{fig:bdt_var} for signal (blue) and ZZ (red). 
+The BDT output distributions as well as the ROC curve are presented in Fig.~\ref{fig:bdt_out}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.60]{Plots/mva/mva1.png}
+\includegraphics[angle=0,scale=0.60]{Plots/mva/mva2.png}
+\caption[dummy text]{BDT input variables for signal (blue) and ZZ (red) processes.}
+\label{fig:bdt_var}
+\end{center}
+\end{figure}
+
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/mva/overtrain.png}
+\includegraphics[angle=0,scale=0.30]{Plots/mva/roc.png}
+\caption[dummy text]{Signal and background distributions of the BDT output (left) and ROC curve (right).
+}
+\label{fig:bdt_out}
+\end{center}
+\end{figure}
+
+Even if cutting on the BDT output has been proven efficient to reduce not only ZZ but also the reducible background, 
+this MVA method has not been used to produce the final results exposed in Sec.~\ref{sec:results}. 
+The main reason is the lack of statistics in the signal region; the level of control of the backgrouns, especially the reducible one, 
+has not been judged sufficient because of the small number of events. However, the estimated gain of such a method is superior to 20\%, and
+ could be used in future runs with larger luminosity.
+

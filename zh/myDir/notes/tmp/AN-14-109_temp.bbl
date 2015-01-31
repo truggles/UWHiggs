@@ -1,0 +1,109 @@
+\providecommand{\href}[2]{#2}\begingroup\raggedright\begin{thebibliography}{10}%
+\makeatletter
+\providecommand{\hrefCMSnoop }[0]{\@secondoftwo}%
+\makeatother
+\providecommand{\doi}{\texttt{doi:}\begingroup \urlstyle{tt}\Url}
+
+\bibitem{Chatrchyan:2012ufa}
+\hrefCMSnoop {}{{CMS Collaboration} Collaboration, ``{Observation of a new
+  boson at a mass of 125 GeV with the CMS experiment at the LHC}'',} \textit{
+  Phys.Lett.} \textbf{ B716} (2012) 30--61,
+  \href{http://dx.doi.org/10.1016/j.physletb.2012.08.021}{\doi{10.1016/j.physletb.2012.08.021}},
+\href{http://www.arXiv.org/abs/1207.7235}{\texttt{ arXiv:1207.7235}}.
+%%CITATION = ARXIV:1207.7235;%%.
+
+\bibitem{Haber:1993wf}
+\hrefCMSnoop {}{H.~E. Haber, ``{Introductory low-energy supersymmetry}'',}
+\href{http://www.arXiv.org/abs/hep-ph/9306207}{\texttt{ arXiv:hep-ph/9306207}}.
+%%CITATION = HEP-PH/9306207;%%.
+
+\bibitem{CMS_AN_2013-302}
+\hrefCMSnoop {}{\mbox{Checcia, P. and others}, ``Search for new physics in the
+  $A \to Zh \to llbb$ channel'',} \textit{ CMS Note} \textbf{
+  \href{http://cms.cern.ch/iCMS/jsp/openfile.jsp?tp=draft&files=AN2013_302_v7.pdf}{2013/302}}
+  (2013).
+
+\bibitem{Chatrchyan:2014nva}
+\hrefCMSnoop {}{{CMS Collaboration} Collaboration, ``{Evidence for the 125 GeV
+  Higgs boson decaying to a pair of $\tau$ leptons}'',}
+\href{http://www.arXiv.org/abs/1401.5041}{\texttt{ arXiv:1401.5041}}.
+%%CITATION = ARXIV:1401.5041;%%.
+
+\bibitem{Alwall:2011uj}
+J.~Alwall\hrefCMSnoop {}{ {et~al.}, ``{MadGraph 5 : Going Beyond}'',} \textit{
+  JHEP} \textbf{ 1106} (2011) 128,
+  \href{http://dx.doi.org/10.1007/JHEP06(2011)128}{\doi{10.1007/JHEP06(2011)128}},
+\href{http://www.arXiv.org/abs/1106.0522}{\texttt{ arXiv:1106.0522}}.
+%%CITATION = ARXIV:1106.0522;%%.
+
+\bibitem{Jadach:1993hs}
+\hrefCMSnoop {}{S.~Jadach, Z.~Was, R.~Decker, and J.~H. Kuhn, ``{The tau decay
+  library TAUOLA: Version 2.4}'',} \textit{ Comput.Phys.Commun.} \textbf{ 76}
+  (1993) 361--380,
+\href{http://dx.doi.org/10.1016/0010-4655(93)90061-G}{\doi{10.1016/0010-4655(93)90061-G}}.
+%%CITATION = CPHCB,76,361;%%.
+
+\bibitem{S10PileUpProfile}
+\hrefCMSnoop {}{M.~Hildreth {et~al.},
+  ``https://twiki.cern.ch/twiki/bin/view/CMS/PdmVPileUpDescription\#S10''.}
+
+\bibitem{genPileUpReweighting}
+\hrefCMSnoop {}{M.~Hildreth {et~al.},
+  ``https://twiki.cern.ch/twiki/bin/viewauth/CMS/PileupInformation''.}
+
+\bibitem{geant}
+S.~Agostinelli\hrefCMSnoop {}{ {et~al.}, ``G4--a simulation toolkit'',}
+  \textit{ Nuclear Instruments and Methods in Physics Research Section A:
+  Accelerators, Spectrometers, Detectors and Associated Equipment} \textbf{
+  506} (2003), no.~3, 250 -- 303,
+  \href{http://dx.doi.org/10.1016/S0168-9002(03)01368-8}{\doi{10.1016/S0168-9002(03)01368-8}}.
+
+\bibitem{CMS_AN_2013-188}
+\hrefCMSnoop {}{\mbox{Higgs TauTau group}, ``Physics Objects in the Higgs to
+  Tau Tau Analysis'',} \textit{ CMS Note} \textbf{
+  \href{http://cms.cern.ch/iCMS/jsp/openfile.jsp?tp=draft&files=AN2013_188_v2.pdf}{2013/188}}
+  (2013).
+
+\bibitem{Hocker:2007ht}
+A.~Hocker\hrefCMSnoop {}{ {et~al.}, ``{TMVA - Toolkit for Multivariate Data
+  Analysis}'',} \textit{ PoS} \textbf{ ACAT} (2007) 040,
+\href{http://www.arXiv.org/abs/physics/0703039}{\texttt{
+  arXiv:physics/0703039}}.
+%%CITATION = PHYSICS/0703039;%%.
+
+\bibitem{CMS-PAS-PFT-09-001}
+\hrefCMSnoop {}{{CMS Collaboration} Collaboration, ``{Particle-Flow Event
+  Reconstruction in CMS and Performance for Jets, Taus, and MET}'',} Technical
+  Report CMS-PAS-PFT-09-001, CERN, 2009. Geneva, Apr, 2009.
+
+\bibitem{CMS-PAS-MUO-10-002}
+\hrefCMSnoop {}{{CMS Collaboration} Collaboration, ``{Performance of muon
+  identification in pp collisions at s**0.5 = 7 TeV}'',} Technical Report
+  CMS-PAS-MUO-10-002, CERN, 2010. Geneva, 2010.
+
+\bibitem{CMS_AN_2014-008}
+\hrefCMSnoop {}{\mbox{Tau POG}, ``Performance of tau reconstruction and
+  identification in $pp$ collisions at $\sqrt{s} = 8$~\TeV'',} \textit{ CMS
+  Note} \textbf{
+  \href{http://cms.cern.ch/iCMS/jsp/openfile.jsp?tp=draft&files=AN2014_008_v4.pdf}{2014/008}}
+  (2014).
+
+\bibitem{1748-0221-7-01-P01001}
+\href {http://stacks.iop.org/1748-0221/7/i=01/a=P01001}{C.~Collaboration,
+  ``Performance of #-lepton reconstruction and identification in CMS'',}
+  \textit{ Journal of Instrumentation} \textbf{ 7} (2012), no.~01, P01001.
+
+\bibitem{lumi-uncertainty-2012}
+\href
+  {http://cms-physics.web.cern.ch/cms-physics/public/LUM-13-001-pas.pdf}{{CMS}
+  Collaboration, ``CMS Luminosity Based on Pixel Cluster Counting Summer 2013
+  Update'',} \textit{ CMS Physics Analysis Summary} \textbf{
+  CMS-PAS-LUM-13-001} (2013).
+
+\bibitem{Read}
+\hrefCMSnoop {}{A.~L. Read, ``Presentation of search results: the CLs
+  technique'',} \textit{ J. Phys. G: Nucl. Part. Phys.} \textbf{ 28} (2002)
+  2693,
+  \href{http://dx.doi.org/10.1088/0954-3899/28/10/313}{\doi{10.1088/0954-3899/28/10/313}}.
+
+\end{thebibliography}\endgroup

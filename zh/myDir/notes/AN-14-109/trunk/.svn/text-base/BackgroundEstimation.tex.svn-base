@@ -1,0 +1,204 @@
+\section{Background estimation}
+\label{section:bkg}
+
+Background to A$\rightarrow$ Zh search can be divided into two components that contribute roughly in equal proportions: irreducible and reducible backgrounds.
+The next paragraphs present how these backgrounds are estimated in the analysis.
+
+\subsection{Irreducible background}
+
+The predominant source of irreducible background is ZZ diboson production.
+The process yields exactly the same final states as the expected signal.
+Both qqZZ and GluGluZZ production modes are taken into account  and their contribution are directly estimated from MC (NNLO).
+
+Another significant source of irreducible background in this analysis is SM h associated production with a Z boson. In this process, an off-shell Z radiates a SM h boson. When the Z decays to light leptons and the h decays to $\tau^{+}\tau^{-}$, the final states are indistinguishable from signal events. h to WW associated with a Z boson is also considered as an irreducible background; it mainly contributes to $e\mu$  final state. 
+Triboson WWZ/WZZ/ZZZ production is also considered as irreducible background. 
+Finally, ttZ, where one Z decays into an electron or a muon pair,
+and both top quarks decay leptonically (to $e$, $\mu$ or $\tau$) with an additional b--jet, though small thanks to the b--jet veto,
+also contributes to the irreducible background.
+All the processes are regrouped under the "rare" appellation.
+
+
+\subsection{Reducible background}
+\label{sec:red_bckgrd}
+
+The primary source of reducible background in final states with two hadronic taus is Z+jets, while another 
+significant source is SM WZ+jets production in other final states with three or more light leptons. 
+In $ll\tau_h\tau_h$ final states, the reducible background is essentially composed of Z+jets events with a least two jets, whereas in 
+$lle\tau_h$ and $ll\mu\tau_h$ final states, the main contribution to the reducible background comes from WZ+jets with 3 light leptons, see Fig.~\ref{fig:composition}.
+In both processes, one or more jets are misidentified as leptons. 
+The contribution from these processes to the final selected events is estimated using a data-driven fake rate scheme. 
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.35]{Plots/backgroundEstimation/composition_lltt.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/backgroundEstimation/composition_llet.pdf}
+\caption[dummy text]{Reducible background composition, from Monte Carlo simulations, in $ll\tau_h\tau_h$ (left) and $lle\tau_h$ (right)
+ final states. The selection is similar as explained in Sec.~\ref{sec:eventSelection}, but the taus have the same sign and are anti-isolated, while there is no cut on their scalar \PT sum.
+}
+\label{fig:composition}
+\end{center}
+\end{figure}
+
+The probability of a jet faking a lepton, the "fake rate", is measured in a signal--free region. 
+In this region, events are required to pass all the final state selections, except that the reconstructed tau candidates are required to have the same sign.
+This effectively eliminates any possible signal while maintaining roughly the same proportion of reducible background events.
+
+\subsubsection{Jet $\to e$ and jet $\to \mu$ fake rates}
+
+Electron (muon) fake rates are measured using $e\tau_{h} (\mu\tau_{h})$ final states. 
+Electron (muon) candidates are selected as outlined in Section \ref{section:eventSelection} for the $e\tau_{h} (\mu\tau_{h})$ final states, 
+with the following exceptions:
+
+\begin{itemize}
+  \item No isolation requirement;
+  \item No identification (Section~\ref{sec:loose_el_id});
+  \item No cut on the scalar p$_{T}$ sum;
+  \item Electron (muon) and tau have the same sign;
+  \item Transverse mass between the electron (muon) and the missing transverse energy $<$ 30 GeV to suppress real leptons from WZ and ZZ.
+\end{itemize}
+
+Events that pass these selections define the "denominator" region. 
+Electrons (muons) that also pass the identification and isolation requirements are included in the "numerator" region". 
+The fake rate is calculated as the ratio of the number of events in the numerator region to the number of events in the denominator region. 
+The fake rate is measured for ranging values of the closest jet p$_{T}$, then fitted with a falling exponential, as shown in Fig.~\ref{fig:emuFR}. 
+The best-fit exponential function is used to estimate the fake rate, $F(jet p_{T})$ for a given data event. 
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fit4objFR_Ele_NumLoose_0_Jet.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fit4objFR_Ele_NumTight_0_Jet.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fit4objFR_Mu_NumLoose_0_Jet.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fit4objFR_Mu_NumTight_0_Jet.pdf}
+\caption[dummy text]{Fit functions for jet $\to e$ (top) and jet $\to \mu$ (bottom) fake rates, in the case of loose (left) and tight (right) identification and isolation. The distributions are fitted as a function of the \PT of the jet closest to the reconstructed light leptons.
+}
+\label{fig:emuFR}
+\end{center}
+\end{figure}
+
+
+\subsubsection{Jet $\to \tau_{had}$ fake rate measurement in $ll + \tau_h\tau_h$ final states}
+
+The hadronic tau fake rate is measured from the $\tau_{h}\tau_{h}$ channels. 
+The selections are the same as those outlined in Section \ref{section:eventSelection}, 
+with the exception that the cut on the scalar p$_{T}$ sum has been reduced to 50 GeV. 
+The fake rate is calculated as the ratio of the number of events that pass all selections to the number of events that 
+pass all selections other than isolation.
+As is done for electrons and muons, this fake rate is measured for various bins of closest jet p$_{T}$, then fitted with a falling exponential. 
+Two fits are performed, depending on whether the tau is reconstructed in the barrel ($|\eta|<1.4$) or endcap ($|\eta|>1.4$) of the detector, see Fig.~\ref{fig:tauLTFR}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fitFakeRate_LT_Tau_Pt_After_Loose_CloseJet_B.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fitFakeRate_LT_Tau_Pt_After_Loose_CloseJet_E.pdf}
+\caption[dummy text]{Fit functions for jet $\to \tau_h$ fake rate, in the case the barrel (left) and endcap (right), in $l\tau_h$ final
+ states. The distributions are fitted as a function of the \PT of the jet closest to the reconstructed tau.
+}
+\label{fig:tauLTFR}
+\end{center}
+\end{figure}
+
+\subsubsection{Jet $\to \tau_{had}$ fake rate measurement in $ll + l\tau_h$ final states}
+
+The hadronic tau fake rate is measured from the $\mu\tau_{h}$ and $e\tau_h$ channels. 
+The selections are the same as those outlined in Section \ref{section:eventSelection}, 
+with the exception that the tau isolation has not been applied. 
+The fake rate is calculated as the ratio of the number of events that pass all selections to the number of events that 
+pass all selections other than isolation.
+This fake rate is measured for various bins of closest jet p$_{T}$, then fitted with a falling exponential. 
+Two fits are performed, depending on whether the tau is reconstructed in the barrel ($|\eta|<1.4$) or endcap ($|\eta|>1.4$) of the detector, see Fig.~\ref{fig:tauTTFR}.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fitFakeRate_LT_Tau_Pt_After_Loose_CloseJet_B.pdf}
+\includegraphics[angle=0,scale=0.38]{Plots/backgroundEstimation/__fitFakeRate_LT_Tau_Pt_After_Loose_CloseJet_E.pdf}
+\caption[dummy text]{Fit functions for jet $\to \tau_h$ fake rate, in the case the barrel (left) and endcap (right), in $\tau_h\tau_h$ final 
+ states. The distributions are fitted as a function of the \PT of the jet closest to the reconstructed tau.
+}
+\label{fig:tauTTFR}
+\end{center}
+\end{figure}
+
+
+\subsubsection{Reducible background normalization}
+
+Data events are split into the three following categories and assigned the following weights:
+
+\begin{itemize}
+  \item Category 0. Events that fail isolation or identification requirements on both tau candidate legs. This category is dominated by Z+jets. These events are assigned the weight
+  \begin{equation}
+  F(\tau_{1})F(\tau_{2}) / (1 - F(\tau_{1}))(1 - F(\tau_{2}))
+  \end{equation}
+
+  \item Category 1. Events that fail isolation or identification requirements on the first tau (the higher p$_{T}$ tau in $\tau\tau$ events, the electron in $e\mu$ events, and the electron (muon) in $e\tau (\mu\tau)$ events) but pass for the second tau. This category includes Z+jets and a part WZ+jets events. These events are assigned the weight
+  \begin{equation}
+  F(\tau_{1}) / (1 - F(\tau_{1}))
+  \end{equation}
+
+  \item Category 2. Events that pass selections for the first tau but fail isolation or identification for the second tau. This category includes Z+jets and the seond part of WZ+jets events. The events are assigned the weight
+  \begin{equation}
+  F(\tau_{2}) / (1 - F(\tau_{2}))
+  \end{equation}
+\end{itemize}
+
+The reducible background yield is estimated as the weighted sum of categories 1 and 2 with category 0 subtracted. 
+This combination of categories avoids double-counting of events with more than one fake tau. 
+Table~\ref{tab:cqdata0} shows the contributions to the reducible background from each category split by channel.
+
+\begin{table}[htbp]
+\centering
+
+\begin{tabular}{|c|c|c|c|c| }
+\hline
+ channel & Cat0 & Cat1 & Cat2 &  1+2-0  \\
+\hline
+mmtt&0.69(15323)&2.16(129)&0.69(177)&2.16$\pm$0.25 \\ 
+mmet&1.72(9897)&3.15(129)&2.25(301)&3.67$\pm$0.42 \\ 
+mmmt&0.44(2508)&2.26(125)&0.84(46)&2.66$\pm$0.33 \\ 
+mmme&0.28(711)&0.88(49)&0.93(42)&1.53$\pm$0.28 \\ 
+eett&0.64(14218)&2.25(124)&0.63(179)&2.24$\pm$0.25 \\ 
+eemt&0.37(2178)&1.62(104)&0.54(39)&1.80$\pm$0.25 \\ 
+eeet&1.58(8937)&1.75(130)&1.89(238)&2.06$\pm$0.29 \\ 
+eeem&0.22(565)&0.23(31)&0.72(31)&0.73$\pm$0.18 \\ 
+\hline
+\end{tabular}
+\caption {Reducible background counts in each channel and category. These contributions are estimated using the data-driven fake rate method detailed above. The right-most column represents the estimated reducible background contribution in each channel. }
+\label{tab:cqdata0}
+\end{table}
+
+\subsubsection{Reducible background shape}
+
+The reducible background shape is obtained from a signal--free region where the tau candidates have the same charge.
+In order to obtain smooth templates, the isolation and identification conditions on the leptons are relaxed. 
+The requirements in each final state are listed here below:
+\begin{itemize}
+\item $lle\mu$: Loose Muon ID, muon relative isolation $< 2.0$ (no ID or isolation requirement on the electron except those of the electron candidates used to estimate the electron fake rate);
+\item $lle\tau_h$: raw MVA2 tau isolation $> -0.95$, Loose electron ID, relative electron isolation $<0.3$;
+\item $ll\mu\tau_h$: raw MVA2 tau isolation $> -0.95$, Loose muon ID, relative muon isolation $<0.7$;
+\item $ll\tau_h\tau_h$: raw MVA2 tau isolation $> -0.95$.
+\end{itemize}
+
+These requirements have been chosen in such a way as to increase the statistics while keeping a constant composition of the reducible background. It has 
+been shown, using a simulated $WZ\to 3l\nu$ MC sample, that the WZ contribution is well included in the reducible background. In particular, the high MET shape of the reducible bacground, coming essentially from WZ+jets events, is well described with these relaxing criteria.
+
+In addition, the LT cut is relaxed to 50 GeV for the fully hadronic final state, whereas it is kept the same as in the final selection for the other final states.
+
+
+\subsubsection{Reducible background shape cross-check}
+The shape of the reducible background is extracted from a same-sign region with loosened isolation to increase the statistics and obtain a smooth template. 
+It can be shown that, within the uncertainties,
+ the shapes obtained from this signal--free region are compatible with the shapes extracted by weighting the events 
+with non isolated/identified leptons with the fake rate method. Fig.~\ref{fig:redShapes} compares the shapes obtained with both techniques in different final states.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.60]{Plots/backgroundEstimation/compashapes.png}
+\caption[dummy text]{Reducible background shapes obtained with the fake rate method (green) or from the SS relaxed region, in four 
+different final states. Within the uncertainties, both methods give compatible shapes. Because the templates are smoother, 
+the shapes are estimated from a SS relaxed region.
+}
+\label{fig:redShapes}
+\end{center}
+\end{figure}
+
+
+ 

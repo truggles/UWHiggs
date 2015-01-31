@@ -1,0 +1,86 @@
+% Do not edit by hand!
+\RCS$Revision$
+\RCS$HeadURL$
+\RCS$Id$
+%%%%%%%%%%%%% local definitions %%%%%%%%%%%%%%%%%%%%%
+% This allows for switching between one column and two column (cms@external) layouts
+% The widths should  be modified for your particular figures. You'll need additional copies if you have more than one standard figure size.
+\newlength\cmsFigWidth
+\ifthenelse{\boolean{cms@external}}{\setlength\cmsFigWidth{0.85\columnwidth}}{\setlength\cmsFigWidth{0.4\textwidth}}
+\ifthenelse{\boolean{cms@external}}{\providecommand{\cmsLeft}{top}}{\providecommand{\cmsLeft}{left}}
+\ifthenelse{\boolean{cms@external}}{\providecommand{\cmsRight}{bottom}}{\providecommand{\cmsRight}{right}}
+%%%%%%%%%%%%%%%  Title page %%%%%%%%%%%%%%%%%%%%%%%%
+\cmsNoteHeader{AN-14-109} % This is over-written in the CMS environment: useful as preprint no. for export versions
+% >> Title: please make sure that the non-TeX equivalent is in PDFTitle below
+\title{Search for a neutral pseudo-scalar Higgs boson decaying to a Z boson and an SM-like Higgs boson using tau final states}
+
+% >> Authors
+%Author is always "The CMS Collaboration" for PAS and papers, so author, etc, below will be ignored in those cases
+%For multiple affiliations, create an address entry for the combination
+%To mark authors as primary, use the \author* form
+\address[IIHE]{IIHE-ULB, Universit\'e Libre de Bruxelles, Brussels, Belgium }
+\address[Pr]{Princeton University, U.S.A}
+\address[Wi]{University of Wisconsin-Madison, WI 53706, U.S.A.}
+\author[IIHE]{C. Caillol}
+\author[IIHE]{B. Clerbaux}
+\author[Pr]{S. Cooperstein}
+\author[Wi]{S. Dasu}
+\author[IIHE]{A. Mohammadi}
+\author[Wi]{I. Ojalvo}
+\author[Wi]{T. Ruggles}
+\author[Wi]{T. Sarangi}
+
+
+% >> Date
+% The date is in yyyy/mm/dd format. Today has been
+% redefined to match, but if the date needs to be fixed, please write it in this fashion.
+% For papers and PAS, \today is taken as the date the head file (this one) was last modified according to svn: see the RCS Id string above.
+% For the final version it is best to "touch" the head file to make sure it has the latest date.
+\date{\today}
+
+% >> Abstract
+% Abstract processing:
+% 1. **DO NOT use \include or \input** to include the abstract: our abstract extractor will not search through other files than this one.
+% 2. **DO NOT use %**                  to comment out sections of the abstract: the extractor will still grab those lines (and they won't be comments any longer!).
+% 3. For PASs: **DO NOT use tex macros**         in the abstract: CDS MathJax processor used on the abstract doesn't understand them _and_ will only look within $$. The abstracts for papers are hand formatted so macros are okay.
+\abstract{
+Results of a search for a neutral pseudo-scalar Higgs boson (A) decaying to a Z boson and an SM-like Higgs boson (h) in the pp collision data recorded by CMS in 2012 are presented. The analysis targets final states where the SM-like Higgs boson decays to a pair of tau leptons, and the Z boson to a pair of light leptons. The search is performed in the context of the minimal supersymmetric extension of the standard model. The dataset corresponds to an integrated luminosity of 19.7 $fb^{-1}$ recorded at 8 TeV center-of-mass energy. No excess is found and upper limits at 95\% confidence limit are set on the A production cross-section in the mass range 220 $<$ $m_{A}$ $<$ 350 GeV.
+}
+
+% >> PDF Metadata
+% Do not comment out the following hypersetup lines (metadata). They will disappear in NODRAFT mode and are needed by CDS.
+% Also: make sure that the values of the metadata items are sensible and are in plain text:
+% (1) no TeX! -- for \sqrt{s} use sqrt(s) -- this will show with extra quote marks in the draft version but is okay).
+% (2) no %.
+% (3) No curly braces {}.
+\hypersetup{%
+pdfauthor={Cecile Caillol},%
+pdftitle={Search for a neutral pseudo-scalar Higgs boson decaying to a Z boson and an SM-like Higgs boson using tau final states},%
+pdfsubject={CMS},%
+pdfkeywords={CMS, physics, software, computing}}
+
+\maketitle %maketitle comes after all the front information has been supplied
+
+\input{Introduction}
+\input{Samples}
+\input{ParticleIdentification}
+\input{AMass}
+\input{EventSelection}
+\input{BackgroundEstimation}
+\input{ControlPlots}
+\input{ScaleFactors}
+\input{Systematics}
+\input{Results}
+\input{Summary}
+\appendix
+\input{MVAagainstZZ}
+\input{OtherChannels}
+
+%% **DO NOT REMOVE BIBLIOGRAPHY**
+\bibliography{auto_generated}   % will be created by the tdr script.
+
+%% examples of appendices. **DO NOT PUT \end{document} at the end
+%\clearpage
+\appendix
+%%% DO NOT ADD \end{document}!
+

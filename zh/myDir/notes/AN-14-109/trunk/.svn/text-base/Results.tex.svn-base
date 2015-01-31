@@ -1,0 +1,51 @@
+\section{Results}
+\label{sec:results}
+
+The blinded massplots in different final states are shown in Fig.~\ref{fig:massplots}. 
+The background in $ll\tau_h\tau_h$ final states is dominated by the reducible background, while $lle\mu$ final states are 
+dominated by irreducible processes, essentially ZZ diboson production. 
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.30]{Plots/results/eeem.pdf}
+\includegraphics[angle=0,scale=0.30]{Plots/results/mmem.pdf}
+\includegraphics[angle=0,scale=0.30]{Plots/results/eemt.pdf}
+\includegraphics[angle=0,scale=0.30]{Plots/results/mmmt.pdf}
+\includegraphics[angle=0,scale=0.30]{Plots/results/eeet.pdf}
+\includegraphics[angle=0,scale=0.30]{Plots/results/mmet.pdf}
+\includegraphics[angle=0,scale=0.30]{Plots/results/eett.pdf}
+\includegraphics[angle=0,scale=0.30]{Plots/results/mmtt.pdf}
+\caption[dummy text]{Mass plots, blinded between 280 and 360 GeV.
+}
+\label{fig:massplots}
+\end{center}
+\end{figure}
+
+
+Exclusion limits on the cross-section times branching ratio are set at 95\% confidence level, using the CLs method~\cite{Read}.
+As shown in Fig.~\ref{fig:limits_chl} and Fig.~\ref{fig:limits_all}, 
+cross-sections times branching ratio between ... and ... are expected to be excluded for masses 
+between 220 and 350 GeV.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.35]{Plots/results/llem_exp_limit.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/llmt_exp_limit.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/llet_exp_limit.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/lltt_exp_limit.pdf}
+\caption[dummy text]{Expected limits in $lle\mu$, $ll\mu\tau_h$, $lle\tau_h$ and $ll\tau_h\tau_h$ final states.
+}
+\label{fig:limits_chl}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.35]{Plots/results/compa_limit.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/cmb_exp_limit.pdf}
+\caption[dummy text]{Expected limits in all final states combined, and comparison with the different final states.
+}
+\label{fig:limits_all}
+\end{center}
+\end{figure}
+
