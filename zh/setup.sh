@@ -10,9 +10,8 @@ export jobid=$jobid8
 #export afile=`find $datasrc/$jobid | grep root | head -n 1`
 
 #make sure that this file is new if you made new variables in Ntuples, also run the top 8 "make_wrapper" functions and ls *pyx
-#export afile='/nfs_scratch/truggles/2014-11-04-FinalNtups/2014-11-04_TES/ggZZ2L2L/make_ntuples_cfg-patTuple_cfg-FAA5CD06-C00A-E211-B1DE-180373FF93CE.root'
 # new svFit file
-export afile='/nfs_scratch/truggles/2014-11-12-FinalNtuples/2014-11-04_svFitTES2/ZZZ/make_ntuples_cfg-patTuple_cfg-869C6070-70DB-E111-9103-0030487E5399.root'
+export afile='/nfs_scratch/truggles/2015-01-01_DataNtups/data_DoubleElectron_Run2012A_22Jan2013_v1/make_ntuples_cfg-patTuple_cfg-003EC246-5E67-E211-B103-00259059642E.root'
 
 #echo "Building cython wrappers from file: $afile"
 #
