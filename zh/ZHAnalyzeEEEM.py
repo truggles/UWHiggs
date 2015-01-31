@@ -54,7 +54,7 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         return selections.muIsoLoose(row, 'm') and selections.muIDLoose(row, 'm')
 
     def red_shape_cuts(self, row):
-        #if (row.e3RelPFIsoDB > 2.0): return False
+        if (row.e3RelPFIsoDB > 2.0): return False
         if (row.mRelPFIsoDB > 2.0): return False
         if not selections.muIDLoose(row, 'm'): return False
         return True

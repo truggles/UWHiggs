@@ -54,7 +54,7 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
 
     def red_shape_cuts(self, row):
         # looser final selections after preselection, used for reducible shape region
-        #if (row.eRelPFIsoDB > 2.0): return False
+        if (row.eRelPFIsoDB > 2.0): return False
         if (row.m3RelPFIsoDB > 2.0): return False
         if not selections.muIDLoose(row, 'm3'): return False
         return True
