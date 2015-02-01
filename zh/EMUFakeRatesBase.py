@@ -69,16 +69,30 @@ class EMUFakeRatesBase(MegaBase):
                 book_histo(self.lepton+'Pt',     self.lepton+' Pt', 150, 0, 150)
                 book_histo(self.lepton+'JetPt',  self.lepton+' Jet Pt', 150, 0, 150)
                 book_histo(self.lepton+'AbsEta', self.lepton+' Abs Eta', 100, -2.5, 2.5)
+                book_histo(self.lepton+'JetPt_Barrel',  self.lepton+' Jet Pt (Barrel Region)', 150, 0, 150)
+                book_histo(self.lepton+'JetPt_EndCap',  self.lepton+' Jet Pt (EndCap Region)', 150, 0, 150)
     
     def process(self):
         # Generic filler function to fill plots after selection
         def fill(self, the_histos, row, evtList):
             weight = 1.0
             the_histos[self.lepton+'Pt'].Fill(    getattr( row, self.branchId+'Pt'    ), weight)
+            # original JetPt plot for all Eta
             if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
                 the_histos[self.lepton+'JetPt'].Fill( getattr( row, self.branchId+'Pt'), weight)
             else:
                 the_histos[self.lepton+'JetPt'].Fill( getattr( row, self.branchId+'JetPt'), weight)
+            # new JetPt plot broken down by Eta region
+            if ( getattr( row, self.branchId+'AbsEta') ) < 1.4:
+                if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
+                    the_histos[self.lepton+'JetPt_Barrel'].Fill( getattr( row, self.branchId+'Pt'), weight)
+                else:
+                    the_histos[self.lepton+'JetPt_Barrel'].Fill( getattr( row, self.branchId+'JetPt'), weight)
+            else:
+                if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
+                    the_histos[self.lepton+'JetPt_EndCap'].Fill( getattr( row, self.branchId+'Pt'), weight)
+                else:
+                    the_histos[self.lepton+'JetPt_EndCap'].Fill( getattr( row, self.branchId+'JetPt'), weight)
             the_histos[self.lepton+'AbsEta'].Fill(getattr( row, self.branchId+'AbsEta'), weight)
             for key, value in histos.iteritems():
                if str(value)[0] == "{": continue
