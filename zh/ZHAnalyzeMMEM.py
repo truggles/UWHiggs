@@ -97,7 +97,10 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
             mcCorrectors.double_muon_trigger(row,'m1','m2')
 
     def leg3_weight(self, row):
-        return fr_fcn.e_loose_jetpt_fr( row.eJetPt ) / (1 - fr_fcn.e_loose_jetpt_fr( row.eJetPt ))
+        if ( row.eAbsEta <= 1.4 ):
+            return fr_fcn.e_loose_jetpt_barrel_fr( row.eJetPt ) / (1 - fr_fcn.e_loose_jetpt_barrel_fr( row.eJetPt ))
+        else:
+            return fr_fcn.e_loose_jetpt_endcap_fr( row.eJetPt ) / (1 - fr_fcn.e_loose_jetpt_endcap_fr( row.eJetPt ))
 
     def leg4_weight(self, row):
         return fr_fcn.mu_loose_jetpt_fr( row.m3JetPt) / (1 -  fr_fcn.mu_loose_jetpt_fr( row.m3JetPt));

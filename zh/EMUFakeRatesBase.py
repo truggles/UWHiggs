@@ -69,11 +69,11 @@ class EMUFakeRatesBase(MegaBase):
                 book_histo(self.lepton+'Pt',     self.lepton+' Pt', 150, 0, 150)
                 book_histo(self.lepton+'JetPt',  self.lepton+' Jet Pt', 150, 0, 150)
                 book_histo(self.lepton+'AbsEta', self.lepton+' Abs Eta', 100, -2.5, 2.5)
-                #book_histo(self.lepton+'JetPtBarrel',  self.lepton+' Jet Pt (Barrel Region)', 150, 0, 150)
-                #book_histo(self.lepton+'JetPtEndCap',  self.lepton+' Jet Pt (EndCap Region)', 150, 0, 150)
-                book_histo(self.lepton+'JetPtLow',  self.lepton+' Jet Pt (EndCap Region)', 150, 0, 150)
-                book_histo(self.lepton+'JetPtMedium',  self.lepton+' Jet Pt (EndCap Region)', 150, 0, 150)
-                book_histo(self.lepton+'JetPtHigh',  self.lepton+' Jet Pt (EndCap Region)', 150, 0, 150)
+                book_histo(self.lepton+'JetPtBarrel',  self.lepton+' Jet Pt (Barrel Region)', 150, 0, 150)
+                book_histo(self.lepton+'JetPtEndCap',  self.lepton+' Jet Pt (EndCap Region)', 150, 0, 150)
+                #book_histo(self.lepton+'JetPtLow',  self.lepton+' Jet Pt (Low Eta Region)', 150, 0, 150)
+                #book_histo(self.lepton+'JetPtMedium',  self.lepton+' Jet Pt (Medium Eta Region)', 150, 0, 150)
+                #book_histo(self.lepton+'JetPtHigh',  self.lepton+' Jet Pt (High Eta Region)', 150, 0, 150)
     
     def process(self):
         # Generic filler function to fill plots after selection
@@ -86,31 +86,33 @@ class EMUFakeRatesBase(MegaBase):
             else:
                 the_histos[self.lepton+'JetPt'].Fill( getattr( row, self.branchId+'JetPt'), weight)
             # new JetPt plot broken down by Eta region
-            if ( getattr( row, self.branchId+'AbsEta') ) < 0.8:
-                if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
-                    the_histos[self.lepton+'JetPtLow'].Fill( getattr( row, self.branchId+'Pt'), weight)
-                else:
-                    the_histos[self.lepton+'JetPtLow'].Fill( getattr( row, self.branchId+'JetPt'), weight)
-            elif ( ( getattr( row, self.branchId+'AbsEta') ) > 0.8 and ( getattr( row, self.branchId+'AbsEta') ) < 1.479 ):
-                if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
-                    the_histos[self.lepton+'JetPtMedium'].Fill( getattr( row, self.branchId+'Pt'), weight)
-                else:
-                    the_histos[self.lepton+'JetPtMedium'].Fill( getattr( row, self.branchId+'JetPt'), weight)
-            else:
-                if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
-                    the_histos[self.lepton+'JetPtHigh'].Fill( getattr( row, self.branchId+'Pt'), weight)
-                else:
-                    the_histos[self.lepton+'JetPtHigh'].Fill( getattr( row, self.branchId+'JetPt'), weight)
-            #if ( getattr( row, self.branchId+'AbsEta') ) < 1.4:
+            # The commented out version below is for splitting electrons by their 3 ID regions in eta
+            # It was decided to split loose ID by barrel and endcap only.
+            #if ( getattr( row, self.branchId+'AbsEta') ) < 0.8:
             #    if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
-            #        the_histos[self.lepton+'JetPtBarrel'].Fill( getattr( row, self.branchId+'Pt'), weight)
+            #        the_histos[self.lepton+'JetPtLow'].Fill( getattr( row, self.branchId+'Pt'), weight)
             #    else:
-            #        the_histos[self.lepton+'JetPtBarrel'].Fill( getattr( row, self.branchId+'JetPt'), weight)
+            #        the_histos[self.lepton+'JetPtLow'].Fill( getattr( row, self.branchId+'JetPt'), weight)
+            #elif ( ( getattr( row, self.branchId+'AbsEta') ) > 0.8 and ( getattr( row, self.branchId+'AbsEta') ) < 1.479 ):
+            #    if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
+            #        the_histos[self.lepton+'JetPtMedium'].Fill( getattr( row, self.branchId+'Pt'), weight)
+            #    else:
+            #        the_histos[self.lepton+'JetPtMedium'].Fill( getattr( row, self.branchId+'JetPt'), weight)
             #else:
             #    if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
-            #        the_histos[self.lepton+'JetPtEndCap'].Fill( getattr( row, self.branchId+'Pt'), weight)
+            #        the_histos[self.lepton+'JetPtHigh'].Fill( getattr( row, self.branchId+'Pt'), weight)
             #    else:
-            #        the_histos[self.lepton+'JetPtEndCap'].Fill( getattr( row, self.branchId+'JetPt'), weight)
+            #        the_histos[self.lepton+'JetPtHigh'].Fill( getattr( row, self.branchId+'JetPt'), weight)
+            if ( getattr( row, self.branchId+'AbsEta') ) < 1.4:
+                if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
+                    the_histos[self.lepton+'JetPtBarrel'].Fill( getattr( row, self.branchId+'Pt'), weight)
+                else:
+                    the_histos[self.lepton+'JetPtBarrel'].Fill( getattr( row, self.branchId+'JetPt'), weight)
+            else:
+                if ( getattr( row, self.branchId+'JetPt') < getattr( row, self.branchId+'Pt') ):
+                    the_histos[self.lepton+'JetPtEndCap'].Fill( getattr( row, self.branchId+'Pt'), weight)
+                else:
+                    the_histos[self.lepton+'JetPtEndCap'].Fill( getattr( row, self.branchId+'JetPt'), weight)
             the_histos[self.lepton+'AbsEta'].Fill(getattr( row, self.branchId+'AbsEta'), weight)
             for key, value in histos.iteritems():
                if str(value)[0] == "{": continue
