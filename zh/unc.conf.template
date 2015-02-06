@@ -16,6 +16,8 @@ QCDscale_VH                             lnN
 CMS_zh2l2tau_GGZZ2L2LBkg_8TeV           lnN
 CMS_zh2l2tau_TTZBkg_8TeV                lnN
 CMS_zh2l2tau_ZjetBkg_emu_extrap_8TeV    lnN
+CMS_zh2l2tau_ZjetBkg_mut_extrap_8TeV    lnN
+CMS_zh2l2tau_ZjetBkg_et_extrap_8TeV     lnN
 CMS_zh2l2tau_ZjetBkg_tt_extrap_8TeV     lnN
 CMS_zh2l2tau_ZjetBkg_lt_extrap_8TeV     lnN
 CMS_vhtt_zzNorm_tt_8TeV                 lnN
