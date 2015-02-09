@@ -21,20 +21,32 @@ e_tight_jetpt_fr =build_roofunctor(
     'efficiency'
 )
 
-mu_loose_jetpt_fr = build_roofunctor(
-    frfit_dir + '/m_zlt_pt10_looseId_muonJetPt.root',
-    'fit_efficiency',
-    'efficiency'
-)
-
+#mu_loose_jetpt_fr = build_roofunctor(
+#    frfit_dir + '/m_zlt_pt10_looseId_muonJetPt.root',
+#    'fit_efficiency',
+#    'efficiency'
+#)
+#
 # We are plitting loose by barrel and endcap
 #e_loose_jetpt_fr =build_roofunctor(
 #    frfit_dir + '/e_zlt_pt10_looseId_electronJetPt.root',
 #    'fit_efficiency',
 #    'efficiency'
 #)
+mu_loose_jetpt_barrel_fr = build_roofunctor(
+    frfit_dir + '/m_zlt_pt10_looseId_muonJetPtBarrel.root',
+    'fit_efficiency',
+    'efficiency'
+)
 
-e_loose_jetpt_barrle_fr =build_roofunctor(
+mu_loose_jetpt_endcap_fr = build_roofunctor(
+    frfit_dir + '/m_zlt_pt10_looseId_muonJetPtEndCap.root',
+    'fit_efficiency',
+    'efficiency'
+)
+
+
+e_loose_jetpt_barrel_fr =build_roofunctor(
     frfit_dir + '/e_zlt_pt10_looseId_electronJetPtBarrel.root',
     'fit_efficiency',
     'efficiency'

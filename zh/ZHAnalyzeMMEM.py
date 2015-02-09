@@ -103,4 +103,7 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
             return fr_fcn.e_loose_jetpt_endcap_fr( row.eJetPt ) / (1 - fr_fcn.e_loose_jetpt_endcap_fr( row.eJetPt ))
 
     def leg4_weight(self, row):
-        return fr_fcn.mu_loose_jetpt_fr( row.m3JetPt) / (1 -  fr_fcn.mu_loose_jetpt_fr( row.m3JetPt));
+        if ( row.m3AbsEta <= 1.4 ):
+            return fr_fcn.mu_loose_jetpt_barrel_fr( row.m3JetPt ) / (1 - fr_fcn.mu_loose_jetpt_barrel_fr( row.m3JetPt ))
+        else:
+            return fr_fcn.mu_loose_jetpt_endcap_fr( row.m3JetPt ) / (1 - fr_fcn.mu_loose_jetpt_endcap_fr( row.m3JetPt ))
