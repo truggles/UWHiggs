@@ -12,5 +12,6 @@ CMS_lumi.py
 myMacro.py
 tdrstyle.py
 *.root
+pyplotter/*
 
 pick_fsa_events.py
