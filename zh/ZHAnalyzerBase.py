@@ -29,6 +29,10 @@ import os
 import pprint
 import baseSelections as selections
 
+# If svFitHMassCut is set to 'true' then a mass window cut is applied to all
+# events in the same manner that 'general cuts' is applied to ALL events 
+svFitHMassCut = False
+
 class ZHAnalyzerBase(MegaBase):
     def __init__(self, tree, outfile, wrapper, channel, **kwargs):
         super(ZHAnalyzerBase, self).__init__(tree, outfile, **kwargs)
@@ -351,6 +355,11 @@ class ZHAnalyzerBase(MegaBase):
             for folder, region_info in cut_region_map.iteritems():
                 if not (preselection(row)):
                     continue
+                if svFitHMassCut:
+                    h_svFitMass = getattr(row, "%s_%s_SVfitMass" % self.H_decay_products() ) 
+                    if not (h_svFitMass > 50 and h_svFitMass < 200):
+                        #print "H svFitMass cut: %f" % h_svFitMass
+                        continue
                 #if row.evt == 306250:
                 #  if folder[1]=='All_Passed':
                 #    print "analyzing event 306250"
