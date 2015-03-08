@@ -148,6 +148,7 @@ for key in run_map.keys():
             varBin = variables_map[variable][0]
         my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
         my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
+        #my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preAppModified_Final/cards/shapes.root", "r")
         #my_shapes = ROOT.TFile("shapes_Nov18_0.root", "r")
         my_data = ROOT.TH1F("my_data", "Data", varBin, 0, varRange)
         my_ZH_ww125 = ROOT.TH1F("my_ZH_ww125", "ZH_ww125", varBin, 0, varRange)
@@ -301,6 +302,19 @@ for key in run_map.keys():
         my_A300.SetLineWidth(2)
         my_A300.SetLineColor(ROOT.kOrange+10)
         my_A300.Draw("hist same")
+        numBins = my_A300.GetXaxis().GetNbins()
+        iii_A300 = 0
+        iii_backGrnd = 0
+        for iii in range (1, numBins ):
+          #print "A300 bin %i: %f" % (iii, my_A300.GetBinContent(iii)/A300Scaling )
+          #print "Back bin %i: %f" % (iii, my_total.GetStack().Last().GetBinContent(iii) )
+          A_300 = my_A300.GetBinContent(iii)/A300Scaling
+          backGrnd = my_total.GetStack().Last().GetBinContent(iii)
+          iii_A300 += A_300
+          iii_backGrnd += backGrnd
+          if backGrnd > 0.0:
+            print "Bin %2i : %6.4f / %8.4f = %6.4f" % (iii, A_300, backGrnd, 100*A_300/backGrnd )
+        print "Total Signal to Background: %6.4f / %8.4f = %8.4f" % (iii_A300, iii_backGrnd, 100*iii_A300/iii_backGrnd)
         if my_data.GetMaximum() > my_total.GetMaximum():
           my_total.SetMaximum( 1.3 * my_data.GetMaximum() )
         else: my_total.SetMaximum( 1.3 * my_total.GetMaximum() )
