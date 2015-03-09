@@ -4,7 +4,9 @@ from ROOT import gStyle
 import ROOT
 import os
 import pyplotter.plot_functions as plotter
+import math
 
+KSTest = True
 #blind = False
 blind = True
 A300Scaling = 20
@@ -135,7 +137,9 @@ for key in run_map.keys():
     nPlots = len( run_map[key] )
     for i in range(1, nPlots):
         variable = run_map[key][i][0]
-        print variable
+        #print variable
+        if KSTest and not variable == "mva_metEt": continue
+        else: pass 
         #if not (variable == 'A_SVfitMass'): continue # or variable == 'Mass'): continue
         if variable == 'Mass' and run_map[key][i][2] != 'all':
             varRange = 300
@@ -149,7 +153,6 @@ for key in run_map.keys():
         my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
         my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
         #my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preAppModified_Final/cards/shapes.root", "r")
-        #my_shapes = ROOT.TFile("shapes_Nov18_0.root", "r")
         my_data = ROOT.TH1F("my_data", "Data", varBin, 0, varRange)
         my_ZH_ww125 = ROOT.TH1F("my_ZH_ww125", "ZH_ww125", varBin, 0, varRange)
         my_ZH_tt125 = ROOT.TH1F("my_ZH_tt125", "ZH_tt125", varBin, 0, varRange)
@@ -302,19 +305,24 @@ for key in run_map.keys():
         my_A300.SetLineWidth(2)
         my_A300.SetLineColor(ROOT.kOrange+10)
         my_A300.Draw("hist same")
+
         numBins = my_A300.GetXaxis().GetNbins()
         iii_A300 = 0
         iii_backGrnd = 0
-        for iii in range (1, numBins ):
+        iii_data = 0
+        for iii in range (1, numBins + 2):
           #print "A300 bin %i: %f" % (iii, my_A300.GetBinContent(iii)/A300Scaling )
           #print "Back bin %i: %f" % (iii, my_total.GetStack().Last().GetBinContent(iii) )
           A_300 = my_A300.GetBinContent(iii)/A300Scaling
           backGrnd = my_total.GetStack().Last().GetBinContent(iii)
+          data_ = my_data.GetBinContent(iii)
+          iii_data += data_
           iii_A300 += A_300
           iii_backGrnd += backGrnd
           if backGrnd > 0.0:
             print "Bin %2i : %6.4f / %8.4f = %6.4f" % (iii, A_300, backGrnd, 100*A_300/backGrnd )
-        print "Total Signal to Background: %6.4f / %8.4f = %8.4f" % (iii_A300, iii_backGrnd, 100*iii_A300/iii_backGrnd)
+        print "Total Signal to Background: %6.4f / %8.4f = %8.4f   ---   data: %i" % (iii_A300, iii_backGrnd, 100*iii_A300/iii_backGrnd, iii_data)
+
         if my_data.GetMaximum() > my_total.GetMaximum():
           my_total.SetMaximum( 1.3 * my_data.GetMaximum() )
         else: my_total.SetMaximum( 1.3 * my_total.GetMaximum() )
@@ -352,6 +360,8 @@ for key in run_map.keys():
 
         c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s.pdf" % fileName)
         c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/png/%s.png" % fileName)
+        if KSTest:
+          c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/KS-Testing/%s_n_%i.png" % (variable, iii_data))
         if run_map[key][i][0] == 'mva_metEt':
             pad5.SetLogy()
             if my_data.GetMaximum() > my_total.GetMaximum():
@@ -366,5 +376,73 @@ for key in run_map.keys():
 #            #txt.Draw()
 #
             c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s_log.root" % fileName)
-        pad5.Close()
-        c3.Close()
+
+        ''' Set us up to run a KS test on mvamet '''
+        if KSTest and (run_map[key][i][0] == 'mva_metEt'):
+          print "Starting a KS routine"
+          ksTester = ROOT.TH1F("ksTester", "ksTester, mva metEt", varBin+1, 0, varRange+varRange/varBin )
+          ksTestMC = ROOT.TH1F("ksTester mc", "MC CDF", varBin+1, 0, varRange+varRange/varBin)
+          ksTestData = ROOT.TH1F("ksTester data", "Data CDF", varBin+1, 0, varRange+varRange/varBin)
+          ks_dataT = 0
+          ks_mcT = 0
+          for kkk in range (1, numBins +2):
+            ks_dataT += my_data.GetBinContent(kkk)
+            ks_mcT += my_total.GetStack().Last().GetBinContent(kkk)
+          print "total mc: %f total data: %f" % (ks_mcT, ks_dataT)
+          ks_data = 0
+          ks_mc = 0
+          maxDiff = 0
+          for jjj in range (1, numBins +2):
+            dataNum = my_data.GetBinContent(jjj)
+            mcNum = my_total.GetStack().Last().GetBinContent(jjj)
+            ks_mc += (mcNum/ks_mcT)
+            ks_data += (dataNum/ks_dataT)
+            ksTestMC.SetBinContent(jjj, ks_mc)
+            ksTestData.SetBinContent(jjj, ks_data)
+            if (math.fabs( ks_mc - ks_data ) > maxDiff):
+              maxDiff = math.fabs( ks_mc - ks_data )
+            print "bin : %i mc: %f data: %f MaxDiff: %f" % (jjj, ks_mc, ks_data, maxDiff)
+          print "D = %f" % maxDiff
+          print "D*SQRT(N) = %f * %f = %f" % (maxDiff, math.sqrt(ks_dataT), maxDiff * math.sqrt(ks_dataT))
+          zKS = ( math.sqrt( ks_dataT ) + 0.12 + ( 0.11/math.sqrt( ks_dataT ) ) ) * maxDiff
+          print "Z = %f" % zKS
+          Q_ks = 0
+          for qqq in range(1, 9):
+            #Q_ks += 2 * ( (-1)**(qqq - 1) ) * math.exp( -2*qqq*qqq*0.8*0.8 )
+            Q_ks += 2 * ( (-1)**(qqq - 1) ) * math.exp( -2*qqq*qqq*zKS*zKS )
+            print "Q_ks: %f" % Q_ks
+          ksTestMC.SetMinimum( 0 )
+          ksTestData.SetMinimum( 0 )
+          c7 = plotter.getCanvas() # Use Kenneth's canvas setup
+          pad7 = ROOT.TPad("pad5","",0,0,1,1) # compare distributions
+          pad7.Draw()
+          pad7.SetGridy(1)
+          pad7.cd()
+          #ksTestMC.SetTitle("K-S Test CDFs of MC & Data;%s (GeV)" % (variable) )
+          ksTestMC.SetLineColor( ROOT.kRed )
+          ksTestData.SetLineColor( ROOT.kBlue )
+          ksTestMC.Draw("hist")
+          ksTestData.Draw("hist same")
+          ROOT.gPad.Update()
+          leg = pad7.BuildLegend(0.60, 0.50, 0.93, 0.58)
+          leg.SetMargin(0.3)
+          #leg.SetFillColor(0)
+          #leg.SetBorderSize(0)
+          leg.Draw()
+          ksTestMC.GetXaxis().SetTitle("%s (GeV)" % (variable))
+          pad7.SetTitle("xxx")
+          txt = ROOT.TText(.9, 1.07, "CMS Preliminary, K-S Test CDFs of MC & Data" )
+          txt.SetTextSize(.04)
+          txt.Draw()
+          txtB = ROOT.TPaveText(150, 0.25, 300, .45)
+          txtB.AddText("KS Statistics Summary:")
+          txtB.AddText("N = %i" % ks_dataT)
+          txtB.AddText("D = %f" % maxDiff)
+          txtB.AddText("Z = %f" % zKS)
+          txtB.AddText("p Value = %f" % Q_ks)
+          txtB.Draw()
+          ROOT.gPad.Update()
+          fileNameKS = "%s_number_%i" % (variable, ks_dataT)
+          c7.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/KS-Testing/%s.png" % fileNameKS)
+          c7.Close()
+
