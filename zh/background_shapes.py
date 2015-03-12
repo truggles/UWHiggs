@@ -6,9 +6,13 @@ import os
 import pyplotter.plot_functions as plotter
 import math
 
-KSTest = True
-#blind = False
-blind = True
+#AZhSample = 'AZh350'
+AZhSample = 'AZh300'
+
+KSTest = False
+#KSTest = True
+blind = False
+#blind = True
 A300Scaling = 20
 ROOT.gROOT.SetBatch(True)
 txtLabel = True
@@ -32,7 +36,7 @@ samples = { 'TTZ' : ("kGreen-7", "kCyan-2", 21),
             'WWZ' : ("kGreen+2", "kGreen+2", 21),
             'GGToZZ2L2L' : ("kRed-7", "kRed-2", 21), 
             'Zjets' : ("kYellow-7", "kMagenta+1", 21),
-            'AZh300' : ("kBlue", "kBlue", 21),
+            AZhSample : ("kBlue", "kBlue", 21),
             'data_obs' : ("","")
 }
 
@@ -151,8 +155,8 @@ for key in run_map.keys():
             varRange = variables_map[variable][1]
             varBin = variables_map[variable][0]
         my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
-        my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
-        #my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preAppModified_Final/cards/shapes.root", "r")
+        #my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
+        my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preAppModified_Final/cards/shapes.root", "r")
         my_data = ROOT.TH1F("my_data", "Data", varBin, 0, varRange)
         my_ZH_ww125 = ROOT.TH1F("my_ZH_ww125", "ZH_ww125", varBin, 0, varRange)
         my_ZH_tt125 = ROOT.TH1F("my_ZH_tt125", "ZH_tt125", varBin, 0, varRange)
@@ -165,7 +169,7 @@ for key in run_map.keys():
         my_Zjets = ROOT.TH1F("my_Zjets", "Zjets (Red bkg)", varBin, 0, varRange)
         my_A300 = ROOT.TH1F("my_A300", "%i x A300, xsec=1fb" % A300Scaling, varBin, 0, varRange)
         
-        for sample in ['ZH_ww125', 'ZH_tt125', 'TTZ', 'GGToZZ2L2L', 'ZZ', 'Zjets', 'ZZZ', 'WZZ', 'WWZ', 'AZh300', 'data_obs']:
+        for sample in ['ZH_ww125', 'ZH_tt125', 'TTZ', 'GGToZZ2L2L', 'ZZ', 'Zjets', 'ZZZ', 'WZZ', 'WWZ', AZhSample, 'data_obs']:
             #print sample
             my_red_combined = ROOT.THStack("%s combined" % sample, "%s combined" % sample)
         
@@ -277,10 +281,10 @@ for key in run_map.keys():
                         print "bin: %i" % bin
                         my_data.SetBinError(bin, 0)
                         my_data.SetBinContent(bin, 0)
-            if sample == 'AZh300':
+            if sample == AZhSample:
                 my_A300.Add( my_red_combined.GetStack().Last().Clone() )
                 my_A300.Scale( A300Scaling )
-            if sample != 'data_obs' and sample != 'AZh300':
+            if sample != 'data_obs' and sample != AZhSample:
                 color = "ROOT.%s" % samples[sample][0]
                 fillColor = "ROOT.%s" % samples[sample][1]
                 my_red_combined.GetStack().Last().SetFillColor( eval(color) )
@@ -326,6 +330,7 @@ for key in run_map.keys():
         if my_data.GetMaximum() > my_total.GetMaximum():
           my_total.SetMaximum( 1.3 * my_data.GetMaximum() )
         else: my_total.SetMaximum( 1.3 * my_total.GetMaximum() )
+        #my_total.SetMaximum(17) #XXX#
         ###if my_data.GetMaximum() > my_total.GetMaximum():
         ###  my_total.SetMaximum( 3.2 * my_data.GetMaximum() )
         ###else: my_total.SetMaximum( 3.2 * my_total.GetMaximum() )
