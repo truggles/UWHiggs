@@ -155,11 +155,11 @@ for key in run_map.keys():
         my_A300 = ROOT.TH1F("my_A300", "%i x A300, xsec=1fb" % A300Scaling, varBin, 0, varRange)
         
         for sample in ['ZH_ww125', 'ZH_tt125', 'TTZ', 'GGToZZ2L2L', 'ZZ', 'Zjets', 'ZZZ', 'WZZ', 'WWZ', AZhSample, 'data_obs']:
-            print sample
+            #print sample
             my_red_combined = ROOT.THStack("%s combined" % sample, "%s combined" % sample)
         
             for channel in run_map[key][0]:
-                print channel
+                #print channel
 #                if run_map[key][i][2] == "all":
 #                     if variable == 'A_SVfitMass': sampVar = sample
 #                     else: sampVar = sample + "_" + variable
@@ -209,7 +209,6 @@ for key in run_map.keys():
                 my_red.GetXaxis().SetTitle("%s (GeV), %s" % (variable, channel) )
         
                 ''' Set reasonable maximums on histos '''        
-                my_red_max = my_red.GetMaximum()
                 my_red.SetMaximum(1.8 * my_red.GetMaximum() )
             
                 #c1.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s/%s.png" % (sample, channel))
@@ -316,7 +315,7 @@ for key in run_map.keys():
 
         #my_total.GetStack().Last().Rebin( 2 )
         my_total.Draw("hist e1")
-        my_total.GetYaxis().SetTitle("Events / %i %s" % ( (variables_map[variable][1]/variables_map[variable][0]), variables_map[variable][3] ) )
+        my_total.GetYaxis().SetTitle("Events / %i %s" % ( (2 * variables_map[variable][1]/variables_map[variable][0]), variables_map[variable][3] ) )
         my_total.GetXaxis().SetTitle("%s %s" % (run_map[key][i][1], variables_map[variable][3]) )
         
 
@@ -325,7 +324,8 @@ for key in run_map.keys():
         my_A300.SetLineColor(ROOT.kOrange+10)
         my_A300.Draw("hist same")
 
-        numBins = my_A300.GetXaxis().GetNbins()
+        # Used for calculating signal / background
+        '''numBins = my_A300.GetXaxis().GetNbins()
         iii_A300 = 0
         iii_backGrnd = 0
         iii_data = 0
@@ -341,10 +341,12 @@ for key in run_map.keys():
           if backGrnd > 0.0:
             print "Bin %2i : %6.4f / %8.4f = %6.4f" % (iii, A_300, backGrnd, 100*A_300/backGrnd )
         print "Total Signal to Background: %6.4f / %8.4f = %8.4f   ---   data: %i" % (iii_A300, iii_backGrnd, 100*iii_A300/iii_backGrnd, iii_data)
+        '''
 
         if my_data.GetMaximum() > my_total.GetMaximum():
           my_total.SetMaximum( 1.3 * my_data.GetMaximum() )
         else: my_total.SetMaximum( 1.3 * my_total.GetMaximum() )
+        #my_total.SetMaximum(17)
         ###if my_data.GetMaximum() > my_total.GetMaximum():
         ###  my_total.SetMaximum( 3.2 * my_data.GetMaximum() )
         ###else: my_total.SetMaximum( 3.2 * my_total.GetMaximum() )
