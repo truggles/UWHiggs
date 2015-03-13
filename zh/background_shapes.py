@@ -5,12 +5,16 @@ import ROOT
 import os
 import pyplotter.plot_functions as plotter
 import math
+from Stats import ChiSqProb
 
 #AZhSample = 'AZh350'
 AZhSample = 'AZh300'
 
-KSTest = False
-#KSTest = True
+Cards = 'Official'
+#Cards = 'hSVFit'
+#Cards = 'Current'
+#KSTest = False
+KSTest = True
 blind = False
 #blind = True
 A300Scaling = 20
@@ -155,8 +159,12 @@ for key in run_map.keys():
             varRange = variables_map[variable][1]
             varBin = variables_map[variable][0]
         my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
-        #my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
-        my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preAppModified_Final/cards/shapes.root", "r")
+        if Cards == 'Official':
+          my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preAppModified_Final/cards/shapes.root", "r")
+        elif Cards == 'hSVFit':
+          my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preApp_hSVFitCut/cards/shapes.root", "r")
+        else:
+          my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
         my_data = ROOT.TH1F("my_data", "Data", varBin, 0, varRange)
         my_ZH_ww125 = ROOT.TH1F("my_ZH_ww125", "ZH_ww125", varBin, 0, varRange)
         my_ZH_tt125 = ROOT.TH1F("my_ZH_tt125", "ZH_tt125", varBin, 0, varRange)
@@ -382,7 +390,7 @@ for key in run_map.keys():
 #
             c3.SaveAs("/afs/hep.wisc.edu/home/truggles/public_html/A_to_Zh_Plots/background_comparisons/%s_log.root" % fileName)
 
-        ''' Set us up to run a KS test on mvamet '''
+        ''' Set us up to run a KS test AND Chi Squared test on mvamet '''
         if KSTest and (run_map[key][i][0] == 'mva_metEt'):
           print "Starting a KS routine"
           ksTester = ROOT.TH1F("ksTester", "ksTester, mva metEt", varBin+1, 0, varRange+varRange/varBin )
@@ -394,6 +402,7 @@ for key in run_map.keys():
             ks_dataT += my_data.GetBinContent(kkk)
             ks_mcT += my_total.GetStack().Last().GetBinContent(kkk)
           print "total mc: %f total data: %f" % (ks_mcT, ks_dataT)
+          ChiSq = 0
           ks_data = 0
           ks_mc = 0
           maxDiff = 0
@@ -404,6 +413,7 @@ for key in run_map.keys():
             ks_data += (dataNum/ks_dataT)
             ksTestMC.SetBinContent(jjj, ks_mc)
             ksTestData.SetBinContent(jjj, ks_data)
+            ChiSq += (dataNum - mcNum)**2 / mcNum
             if (math.fabs( ks_mc - ks_data ) > maxDiff):
               maxDiff = math.fabs( ks_mc - ks_data )
             print "bin : %i mc: %f data: %f MaxDiff: %f" % (jjj, ks_mc, ks_data, maxDiff)
@@ -411,6 +421,7 @@ for key in run_map.keys():
           print "D*SQRT(N) = %f * %f = %f" % (maxDiff, math.sqrt(ks_dataT), maxDiff * math.sqrt(ks_dataT))
           zKS = ( math.sqrt( ks_dataT ) + 0.12 + ( 0.11/math.sqrt( ks_dataT ) ) ) * maxDiff
           print "Z = %f" % zKS
+          print "Chi Squared = %f" % ChiSq
           Q_ks = 0
           for qqq in range(1, 9):
             #Q_ks += 2 * ( (-1)**(qqq - 1) ) * math.exp( -2*qqq*qqq*0.8*0.8 )
@@ -439,12 +450,16 @@ for key in run_map.keys():
           txt = ROOT.TText(.9, 1.07, "CMS Preliminary, K-S Test CDFs of MC & Data" )
           txt.SetTextSize(.04)
           txt.Draw()
-          txtB = ROOT.TPaveText(150, 0.25, 300, .45)
-          txtB.AddText("KS Statistics Summary:")
+          txtB = ROOT.TPaveText(150, 0.19, 300, .45)
+          txtB.AddText("KS & ChiSq Statistics Summary:")
           txtB.AddText("N = %i" % ks_dataT)
           txtB.AddText("D = %f" % maxDiff)
           txtB.AddText("Z = %f" % zKS)
           txtB.AddText("p Value = %f" % Q_ks)
+          txtB.AddText("Chi Squared = %f" % ChiSq)
+          ChiProb = ChiSqProb( ChiSq, ks_dataT )
+          print "Chi Squared Probability = %f" % ChiProb
+          txtB.AddText("Chi Squared Probability = %f" % ChiProb )
           txtB.Draw()
           ROOT.gPad.Update()
           fileNameKS = "%s_number_%i" % (variable, ks_dataT)
