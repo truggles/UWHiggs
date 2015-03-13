@@ -14,5 +14,6 @@ tdrstyle.py
 *.root
 pyplotter/*
 HIG-14-034/*
+cardsMF/*
 
 pick_fsa_events.py
