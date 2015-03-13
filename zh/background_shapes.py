@@ -5,7 +5,7 @@ import ROOT
 import os
 import pyplotter.plot_functions as plotter
 import math
-from Stats import ChiSqProb
+from macros.stats import ChiSqProb
 
 #AZhSample = 'AZh350'
 AZhSample = 'AZh300'
