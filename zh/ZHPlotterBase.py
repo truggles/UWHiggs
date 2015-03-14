@@ -28,9 +28,9 @@ import glob
 from FinalStateAnalysis.PlotTools.THBin import zipBins
 import pprint
 import ROOT
-
 import math
 
+targetZHADir = os.environ['targetZHADir']
 ROOT.gROOT.SetBatch(True)
 ROOT.gStyle.SetOptTitle(0)
 
@@ -136,9 +136,19 @@ class ZHPlotterBase(Plotter):
         self.blind = blind
         lumifiles = []
         for x in self.samples:
-            files += glob.glob('results/%s/ZHAnalyze%s/%s.root' % (jobid, channel, x))
             lumifiles += glob.glob('inputs/%s/%s.lumicalc.sum' % (jobid, x))
-        self.outputdir = 'results/%s/plots/%s' % (jobid, self.channelOut.lower() )
+            if targetZHADir == 'Current':
+                files += glob.glob('results/%s/ZHAnalyze%s/%s.root' % (jobid, channel, x))
+            if targetZHADir == 'Official':
+                files += glob.glob('results/%s/preAppModified_Final/ZHAnalyze%s/%s.root' % (jobid, channel, x))
+            if targetZHADir == 'hSVFit':
+                files += glob.glob('results/%s/preApp_hSVFitCut/ZHAnalyze%s/%s.root' % (jobid, channel, x))
+        if targetZHADir == 'Current':
+            self.outputdir = 'results/%s/plots/%s' % (jobid, self.channelOut.lower() )
+        if targetZHADir == 'Official':
+            self.outputdir = 'results/%s/plotsOfficial/%s' % (jobid, self.channelOut.lower() )
+        if targetZHADir == 'hSVFit':
+            self.outputdir = 'results/%s/plotshSVFit/%s' % (jobid, self.channelOut.lower() )
         #pprint.pprint(files)
         blinder = None
         if blind:
@@ -858,7 +868,7 @@ for channel in channels:
     #plotter.write_shapes('A_SVfitMass', 160, shape_dir, unblinded=True)
     plotter.write_shapes('LT_Higgs', 10, shape_dir, unblinded=True)
     plotter.write_shapes('Mass', 20, shape_dir, unblinded=True)
-    plotter.write_shapes('mva_metEt', 10, shape_dir, unblinded=True)
+    plotter.write_shapes('mva_metEt', 5, shape_dir, unblinded=True)
     plotter.write_shapes('%s_%s_Mass' % Zprod, 10, shape_dir, unblinded=True)
     plotter.write_shapes('%s_%s_Mass' % Hprod, 10, shape_dir, unblinded=True)
     plotter.write_shapes('%s_%s_SVfitMass' % Hprod, 10, shape_dir, unblinded=True)
@@ -879,7 +889,12 @@ for channel in channels:
 
 
 #Write yields
-filename = 'results/%s/plots/yields.txt' % jobid
+if targetZHADir == 'Current':
+    filename = 'results/%s/plots/yields.txt' % jobid
+if targetZHADir == 'Official':
+    filename = 'results/%s/plotsOfficial/yields.txt' % jobid
+if targetZHADir == 'hSVFit':
+    filename = 'results/%s/plotshSVFit/yields.txt' % jobid
 lines    = []
 if os.path.isfile(filename):
     with open(filename) as yfile:

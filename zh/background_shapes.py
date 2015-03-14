@@ -48,7 +48,7 @@ variables_map = {'LT_Higgs' : (10, 200, "L_{T} #tau1 #tau2", "(GeV)", "x"),
                  'Mass' : (20, 800, "Visible Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
                  #'Mass' : (20, 200, "SM higgs Visible Mass", "(GeV)", "h"),
                  #'Mass' : (20, 200, "Z Mass", "(GeV)", "z"),
-                 'mva_metEt' : (15, 300, "mva metEt", "(GeV)", "x"),
+                 'mva_metEt' : (60, 300, "mva metEt", "(GeV)", "x"),
                  'A_SVfitMass' : (20, 800, "Mass_{l^{+}l^{-}#tau^{+}#tau^{-}}", "(GeV)", "x"),
                  'SVfitMass' : (15, 300, "#tau1 #tau2 Mass", "(GeV)", "h"),
                  #'DR' : (20, 10, "dR of #tau1 #tau2", "(GeV)", "h"),
@@ -160,10 +160,10 @@ for key in run_map.keys():
             varBin = variables_map[variable][0]
         my_total = ROOT.THStack("my_total", "CMS Preliminary, Red + Irr bgk & Data, 19.7 fb^{-1} at S=#sqrt{8} TeV")
         if Cards == 'Official':
-          my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preAppModified_Final/cards/shapes.root", "r")
+          my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cardsOfficial/shapes.root", "r")
         elif Cards == 'hSVFit':
-          my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/preApp_hSVFitCut/cards/shapes.root", "r")
-        else:
+          my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cardshSVFit/shapes.root", "r")
+        elif Cards == 'Current':
           my_shapes = ROOT.TFile("results/2014-02-28_8TeV_Ntuples-v2/cards/shapes.root", "r")
         my_data = ROOT.TH1F("my_data", "Data", varBin, 0, varRange)
         my_ZH_ww125 = ROOT.TH1F("my_ZH_ww125", "ZH_ww125", varBin, 0, varRange)
@@ -218,7 +218,8 @@ for key in run_map.keys():
 
                 ''' Rebin for better viewing! '''
                 if run_map[key][i][0] == 'Pt': my_red.Rebin(4)
-                if run_map[key][i][0] == 'mva_metEt': my_red.Rebin(2)
+                if not KSTest:
+                  if run_map[key][i][0] == 'mva_metEt': my_red.Rebin(4)
                 if run_map[key][i][0] == 'Mass' and run_map[key][i][2] == 'all': my_red.Rebin(2)
                 if run_map[key][i][0] == 'SVfitMass' and run_map[key][i][2] == 'h': my_red.Rebin(2)
                 if run_map[key][i][0] == 'A_SVfitMass' and run_map[key][i][2] == 'all': my_red.Rebin(2)

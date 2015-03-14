@@ -3,6 +3,13 @@ recipes = ENV['CMSSW_BASE'] + '/src/FinalStateAnalysis/PlotTools/rake/recipes.ra
 import recipes
 
 $jobid = ENV['jobid']
+$targetZHADir = ENV['targetZHADir']
+
+# Enable drawing ZHA samples from difference repositories and createing different
+# versions of plots and cards directories
+#$targetZHADir = 'Current'
+#$targetZHADir = 'Official'
+#$targetZHADir = 'hSVFit'
 
 # Figure out what run period we are in
 $period = '7TeV'
@@ -838,13 +845,29 @@ end
 #      copycards -> move cards to official HTT CVS area
 ################################################################################
 
+if $targetZHADir == 'Current'
+  plotsFolder = 'plots'
+  cardsFolder = 'cards'
+  sh "echo $targetZHADir"
+end
+if $targetZHADir == 'Official'
+  plotsFolder = 'plotsOfficial'
+  cardsFolder = 'cardsOfficial'
+  sh "echo $targetZHADir"
+end
+if $targetZHADir == 'hSVFit'
+  plotsFolder = 'plotshSVFit'
+  cardsFolder = 'cardshSVFit'
+  sh "echo $targetZHADir"
+end
+
 
 # Output directories
 channels = [ "mmmt", "eemt", "mmet", "eeet", "mmem", "eeem", "mmtt", "eett"]
 chToRun  = ["python","ZHPlotterBase.py"]
 outFiles = Array.new
 channels.each do |channel|
-  $plotdir = "results/#{$jobid}/plots/#{channel}/"
+  $plotdir = "results/#{$jobid}/#{plotsFolder}/#{channel}/"
   directory $plotdir
   outf = "#{$plotdir}/#{channel}_shapes_#{$period}.root"
   outFiles << outf
@@ -862,15 +885,15 @@ end
 
 
 
-$carddir = "results/#{$jobid}/cards"
+$carddir = "results/#{$jobid}/#{cardsFolder}"
  
 ## Combine all category shape files into the datacard project
-file "#{$carddir}/shapes.root" => Dir.glob("results/#{$jobid}/plots/????/????_shapes_#{$period}.root") do |t|
+file "#{$carddir}/shapes.root" => Dir.glob("results/#{$jobid}/#{plotsFolder}/????/????_shapes_#{$period}.root") do |t|
   sh "mkdir -p #{$carddir}"
   sh "hadd -f #{t.name} #{t.prerequisites.join(' ')}"
   puts "#{$jobid}"
   puts "#{$period}"
-  puts "results/#{$jobid}/plots/????/????_shapes_#{$period}.root"
+  puts "results/#{$jobid}/#{plotsFolder}/????/????_shapes_#{$period}.root"
   puts t.prerequisites
 end
 
