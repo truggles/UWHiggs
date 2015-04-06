@@ -11,19 +11,23 @@ The results obtained for PDF and QCD scale uncertainties, summarized in the Tabl
 The uncertainty on reducible background is estimated by evaluating an individual uncertainty
 for each lepton fake rate and  applying it to the background calculation.
 
-One part of the uncertainty on the tau fake rate is due to the uncertainty on the fit of the fake rate.
-As mentioned earlier, the dependency of the fake rate on the associated jet $p_T$ is fitted with an exponential function.
-The uncertainties on the fitted parameters are used to compute upper and lower bounds for the fitting function. 
-Additionally,
- it is shown that 20\% uncertainty band on tau fake rate, can cover the fit uncertainty as well as statistical fluctuation.
+The fake rate fit functions are varied within their uncertainties, and the reducible background yields are recomputed using the extreme fit functions.
+Varying electron and muon fake rate fits gives a 50\% yield variation in emu final state. The same method gives a 15\% uncertainty in $\tau\tau$ final state.
+In $e\tau$ and $\mu\tau$ final state, two components play a role: the tau fit function, fully correlated between both, and the light lepton fit functions, decorrelated as one is related to the electron and the other one to the muon. The tau component amounts to 20\%, and the light lepton component to 10\%.
 
-The same procedure is applied for electron and muon fake rates.
-The presence of an attidional tau in the event leads to a lower rate since it induces a greater hadronic activity in the event. To compensate for the slightly different topologies in which these fake rates are extracted and applied,
-we assign a 30\% uncertainty. This band also covers the fit uncertainty and statistical fluctuations.
+%One part of the uncertainty on the tau fake rate is due to the uncertainty on the fit of the fake rate.
+%As mentioned earlier, the dependency of the fake rate on the associated jet $p_T$ is fitted with an exponential function.
+%The uncertainties on the fitted parameters are used to compute upper and lower bounds for the fitting function. 
+%Additionally,
+% it is shown that 20\% uncertainty band on tau fake rate, can cover the fit uncertainty as well as statistical fluctuation.
 
-The 20\% uncertainty on tau fake rate and 30\% correlated uncertainty on the electron and muon fake rates are
-propagated through the background calculation to derive individual systematic uncertainties for each decay channel.
-By propagating these uncertainties on the fake rate and re-calculating the reducible backgrounds for all eight final states, it can be seen that the total amount of reducible has a total uncertainty between 10 to 30\%, depending on the channel. Tau fake rate uncertainty in tautau final states, tau fake rate uncertainty in l-tau final state and electron/muon fake rate in l-tau and ll final states are  accounted to be uncorrelated with each other, as they have been measured differently in different control regions. However they are accounted as correlated among all relevant final states.
+%The same procedure is applied for electron and muon fake rates.
+%The presence of an attidional tau in the event leads to a lower rate since it induces a greater hadronic activity in the event. To compensate for the slightly different topologies in which these fake rates are extracted and applied,
+%we assign a 30\% uncertainty. This band also covers the fit uncertainty and statistical fluctuations.
+
+%The 20\% uncertainty on tau fake rate and 30\% correlated uncertainty on the electron and muon fake rates are
+%propagated through the background calculation to derive individual systematic uncertainties for each decay channel.
+%By propagating these uncertainties on the fake rate and re-calculating the reducible backgrounds for all eight final states, it can be seen that the total amount of reducible has a total uncertainty between 10 to 30\%, depending on the channel. Tau fake rate uncertainty in tautau final states, tau fake rate uncertainty in l-tau final state and electron/muon fake rate in l-tau and ll final states are  accounted to be uncorrelated with each other, as they have been measured differently in different control regions. However they are accounted as correlated among all relevant final states.
 
 The muon and electron trigger efficiencies, identification, isolation values are measured from data with tag--and--probe methods.
 
@@ -59,7 +63,7 @@ PDF for $gg\to ZZ$ & \multicolumn{4}{c|}{10\%}  \\
 QCD scale for $q\bar q\toZZ$  & \multicolumn{4}{c|}{2.6-6.7\%}  \\
 QCD scale for $gg\to ZZ$  & \multicolumn{4}{c|}{24-44\%}  \\
 QCD scale for VHs & \multicolumn{4}{c|}{2.9\%}  \\
-Reducible background estimate & \multicolumn{4}{c|}{15-30\%}  \\
+Reducible background estimate & \multicolumn{4}{c|}{15-50\%}  \\
 $\sigma_{TTZ}$  & \multicolumn{4}{c|}{50\%}   \\
 $\sigma_{WWZ}$  & \multicolumn{4}{c|}{50\%}   \\
 $\sigma_{WZZ}$  & \multicolumn{4}{c|}{50\%}   \\

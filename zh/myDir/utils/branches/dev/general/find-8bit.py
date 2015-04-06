@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 """Script look for 8 bit characters
     """
@@ -6,6 +7,7 @@
 __version__ = "$Revision: 5556 $"
 #$HeadURL: svn+ssh://alverson@svn.cern.ch/reps/admin/tdr2/conf/new-note.py $
 #$Id: new-note.py 5556 2011-01-14 13:30:27Z alverson $
+
 
 import re
 import os
@@ -24,15 +26,15 @@ def main(argv):
     (opts, args) = parser.parse_args()
 
     for file in glob.glob(args[0]):
-        f = open(file,"r",0)
+        f = open(file)
         body = f.read()
         p = re.compile(r"[\x80-\xFF]",re.DOTALL)
         pm = p.findall(body)
         print("Testing %s" % file)
-        print pm
+        print(pm)
         for cand in pm:
             index = body.find(cand)
-            print body[index:index+25]
+            print(body[index:index+25])
             
             
         print("next...")

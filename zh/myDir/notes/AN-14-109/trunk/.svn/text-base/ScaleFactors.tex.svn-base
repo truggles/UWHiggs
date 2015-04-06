@@ -3,8 +3,8 @@
 
 \subsection{Trigger efficiency}
 To compensate the difference in trigger efficiency between data and MC, both data and MC
- trigger efficiencies are fitted with a Crystalball function and the scale factor is obtained by
- dividing these two functions.
+ trigger efficiencies are measured and the scale factor is obtained by
+ dividing these two results.
 
 \subsection{Lepton identification and isolation efficiency}
 

@@ -1,14 +1,14 @@
 10
 
 dir
-274621
+282245
 svn+ssh://svn.cern.ch/reps/tdr2/utils/trunk/general
 svn+ssh://svn.cern.ch/reps/tdr2
 
 
 
-2015-01-17T01:39:58.945949Z
-274148
+2015-03-25T14:10:03.290062Z
+282189
 alverson
 has-props
 
@@ -25,74 +25,6 @@ has-props
 
 
 4525493e-7705-40b1-a816-d608a930855b
-
-patch_html2.pl
-file
-
-
-
-
-2015-01-22T15:16:37.000000Z
-ae7f66ec19566a41424a7bf735663bf7
-2009-12-13T21:54:38.367889Z
-352
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2018
-
-get-ptdr-defs.pl
-file
-
-
-
-
-2015-01-22T15:16:37.000000Z
-09e248458660c467eebcbd310d467787
-2011-06-21T20:51:57.854790Z
-62958
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2564
 
 cms_draft_paper.eps
 file
@@ -128,6 +60,74 @@ has-props
 
 204315
 
+get-ptdr-defs.pl
+file
+
+
+
+
+2015-01-22T15:16:37.000000Z
+09e248458660c467eebcbd310d467787
+2011-06-21T20:51:57.854790Z
+62958
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2564
+
+patch_html2.pl
+file
+
+
+
+
+2015-01-22T15:16:37.000000Z
+ae7f66ec19566a41424a7bf735663bf7
+2009-12-13T21:54:38.367889Z
+352
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2018
+
 cms_in.pdf
 file
 
@@ -161,6 +161,40 @@ has-props
 
 
 57351
+
+CMS_lumi.C
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+0708f5f345becf411d7a61f37bd8a99a
+2015-02-13T20:55:21.000739Z
+277574
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3610
 
 cms-tdr-note.cls
 file
@@ -229,6 +263,74 @@ has-props
 
 
 59187
+
+ATLAS_CMS_logo.pdf
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+aa6dd0f03892f71cba3bb3d5e78a9c98
+2015-03-25T14:10:03.290062Z
+282189
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1178920
+
+CMS_ATLAS_logo.pdf
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+711b2f46c57ffa81ab45ba4289526121
+2015-02-27T12:30:40.934913Z
+278870
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1177689
 
 cms_draft_note.pdf
 file
@@ -400,40 +502,6 @@ has-props
 
 1062
 
-hypernat.sty
-file
-
-
-
-
-2015-01-22T15:16:37.000000Z
-bc0690c746a799482f9ea23ddf1b1ac5
-2009-12-13T21:54:38.367889Z
-352
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-5514
-
 BigDraft.eps
 file
 
@@ -467,6 +535,40 @@ has-props
 
 
 213019
+
+hypernat.sty
+file
+
+
+
+
+2015-01-22T15:16:37.000000Z
+bc0690c746a799482f9ea23ddf1b1ac5
+2009-12-13T21:54:38.367889Z
+352
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+5514
 
 do-pas-svn-upload
 file
@@ -672,6 +774,40 @@ has-props
 
 28118
 
+CMS Funding agencies.xlsx
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+7edae8919324f1baa3e085da480bf46f
+2015-02-12T19:43:04.822335Z
+277446
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+15937
+
 lucas_unsrt_epjc.bst
 file
 
@@ -807,6 +943,40 @@ has-props
 
 
 2288
+
+CMS_lumi.h
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+70162eea3704cb169565495ea45f16d6
+2015-02-13T20:55:21.000739Z
+277574
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+939
 
 cms_paper.eps
 file
@@ -1148,40 +1318,6 @@ has-props
 
 36
 
-do-pas-svn-nodraft
-file
-
-
-
-
-2015-01-22T15:16:37.000000Z
-8571d8a7138e8e733203d91133693dc8
-2010-03-08T04:09:43.382028Z
-3779
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1058
-
 CMS_Totem_logo.pdf
 file
 
@@ -1215,6 +1351,40 @@ has-props
 
 
 824873
+
+do-pas-svn-nodraft
+file
+
+
+
+
+2015-01-22T15:16:37.000000Z
+8571d8a7138e8e733203d91133693dc8
+2010-03-08T04:09:43.382028Z
+3779
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1058
 
 do-pas
 file
@@ -1318,6 +1488,40 @@ has-props
 
 1019
 
+cms_draft_an.pdf
+file
+
+
+
+
+2015-01-22T15:16:37.000000Z
+a64bfe4f620d32656843bfcc53d230bc
+2011-03-06T17:00:00.874937Z
+44192
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+51267
+
 topcapt.sty
 file
 
@@ -1352,16 +1556,16 @@ has-props
 
 2103
 
-cms_draft_an.pdf
+myMacro.C
 file
 
 
 
 
-2015-01-22T15:16:37.000000Z
-a64bfe4f620d32656843bfcc53d230bc
-2011-03-06T17:00:00.874937Z
-44192
+2015-03-25T16:41:10.000000Z
+dc48e77f9b211d419ed8d2ac47770e7a
+2015-02-13T20:55:21.000739Z
+277574
 alverson
 has-props
 
@@ -1384,7 +1588,7 @@ has-props
 
 
 
-51267
+5289
 
 BigDraft.pdf
 file
@@ -1454,40 +1658,6 @@ has-props
 
 6373
 
-changepage.sty
-file
-
-
-
-
-2015-01-22T15:16:37.000000Z
-a9044e2dc40e764dac60d2acda7ae919
-2011-03-08T11:41:55.477307Z
-44635
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-4523
-
 cms_draft_in.pdf
 file
 
@@ -1522,16 +1692,16 @@ has-props
 
 58126
 
-notes_for_authors.tex
+changepage.sty
 file
 
 
 
 
 2015-01-22T15:16:37.000000Z
-438fceff4c6f0d47a8928cffaa1f3a3e
-2014-09-10T19:50:25.360523Z
-259886
+a9044e2dc40e764dac60d2acda7ae919
+2011-03-08T11:41:55.477307Z
+44635
 alverson
 has-props
 
@@ -1554,7 +1724,7 @@ has-props
 
 
 
-67178
+4523
 
 CMS_LHCb_logo.pdf
 file
@@ -1590,16 +1760,16 @@ has-props
 
 823258
 
-pennames-ital.sty
+notes_for_authors.tex
 file
 
 
 
 
-2015-01-22T15:16:37.000000Z
-9bc7c10090e8db5b05186309c956b264
-2011-03-06T16:35:24.570255Z
-44181
+2015-03-25T16:41:10.000000Z
+03d34ad98d339c41ad1e80d8e0ab0a58
+2015-01-23T15:22:46.181439Z
+274755
 alverson
 has-props
 
@@ -1622,7 +1792,7 @@ has-props
 
 
 
-14239
+67325
 
 cms_dn.pdf
 file
@@ -1657,6 +1827,74 @@ has-props
 
 
 96054
+
+pennames-ital.sty
+file
+
+
+
+
+2015-01-22T15:16:37.000000Z
+9bc7c10090e8db5b05186309c956b264
+2011-03-06T16:35:24.570255Z
+44181
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+14239
+
+AN_atlaslogo.pdf
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+f3d2db193f095b6dac97edcf9685217a
+2015-03-11T21:10:23.497689Z
+280347
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+168538
 
 do-pas-nodraft
 file
@@ -1760,50 +1998,16 @@ has-props
 
 61196
 
-cms-tdr.cls
-file
-
-
-
-
-2015-01-22T15:16:37.000000Z
-8c4e2f62fe9ccc49ed66c6dbc6b446da
-2014-12-29T01:49:15.056879Z
-272727
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-34086
-
 cleanRefs.py
 file
 
 
 
 
-2015-01-22T15:16:37.000000Z
-7e75ed68b7efda0a841ad307d514dd49
-2014-09-10T17:10:38.643291Z
-259869
+2015-03-25T16:41:10.000000Z
+96676aaea64e4834195f84ed1556edb5
+2015-02-20T18:01:43.341693Z
+278221
 alverson
 has-props
 
@@ -1826,18 +2030,18 @@ has-props
 
 
 
-19303
+19497
 
-tdrstyle.C
+cms-tdr.cls
 file
 
 
 
 
-2015-01-22T15:16:37.000000Z
-ce88d5ab4a10cb571a2631a694e35da1
-2010-05-21T02:37:25.475635Z
-6428
+2015-03-25T16:41:10.000000Z
+6292e432fc23b5e19ebb8558ed66e293
+2015-03-25T14:10:03.290062Z
+282189
 alverson
 has-props
 
@@ -1860,7 +2064,7 @@ has-props
 
 
 
-4732
+34187
 
 pennames-pazo.sty
 file
@@ -1896,16 +2100,16 @@ has-props
 
 15794
 
-ptdr-definitions.sty
+tdrstyle.C
 file
 
 
 
 
-2015-01-22T15:16:37.000000Z
-4042572df97b214c22f9462b8f31d7ef
-2015-01-17T01:39:58.945949Z
-274148
+2015-03-25T16:41:10.000000Z
+2f1fe82849cc3bb18100b747fc724249
+2015-02-13T20:55:21.000739Z
+277574
 alverson
 has-props
 
@@ -1928,7 +2132,41 @@ has-props
 
 
 
-24372
+4812
+
+ptdr-definitions.sty
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+a7398f8ed62b2eb343264b26fc09afee
+2015-03-25T14:10:03.290062Z
+282189
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+24647
 
 pdfdraftcopy.sty
 file
@@ -2032,6 +2270,40 @@ has-props
 
 18210
 
+histo.root
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+d41de1b1d8385369e9673aa7b7de99fa
+2015-02-13T20:55:21.000739Z
+277574
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+8907
+
 definitions.tex
 file
 
@@ -2100,40 +2372,6 @@ has-props
 
 190163
 
-cms_as.pdf
-file
-
-
-
-
-2015-01-22T15:16:37.000000Z
-e724455b4f6dc70f01ad8be5d197a6a0
-2011-03-06T17:00:00.874937Z
-44192
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-54172
-
 cms_draft_pas.pdf
 file
 
@@ -2168,16 +2406,16 @@ has-props
 
 58617
 
-makeManifest.pl
+cms_as.pdf
 file
 
 
 
 
 2015-01-22T15:16:37.000000Z
-29d4242adba6ff33f5bf80556c05c837
-2015-01-12T16:46:22.633285Z
-273471
+e724455b4f6dc70f01ad8be5d197a6a0
+2011-03-06T17:00:00.874937Z
+44192
 alverson
 has-props
 
@@ -2200,5 +2438,39 @@ has-props
 
 
 
-30361
+54172
+
+makeManifest.pl
+file
+
+
+
+
+2015-03-25T16:41:10.000000Z
+cd872564de65663110f74f29032ba0ef
+2015-03-12T15:28:09.656197Z
+280421
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+31057
 

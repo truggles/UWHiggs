@@ -15,7 +15,7 @@ dominated by irreducible processes, essentially ZZ diboson production.
 \includegraphics[angle=0,scale=0.30]{Plots/results/mmet.pdf}
 \includegraphics[angle=0,scale=0.30]{Plots/results/eett.pdf}
 \includegraphics[angle=0,scale=0.30]{Plots/results/mmtt.pdf}
-\caption[dummy text]{Mass plots, blinded between 280 and 360 GeV.
+\caption[dummy text]{Mass plots. Signal is scaled for tan $\beta =2$ in the low tan $\beta$ scenario of MSSM.
 }
 \label{fig:massplots}
 \end{center}
@@ -24,16 +24,16 @@ dominated by irreducible processes, essentially ZZ diboson production.
 
 Exclusion limits on the cross-section times branching ratio are set at 95\% confidence level, using the CLs method~\cite{Read}.
 As shown in Fig.~\ref{fig:limits_chl} and Fig.~\ref{fig:limits_all}, 
-cross-sections times branching ratio between ... and ... are expected to be excluded for masses 
+cross-sections times branching ratio between 5.4 and 18 fb are excluded for masses 
 between 220 and 350 GeV.
 
 \begin{figure}[htbp]
 \begin{center}
-\includegraphics[angle=0,scale=0.35]{Plots/results/llem_exp_limit.pdf}
-\includegraphics[angle=0,scale=0.35]{Plots/results/llmt_exp_limit.pdf}
-\includegraphics[angle=0,scale=0.35]{Plots/results/llet_exp_limit.pdf}
-\includegraphics[angle=0,scale=0.35]{Plots/results/lltt_exp_limit.pdf}
-\caption[dummy text]{Expected limits in $lle\mu$, $ll\mu\tau_h$, $lle\tau_h$ and $ll\tau_h\tau_h$ final states.
+\includegraphics[angle=0,scale=0.35]{Plots/results/llem_limit.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/llmt_limit.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/llet_limit.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/lltt_limit.pdf}
+\caption[dummy text]{Limits in $lle\mu$, $ll\mu\tau_h$, $lle\tau_h$ and $ll\tau_h\tau_h$ final states.
 }
 \label{fig:limits_chl}
 \end{center}
@@ -42,10 +42,34 @@ between 220 and 350 GeV.
 \begin{figure}[htbp]
 \begin{center}
 \includegraphics[angle=0,scale=0.35]{Plots/results/compa_limit.pdf}
-\includegraphics[angle=0,scale=0.35]{Plots/results/cmb_exp_limit.pdf}
-\caption[dummy text]{Expected limits in all final states combined, and comparison with the different final states.
+\includegraphics[angle=0,scale=0.35]{Plots/results/vhtt_limit.pdf}
+\caption[dummy text]{Limits in all final states combined, and comparison of expected limits between the different final states.
 }
 \label{fig:limits_all}
 \end{center}
 \end{figure}
+
+The results can also be interpreted in the context of 2 Higgs Doublets Models (2HDM). Figure~\ref{fig:2HDM} shows the expected and observed excluded
+areas in the cos($\beta - \alpha$) - tan$\beta$ plan of the 2HDM type 2, whereas figure~\ref{fig:MSSM} illustrates the exclusion limits in the $m_A$ - tan$\beta$ plan in the context of the low tan $\beta$ high scenario of the MSSM.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.35]{Plots/results/modelDependent/cmb_2HDMtyp2-cosba-tanb-azh.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/modelDependent/cmb_2HDMtyp2-cosba-tanb-cmb.pdf}
+\caption[dummy text]{Model-dependent exclusion limits in the context of the 2HDM type 2. The red area indicates the area excluded by the mass of the SM-like scalar being 125 GeV. The left figure corresponds to the present $A\to Zh \to ll\tau\tau$ analysis, while the right figure combines this analysis with the $H\to hh\to bb\tau\tau$ analysis~\cite{CMS_AN_2014-234}.
+}
+\label{fig:2HDM}
+\end{center}
+\end{figure}
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[angle=0,scale=0.35]{Plots/results/modelDependent/cmb_low-tb-high-mA-tanb-azh.pdf}
+\includegraphics[angle=0,scale=0.35]{Plots/results/modelDependent/cmb_low-tb-high-mA-tanb-cmb.pdf}
+\caption[dummy text]{Model-dependent exclusion limits in the context of the MSSM low tan$\beta$ high scenario. The red area indicates the area excluded by the mass of the SM-like scalar being 125 GeV. The left figure corresponds to the present $A\to Zh \to ll\tau\tau$ analysis, while the right figure combines this analysis with the $H\to hh\to bb\tau\tau$ analysis~\cite{CMS_AN_2014-234}.}
+}
+\label{fig:MSSM}
+\end{center}
+\end{figure}
+
 

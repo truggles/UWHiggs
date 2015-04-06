@@ -13,7 +13,7 @@ use XML::Twig;
 use Text::Balanced qw (extract_bracketed);
 #use PDF::API2; #not installed on lxplus
 
-my $VERSION = sprintf "%d.%03d", q$Revision: 273471 $ =~ /(\d+)/g;
+my $VERSION = sprintf "%d.%03d", q$Revision: 280421 $ =~ /(\d+)/g;
 my $verbose;
 my $texFile = 'D:/tdr2/papers/XXX-08-000/trunk/XXX-08-000.tex';
 my $doc = 'XXX-08-000_temp.pdf';
@@ -137,10 +137,10 @@ EOD
    $_ .= do { local( $/ ); <FILE> }; #grab entire content!
    close(FILE);
    # extract svn info: exemplars-- (note that these are the real values for this file)
-   # \RCS$Revision: 273471 $
-   # \RCS$Date: 2015-01-12 10:46:22 -0600 (Mon, 12 Jan 2015) $
+   # \RCS$Revision: 280421 $
+   # \RCS$Date: 2015-03-12 10:28:09 -0500 (Thu, 12 Mar 2015) $
    # \RCS$HeadURL: svn+ssh://svn.cern.ch/reps/tdr2/utils/trunk/general/makeManifest.pl $
-   # \RCS$Id: makeManifest.pl 273471 2015-01-12 16:46:22Z alverson $
+   # \RCS$Id: makeManifest.pl 280421 2015-03-12 15:28:09Z alverson $
    # -- what it looked like under cvs, with the dollar signs removed
    #\RCS Revision: 1.4 
    #\RCS Date: 2008/07/31 09:20:05 
@@ -378,6 +378,7 @@ EOD
       # 980 tag: (MARC Equivalence or Cross-Reference Series Personal Name/Title"
       if ($style eq 'pas')
       {
+          &insert_datafield("980",$record,"NOTE");
           &insert_datafield("980",$record,"CMS-PHYSICS-ANALYSIS-SUMMARIES");
       }
       elsif ($style eq 'cmspaper')
@@ -426,6 +427,10 @@ EOD
           else
           {
               $convertCmd = "convert";
+              if (-f '/afs/cern.ch/cms/external/gs') # temporary patch on lxplus for problems with central gs. See http://bugs.ghostscript.com/show_bug.cgi?id=690676.
+              {
+                  $ENV{'PATH'} = '/afs/cern.ch/cms/external'.':'.$ENV{'PATH'};
+              }
           }
           if ($verbose) {print "> Using convert version...\n"; system($convertCmd,"-version"); print "\n";}
       }
@@ -512,12 +517,17 @@ EOD
                     $outFile =~ m/^(\S+)\.\S{3,4}$/s;
                     $doc_tag = XML::Twig::Elt->new(subfield=>{code=>"d"},$1);
                     $doc_tag->paste('last_child',$fft_tag);
-                    my @convertArgs = ("$outDir/$outFile", "-trim", "-sample", "240", "-define", "pdf:use-cropbox=true", "$outDir/$1-thumb.png");
+                    my @convertArgs = ("-trim", "-sample", "240", "-define", "pdf:use-cropbox=true", "$outDir/$outFile", "$outDir/$1-thumb.png");
                     if ($thumbnails) 
                     {
                       system($convertCmd, @convertArgs)==0 or die "system call to create thumbnails with args @convertArgs failed: $?"; 
                       $doc_tag = XML::Twig::Elt->new(subfield=>{code=>"x"},"$outDir/$1-thumb.png");
                       $doc_tag->paste('last_child',$fft_tag);
+                    }
+                    if (0)
+                    {
+                      @convertArgs = ("-trim", "-density", "600", "-quality", "100", "-define", "pdf:use-cropbox=true", "$outDir/$outFile", "$outDir/$1.png"); 
+                      system($convertCmd, @convertArgs)==0 or die "system call to create thumbnails with args @convertArgs failed: $?";
                     }
                     $fft_tag->paste('last_child',$record);
                 }

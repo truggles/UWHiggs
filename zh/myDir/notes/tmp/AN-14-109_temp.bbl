@@ -106,4 +106,9 @@ A.~Hocker\hrefCMSnoop {}{ {et~al.}, ``{TMVA - Toolkit for Multivariate Data
   2693,
   \href{http://dx.doi.org/10.1088/0954-3899/28/10/313}{\doi{10.1088/0954-3899/28/10/313}}.
 
+\bibitem{CMS_AN_2014-234}
+\hrefCMSnoop {}{H.~to~tau~tau group, ``Search for a heavy Higgs decaying to two
+  125 GeV Higgs in the 2 taus + 2 b final state using data at $\sqrt{s}$ = 8
+  TeV'',} CMS Note 2014/234, 2014.
+
 \end{thebibliography}\endgroup

@@ -1,14 +1,14 @@
 10
 
 dir
-274622
+282245
 svn+ssh://svn.cern.ch/reps/tdr2/notes/AN-14-109/trunk
 svn+ssh://svn.cern.ch/reps/tdr2
 
 
 
-2015-01-19T12:50:51.797299Z
-274228
+2015-03-25T13:58:42.105326Z
+282187
 ccaillol
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2015-01-22T15:17:36.000000Z
-8a69cea1c2163f5bdc7c2a0e39cf634d
-2014-11-19T10:58:00.748046Z
-268351
+2015-03-25T16:41:11.000000Z
+3c36d6bcd18fbfeed8293f076a961ea1
+2015-03-25T08:59:14.697777Z
+282129
 ccaillol
 has-props
 
@@ -92,41 +92,7 @@ has-props
 
 
 
-24003
-
-EventSelection.tex
-file
-
-
-
-
-2015-01-22T15:17:36.000000Z
-9a1074b3afcb64e5bced40fff0aacb3f
-2015-01-16T16:10:35.864411Z
-274096
-ccaillol
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-9362
+24280
 
 AN-14-109.tex
 file
@@ -162,6 +128,40 @@ has-props
 
 4721
 
+EventSelection.tex
+file
+
+
+
+
+2015-01-22T15:17:36.000000Z
+9a1074b3afcb64e5bced40fff0aacb3f
+2015-01-16T16:10:35.864411Z
+274096
+ccaillol
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+9362
+
 CMScol.pdf
 file
 
@@ -195,40 +195,6 @@ has-props
 
 
 158921
-
-OtherChannels.tex
-file
-
-
-
-
-2015-01-22T15:17:36.000000Z
-c5e04e4c773056f75ec95355c8ee6042
-2014-10-23T15:17:57.883659Z
-264989
-ccaillol
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-3463
 
 Summary.tex
 file
@@ -264,16 +230,16 @@ ccaillol
 
 40
 
-Results.tex
+OtherChannels.tex
 file
 
 
 
 
 2015-01-22T15:17:36.000000Z
-6d8c3b3b9afbd199ee11d9bd00e7ac85
-2014-11-18T16:23:36.223317Z
-268258
+c5e04e4c773056f75ec95355c8ee6042
+2014-10-23T15:17:57.883659Z
+264989
 ccaillol
 
 
@@ -296,7 +262,7 @@ ccaillol
 
 
 
-2111
+3463
 
 pdefs.tex
 file
@@ -332,6 +298,43 @@ has-props
 
 7149
 
+Results.tex
+file
+
+
+
+
+2015-03-25T16:41:11.000000Z
+3043fac27dfda51857fe77564fc47d48
+2015-03-25T08:59:14.697777Z
+282129
+ccaillol
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+3831
+
+Plots
+dir
+
 ControlPlots.tex
 file
 
@@ -366,8 +369,39 @@ ccaillol
 
 3290
 
-Plots
-dir
+AMass.tex
+file
+
+
+
+
+2015-03-25T16:41:11.000000Z
+907b2b7fdeb5a7f795e0a6f0810098e6
+2015-03-18T13:32:27.363392Z
+281119
+ccaillol
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1874
 
 Samples.tex
 file
@@ -403,50 +437,16 @@ ccaillol
 
 6064
 
-AMass.tex
-file
-
-
-
-
-2015-01-22T15:17:36.000000Z
-49c9086a12d7ed4705a648ad778abc71
-2015-01-16T16:10:35.864411Z
-274096
-ccaillol
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1734
-
 Systematics.tex
 file
 
 
 
 
-2015-01-22T15:17:36.000000Z
-b6a04e819ab0259f460315968976643e
-2015-01-19T12:50:51.797299Z
-274228
+2015-03-25T16:41:11.000000Z
+c26bd512a4f4abeb888e8bfc8740a778
+2015-03-18T13:32:27.363392Z
+281119
 ccaillol
 
 
@@ -469,7 +469,7 @@ ccaillol
 
 
 
-4426
+5055
 
 ScaleFactors.tex
 file
@@ -477,10 +477,10 @@ file
 
 
 
-2015-01-22T15:17:36.000000Z
-9dfb7c0b464fc463ad2bad05947e118e
-2014-11-18T16:23:36.223317Z
-268258
+2015-03-25T16:41:11.000000Z
+71737c250678915fa885642fd0f07a49
+2015-03-17T14:58:51.857497Z
+280957
 ccaillol
 
 
@@ -503,7 +503,7 @@ ccaillol
 
 
 
-699
+671
 
 CMScolNoCrop.pdf
 file
@@ -545,10 +545,10 @@ file
 
 
 
-2015-01-22T15:17:36.000000Z
-0409967e7327c88a401b4cec8753c956
-2014-11-19T10:58:00.748046Z
-268351
+2015-03-25T16:41:11.000000Z
+9bcbd3a8fb3083d19b9c4607df28a97c
+2015-03-18T13:32:27.363392Z
+281119
 ccaillol
 
 
@@ -571,7 +571,7 @@ ccaillol
 
 
 
-12699
+13080
 
 ParticleIdentification.tex
 file

@@ -1,7 +1,7 @@
 10
 
 dir
-274621
+282245
 svn+ssh://svn.cern.ch/reps/tdr2/utils/tags/v1/general
 svn+ssh://svn.cern.ch/reps/tdr2
 
@@ -672,40 +672,6 @@ has-props
 
 50722
 
-do-paper-nodraft
-file
-
-
-
-
-2015-01-22T15:16:42.000000Z
-cdd0270d6dda3fb516590d6fca556ace
-2009-12-13T21:54:38.367889Z
-352
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1028
-
 notes_for_authors.tex
 file
 
@@ -739,6 +705,40 @@ has-props
 
 
 51157
+
+do-paper-nodraft
+file
+
+
+
+
+2015-01-22T15:16:42.000000Z
+cdd0270d6dda3fb516590d6fca556ace
+2009-12-13T21:54:38.367889Z
+352
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1028
 
 do-pas-svn-preview
 file
@@ -774,40 +774,6 @@ has-props
 
 1062
 
-BigDraft.eps
-file
-
-
-
-
-2015-01-22T15:16:42.000000Z
-58a1c6d5ee58306105362aeb623cbc05
-2009-12-15T18:44:28.009142Z
-405
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-213019
-
 hypernat.sty
 file
 
@@ -841,6 +807,40 @@ has-props
 
 
 5514
+
+BigDraft.eps
+file
+
+
+
+
+2015-01-22T15:16:42.000000Z
+58a1c6d5ee58306105362aeb623cbc05
+2009-12-15T18:44:28.009142Z
+405
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+213019
 
 do-pas-svn-upload
 file
@@ -876,14 +876,14 @@ has-props
 
 1553
 
-c1.pdf
+notes_for_authors.pdf
 file
 
 
 
 
 2015-01-22T15:16:42.000000Z
-26a7b05125468a85f997068edcdf40d4
+4d023652ccd0cc38c1acb7962586118e
 2009-12-13T21:54:38.367889Z
 352
 alverson
@@ -908,7 +908,7 @@ has-props
 
 
 
-3472
+231439
 
 cms_dn.pdf
 file
@@ -944,14 +944,14 @@ has-props
 
 92272
 
-notes_for_authors.pdf
+c1.pdf
 file
 
 
 
 
 2015-01-22T15:16:42.000000Z
-4d023652ccd0cc38c1acb7962586118e
+26a7b05125468a85f997068edcdf40d4
 2009-12-13T21:54:38.367889Z
 352
 alverson
@@ -976,41 +976,7 @@ has-props
 
 
 
-231439
-
-do-pas-nodraft
-file
-
-
-
-
-2015-01-22T15:16:42.000000Z
-c9746df703c1f81b01030101ce6890ad
-2009-12-13T21:54:38.367889Z
-352
-alverson
-has-props
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-1026
+3472
 
 sortbib.pl
 file
@@ -1045,6 +1011,40 @@ has-props
 
 
 3593
+
+do-pas-nodraft
+file
+
+
+
+
+2015-01-22T15:16:42.000000Z
+c9746df703c1f81b01030101ce6890ad
+2009-12-13T21:54:38.367889Z
+352
+alverson
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1026
 
 new-cms-tdr.cls
 file

@@ -238,6 +238,9 @@ class cleanRefs:
                 #
                 # ad hoc checks
                 #
+                if self._bib[key][0]=='TECHREPORT':
+                    if not 'URL' in self._bib[key][1].keys():
+                        print('{0}:\t Missing URL for Techreport '.format(key))
                 if self._bib[key][0]=='ARTICLE':
                     if not 'AUTHOR' in self._bib[key][1].keys():
                         print('{0}:\t Missing AUTHOR '.format(key))

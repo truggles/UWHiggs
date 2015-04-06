@@ -15,7 +15,7 @@ Triboson WWZ/WZZ/ZZZ production is also considered as irreducible background.
 Finally, ttZ, where one Z decays into an electron or a muon pair,
 and both top quarks decay leptonically (to $e$, $\mu$ or $\tau$) with an additional b--jet, though small thanks to the b--jet veto,
 also contributes to the irreducible background.
-All the processes are regrouped under the "rare" appellation.
+All these processes are regrouped under the "rare" appellation.
 
 
 \subsection{Reducible background}
@@ -24,7 +24,8 @@ All the processes are regrouped under the "rare" appellation.
 The primary source of reducible background in final states with two hadronic taus is Z+jets, while another 
 significant source is SM WZ+jets production in other final states with three or more light leptons. 
 In $ll\tau_h\tau_h$ final states, the reducible background is essentially composed of Z+jets events with a least two jets, whereas in 
-$lle\tau_h$ and $ll\mu\tau_h$ final states, the main contribution to the reducible background comes from WZ+jets with 3 light leptons, see Fig.~\ref{fig:composition}.
+$lle\tau_h$ and $ll\mu\tau_h$ final states, the main contribution to the reducible background comes from WZ+jets with 3 light leptons.
+Fig.~\ref{fig:composition} naively shows these contributions by applying the selection to corresponding MC samples, without uncertainties or corrections related to the jet to lepton fake rates.
 In both processes, one or more jets are misidentified as leptons. 
 The contribution from these processes to the final selected events is estimated using a data-driven fake rate scheme. 
 
@@ -45,8 +46,8 @@ This effectively eliminates any possible signal while maintaining roughly the sa
 
 \subsubsection{Jet $\to e$ and jet $\to \mu$ fake rates}
 
-Electron (muon) fake rates are measured using $e\tau_{h} (\mu\tau_{h})$ final states. 
-Electron (muon) candidates are selected as outlined in Section \ref{section:eventSelection} for the $e\tau_{h} (\mu\tau_{h})$ final states, 
+Electron (muon) fake rates are measured using $e\tau_{h}$ $(\mu\tau_{h})$ final states. 
+Electron (muon) candidates are selected as outlined in Section \ref{sec:eventSelection} for the $e\tau_{h}$ $(\mu\tau_{h})$ final states, 
 with the following exceptions:
 
 \begin{itemize}
@@ -60,7 +61,7 @@ with the following exceptions:
 Events that pass these selections define the "denominator" region. 
 Electrons (muons) that also pass the identification and isolation requirements are included in the "numerator" region". 
 The fake rate is calculated as the ratio of the number of events in the numerator region to the number of events in the denominator region. 
-The fake rate is measured for ranging values of the closest jet p$_{T}$, then fitted with a falling exponential, as shown in Fig.~\ref{fig:emuFR}. 
+The fake rate is measured for ranging values of the closest jet p$_{T}$, then fitted with the sum of a constant and a falling exponential, as shown in Fig.~\ref{fig:emuFR}. 
 The best-fit exponential function is used to estimate the fake rate, $F(jet p_{T})$ for a given data event. 
 
 \begin{figure}[htbp]
@@ -83,8 +84,9 @@ The selections are the same as those outlined in Section \ref{section:eventSelec
 with the exception that the cut on the scalar p$_{T}$ sum has been reduced to 50 GeV. 
 The fake rate is calculated as the ratio of the number of events that pass all selections to the number of events that 
 pass all selections other than isolation.
-As is done for electrons and muons, this fake rate is measured for various bins of closest jet p$_{T}$, then fitted with a falling exponential. 
+As is done for electrons and muons, this fake rate is measured for various bins of closest jet p$_{T}$, then fitted with the sum of a constant and a falling exponential. 
 Two fits are performed, depending on whether the tau is reconstructed in the barrel ($|\eta|<1.4$) or endcap ($|\eta|>1.4$) of the detector, see Fig.~\ref{fig:tauLTFR}.
+Whereas the agreement between data and fitted function at high $p_T$ in the barrel is less good, this is well compatible within the large statistical uncertainties.
 
 \begin{figure}[htbp]
 \begin{center}

@@ -122,7 +122,7 @@ For \textbf{advice on using \LaTeX}, for example to include figures, see section
 
 
 All files reside in a standard CMS svn repository (called \texttt{tdr2}).
-As long as you are a member of the CMS e-group, you can use a web browser to see the repository: \href{https://svnweb.cern.ch/cern/wsvn/tdr2/?}.
+As long as you are a member of the CMS e-group, you can use a web browser to see the repository: \url{https://svnweb.cern.ch/cern/wsvn/tdr2/?}.
 On any machine with the CMS environment (\eg, \texttt{lxplus.cern.ch}) you can check out either the \emph{entire} repository or selected portions
 with the \texttt{svn} repository address \texttt{svn+ssh://svn.cern.ch/reps/tdr2}
 
@@ -137,7 +137,7 @@ or \href{Lucas.Taylor@cern.ch}{Lucas Taylor}). It is best to supply a list of th
 To generate output, check out your note
 directory from \texttt{svn} following the example below. The \texttt{tag} below is the identifier for your paper, typically of the form XXX-YY-NNN.
 Following the sequence below will populate your local copy of the repository  with only your note and not include the other notes. If you have a note, use ``notes".
-For a paper, use ``papers." [Note: when running without Kerberos authentication, use svn+ssh://username@svn.cern.ch\ldots Additional information on accessing \texttt{svn} is available at the \href{CERN Central SVN Sevice web site.}{https://information-technology.web.cern.ch/book/how-start-working-svn/accessing-svn-repository#SVN Clients} ]
+For a paper, use ``papers." [Note: when running without Kerberos authentication, use svn+ssh://username@svn.cern.ch\ldots Additional information on accessing \texttt{svn} is available at the \href{http://information-technology.web.cern.ch/book/how-start-working-svn/accessing-svn-repository#accessing-sshlinux}{CERN Central SVN Sevice web site.} ]
 
 \begin{verbatim}
 > svn co -N svn+ssh://svn.cern.ch/reps/tdr2 myDir
@@ -167,7 +167,7 @@ Once created, this directory will contain a template note named according to
 the analysis name, \eg \texttt{TOP-07-005.tex}. The \texttt{tdr} script will automatically
 generate the \texttt{cmsNoteHeader} from the directory name.
 
-\subsubsection{Special Note on Physics Analysis Summaries}
+\subsubsection{Special note on Physics Analysis Summaries}
 PAS documents are loaded into the \href{http://cdsweb.cern.ch/collection/CMS\%20PHYSICS\%20ANALYSIS\%20SUMMARIES}{CDS} archives after approval. At this point, the title \emph{as stored in the \texttt{hypersetup} \texttt{pdftitle}
 field} is passed to CDS as the document title. This allows for a fully formatted \LaTeX\ title on the document and a natural language title for easy searching. The abstract, on the other hand, is taken from the \texttt{abstract} \LaTeX\ version. Both are run through a simple-minded pre-processor for display. The preprocessor will not see any \TeX\ macros, however, so those should should not be used.
 
@@ -399,7 +399,7 @@ Valid styles are
 \item \texttt{note} for CMS Notes,
 \item \texttt{an}   for Analysis Notes,
 \item \texttt{pas}  for Physics Analysis Summaries,
-\item \texttt{in}   for Internal Notes.
+\item \texttt{dn}   for Detector Notes.
 \end{itemize}
 
 Note that PAS documents can be in either draft mode (the default), or non-draft,
@@ -483,7 +483,7 @@ To clean up temporary files and emacs and nedit backup files:
 
 
 %----------------------------------------------------------------------------
-\subsection{Formatting for Journals\label{sec:journal-formatting}}
+\subsection{Formatting for journals\label{sec:journal-formatting}}
 You can produce versions of your document formatted following the standards of several of the journals to which CMS submits physics results. Journal-specific options are passed as strings. To use
 our defaults, use a single dash as the option:
 
@@ -496,7 +496,7 @@ Please note that the \texttt{tdr} script can automatically take the pdfkeywords 
 
 \begin{description}
 \item[APS] use the normal command for a paper, but add the appropriate APS options with, \eg, \texttt{--aps="reprint,prl,linenumbers"}. See the revtex documentation for details on APS options. Information on the revtex style for use with APS journals can be found at \url{http://authors.aps.org/revtex4/} and download sites are listed at \url{https://authors.aps.org/revtex4/revtex4_faq.html#download}. APS does not accept sub-directories nor included \TeX files, so the necessary files will either be included or moved to the top level, as appropriate, for submission.
-\item[PLB] use \texttt{--plb="3p,twocolumn,times"} or any other set of Elsevier options. See \url{http://www.elsevier.com/framework_authors/misc/elsdoc.pdf} for details on the Elsevier elsarticle style. As for the APS, PLB only accepts a flat file structure. The PLB default bib style will convert to lowercase all except the first word in the titles of references, so escape proper names, acronyms, \etc, with curly braces, \eg, "\verb|Search for {ADD} extra dimensional gravity|\ldots"
+\item[PLB] use \texttt{--plb="3p,twocolumn,times"} or any other set of Elsevier options. See \url{http://www.elsevier.com/framework_authors/misc/elsdoc.pdf} for details on the Elsevier elsarticle style. As for the APS, PLB only accepts a flat file structure. The PLB default bib style will convert to lowercase all except the first word in the titles of references, so escape proper names, acronyms, \etc, with curly braces, \eg,\linebreak[4] "\verb|Search for {ADD} extra dimensional gravity|\ldots"
 \item[EPJC] Please provide (using the if-then construction described below) a \verb|\titlerunning| in the text before the \verb|\maketitle|. This is used to create a running head so it cannot be longer than roughly half a page width. When EPJC sets articles, they tend to use the \verb|\sidecaption| macro and have caption plus two small plots run across the full page. This option is not accessible in the CMS style although one can pass it to the EPJC style via an if-then.
 \item[JHEP] JHEP accepts papers in the CMS style.
 
@@ -515,7 +515,7 @@ For instances where the CMS style and the journal style are incompatible, one ma
 
 Note, however, that many formatting changes that are required for the two-column format of many journals can be accommodated in the standard CMS style. Using the \texttt{*} format for figures that should extend across two columns does not effect placement for us. If you resize figures, use units of \verb|\columnwidth|, which is the same as the \verb|\textwidth| in single column format.
 %----------------------------------------------------------------------------
-\subsection{Supplemental Material for Journals\label{sec:journal-supplements}}
+\subsection{Supplemental material for journals\label{sec:journal-supplements}}
 Supplemental material should be placed in an independent \LaTeX\ file, \eg, supplemental\_material.tex. This file will be included via conditional code in the main document (say GEN-12-001.tex, representing a GENeric document) when it is formatted for CMS and for the arXiv, and excluded in the journal version. A third file, GEN-12-001\_supp.tex should have the supplemental material included wrapped in a standard document template, which will provide an independent file for uploading to the journal.
 So for GEN-12-001.tex,
 \begin{verbatim}
@@ -650,7 +650,7 @@ Notes use \texttt{author}, \texttt{address}, and \texttt{abstract} commands.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Inclusion of Figures}
+\subsection{Inclusion of figures}
 
 Figures should reside in the \texttt{fig} directory of the corresponding TDR (volume).
 A figure may be included as follows:
@@ -702,14 +702,15 @@ Finally, note that correct results for the labeling occur only if you
 place the \texttt{label} command within the caption environment.
 
 
-\subsubsection{Colour Figures}
+\subsubsection{Colour figures}
 
 Figures will generally be printed in black and white for paper versions of the
 final document.
 We have found that the automatic conversion of colour figures to black and white
 often results in a lack of legibility, so we recommend that all authors provide a
 black and white version for each figure which they have checked for legibility
-on an actual paper copy.
+on an actual paper copy. If paper output is not required or the authors are satisfied with dual-purpose figures,
+the rest of this section can be ignored.
 
 Colour versions of figures can by provided for PDF output using the \verb+combinedfigure+ macro
 in place of the  \texttt{$\backslash$includegraphics} command.
@@ -857,7 +858,7 @@ which produces the following:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Chapters, Sections and Other Sectioning Commands}
+\subsection{Chapters, sections and other sectioning commands}
 
 For all notes use the following
 section heading commands:
@@ -946,7 +947,7 @@ as the latter will invariably become wrong very quickly.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsubsection{Bibliographic References}
+\subsubsection{Bibliographic references}
 
 All bibliographic entries are defined in a BibTeX file
 (i.e., files with \texttt{.bib} extension in the \texttt{bib} directory

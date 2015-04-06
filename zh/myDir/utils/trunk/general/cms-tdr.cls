@@ -1,7 +1,7 @@
 \def\Fileversion$#1: #2 ${\gdef\fileversion{#2}}
 \def\Filedate$#1: #2 #3 ${\gdef\filedate{#2}}
-\Fileversion$Revision: 272727 $
-\Filedate$Date: 2014-12-28 19:49:15 -0600 (Sun, 28 Dec 2014) $
+\Fileversion$Revision: 282189 $
+\Filedate$Date: 2015-03-25 09:10:03 -0500 (Wed, 25 Mar 2015) $
 
 %\def\fileversion{1.0.0}\def\filedate{21 December 2006}
 
@@ -121,6 +121,7 @@
 \usepackage{ifpdf}%
 \ifpdf\usepackage[watermark]{pdfdraftcopy}\watermarkgraphic{BigDraft}%
 \else\usepackage{draftcopy}\fi}
+\usepackage{pdfpages}% not for use in journal submission!
 %\usepackage{float}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5
 %
@@ -561,6 +562,7 @@
 \newcommand{\cmsNoteContact}[1]{\def\cmsContact{#1}}
 \newcommand{\cmslogo}{\includegraphics[height=2cm]{CMS-bw-logo}}
 \newcommand{\cmsTag}{CMS-\cmsNUMBER}
+\newcommand{\cmsCopyright}{\copyright\,\the\year\ CERN for the benefit of the CMS Collaboration.}
 \newcommand{\appMsg}{See Appendix~\ref{app:collab} for the list of collaboration members}
 \def\cmsNoteRepoAddress{http://cdsweb.cern.ch/collection/CMS\%20PHYSICS\%20ANALYSIS\%20SUMMARIES} %this avoids a problem with the percent signs in commands
 \newcommand{\cmsNoteRepo}[0]
@@ -734,7 +736,7 @@ Archive Date:& \ifx\RCSId\empty\relax\else\expandafter\RCSgetDate\RCSId\RCSSVNDa
   }{}
   % submit to :
   \ifx\cmsMessage\undefined\else\vskip 1cm\begin{center}\textit{\cmsMessage}\end{center}\fi
-  \ifthenelse{\boolean{cms@final}}{\null\vfill\ifthenelse{\boolean{cms@paper}}{\noindent\small{\copyright\,\the\year\ CERN for the benefit of the CMS Collaboration. \href{http://creativecommons.org/licenses/by/3.0}{CC-BY-3.0 license}}}{}}{\vfill\hfill{\textcolor{cms@grey}{\framebox{
+  \ifthenelse{\boolean{cms@final}}{\null\vfill\ifthenelse{\boolean{cms@paper}}{\noindent\small{\cmsCopyright\ \href{http://creativecommons.org/licenses/by/3.0}{CC-BY-3.0 license}}}{}}{\vfill\hfill{\textcolor{cms@grey}{\framebox{
   \begin{tabular}{lp{0.8\textwidth}}
   \multicolumn{2}{l}{This box is only visible in draft mode. Please make sure the values below make sense.}\\
   \cline{1-2}\\

@@ -5,9 +5,7 @@ The Standard Model H $\rightarrow \tau\tau$ search used a special algorithm (SVF
 This combines the visible quadri-vectors of the taus, as well as the missing transverse energy and its experimental resolution in a maximum likelihood estimator.
 For a complete description of this algorithm, refer to \cite{Chatrchyan:2014nva}.  The motivation for using SVFit is that when the taus decay leptonically, they do so through a W boson.  This emits a neutrino.  SVFit allows for the incorporation of the neutrinos energy into the analysis.
 
-Unlike the Standard Model search, this analysis uses Markov Chain integration to extract the $p_{T}$, $\eta$, and $\phi$ of the SV-fitted $\tau\tau$ system in addition to its invariant mass. 
-
-The reconstructed A mass is the invariant mass between the Z candidate and the SV--reconstructed h. With respect to using the visible $\tau\tau$ mass, this greatly improves the shape difference between the signal (A $\rightarrow$ Zh) and backgrounds,
+Unlike the Standard Model search where Vegas integration is used, this analysis uses Markov Chain integration to extract the $p_{T}$, $\eta$, and $\phi$ of the SV-fitted $\tau\tau$ system in addition to its invariant mass. These variables are needed in order to compute the invariant mass between the Z system and the di-tau system. The reconstructed A mass is the invariant mass between the Z candidate and the SV--reconstructed h. With respect to using the visible $\tau\tau$ mass, this greatly improves the shape difference between the signal (A $\rightarrow$ Zh) and backgrounds,
 as well as the signal shape resolution, allowing for better sensitivity. The improvement in limit from reconstructing the 
 h mass with the SVFit algorithm ranges typically from 15 to 20\% depending on the final state in this analysis.
 

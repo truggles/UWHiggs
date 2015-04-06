@@ -378,6 +378,7 @@ EOD
       # 980 tag: (MARC Equivalence or Cross-Reference Series Personal Name/Title"
       if ($style eq 'pas')
       {
+          &insert_datafield("980",$record,"NOTE");
           &insert_datafield("980",$record,"CMS-PHYSICS-ANALYSIS-SUMMARIES");
       }
       elsif ($style eq 'cmspaper')
@@ -426,6 +427,10 @@ EOD
           else
           {
               $convertCmd = "convert";
+              if (-f '/afs/cern.ch/cms/external/gs') # temporary patch on lxplus for problems with central gs. See http://bugs.ghostscript.com/show_bug.cgi?id=690676.
+              {
+                  $ENV{'PATH'} = '/afs/cern.ch/cms/external'.':'.$ENV{'PATH'};
+              }
           }
           if ($verbose) {print "> Using convert version...\n"; system($convertCmd,"-version"); print "\n";}
       }
@@ -512,12 +517,17 @@ EOD
                     $outFile =~ m/^(\S+)\.\S{3,4}$/s;
                     $doc_tag = XML::Twig::Elt->new(subfield=>{code=>"d"},$1);
                     $doc_tag->paste('last_child',$fft_tag);
-                    my @convertArgs = ("$outDir/$outFile", "-trim", "-sample", "240", "-define", "pdf:use-cropbox=true", "$outDir/$1-thumb.png");
+                    my @convertArgs = ("-trim", "-sample", "240", "-define", "pdf:use-cropbox=true", "$outDir/$outFile", "$outDir/$1-thumb.png");
                     if ($thumbnails) 
                     {
                       system($convertCmd, @convertArgs)==0 or die "system call to create thumbnails with args @convertArgs failed: $?"; 
                       $doc_tag = XML::Twig::Elt->new(subfield=>{code=>"x"},"$outDir/$1-thumb.png");
                       $doc_tag->paste('last_child',$fft_tag);
+                    }
+                    if (0)
+                    {
+                      @convertArgs = ("-trim", "-density", "600", "-quality", "100", "-define", "pdf:use-cropbox=true", "$outDir/$outFile", "$outDir/$1.png"); 
+                      system($convertCmd, @convertArgs)==0 or die "system call to create thumbnails with args @convertArgs failed: $?";
                     }
                     $fft_tag->paste('last_child',$record);
                 }

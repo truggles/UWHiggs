@@ -39,7 +39,7 @@ use Text::Balanced qw (extract_bracketed);
 # Main:
 #############################################################################
 
-my $VERSION = sprintf "%6d", q$Revision: 273468 $ =~ /(\d+)/g;
+my $VERSION = sprintf "%6d", q$Revision: 282189 $ =~ /(\d+)/g;
 
 my $verbose = '';
 my $help = '';
@@ -1159,6 +1159,9 @@ sub export_arxiv {
             copy("$tmp_dir/auto_generated.bib", "auto_generated.bib");
             # only EPJC does not have a house bib style (AFAIK so far)
             if ($epjcStyle ) { copy("$tmp_dir/auto_generated.bst", "auto_generated.bst"); }
+
+            # pick up funding agency list
+            copy("$gen_dir/CMS Funding agencies.xlsx", "CMS Funding agencies.xlsx");
        }
     }
     else
@@ -1665,7 +1668,7 @@ sub makeAPS{
    my $infile = shift;
    my $outfile = shift;
    my $style = shift;
-   if ($style eq '-') {$style = "prl,reprint";} # default style; removed showpacs option
+   if ($style eq '-') {$style = "prl,reprint,longbibliography";} # default style; removed showpacs option
 
    &replacePdfAuthor($infile, 1);
 
@@ -1681,6 +1684,7 @@ sub makeAPS{
 \\usepackage{topcapt}
 \\usepackage{lineno}
 \\usepackage{dcolumn}
+\\usepackage{rotating} % only for HIG-14-042
 %\\usepackage[table,usenames,dvipsnames]{xcolor}
 %\\usepackage{colortbl}
 \\DeclareMathOperator{\\sgn}{sgn}% Declare the sgn operator
@@ -1689,6 +1693,13 @@ sub makeAPS{
 \\DeclareMathOperator{\\Tr}{Tr}
 \\providecommand{\\cmsNoteHeader}[1]{\\preprint{#1}}
 \\providecommand{\\cmsNoteContact}[1]{\\relax}
+\\providecommand{\\cmsCollabName}{\\relax}
+\\providecommand{\\cmsNUMBER}{\\relax}
+\\providecommand{\\cmslogo}{\\relax}
+\\providecommand{\\cmsTag}{\\relax}
+\\providecommand{\\appMsg}{\\relax}
+\\providecommand{\\cmsCopyright}{\\relax}
+\\providecommand{\\cmsPubBlock}{\\relax}
 % authorlist formatting; cmsAuthorMark matches use in endnotes
 \\newcommand{\\cmsAuthorMark}[1]{\\hbox{\\\@textsuperscript{\\normalfont#1}}}
 \\newskip{\\cmsinstskip} \\cmsinstskip=0pt plus 4pt
@@ -1738,7 +1749,7 @@ EOD
 
    # find the abstract
    m/(.*?)\\abstract(\{.*)/s;
-   print FILE $1, "\\author{The CMS Collaboration}\n\\affiliation{CERN}\n\\begin{abstract}\n";
+   print FILE $1, "\\author{\\cmsCollabName}\n\\affiliation{CERN}\n\\begin{abstract}\n";
 
    my @substring = extract_bracketed("abstract".$2,"{}","abstract");
    #strip off enclosing {}
