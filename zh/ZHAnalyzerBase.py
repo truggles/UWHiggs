@@ -108,6 +108,7 @@ class ZHAnalyzerBase(MegaBase):
 							      ] ),}
         #print '__init__->self.channel %s' % self.channel
         self.eventSet = set() # to keep track of duplicate events
+        #self.cutFlowSet = set() # to make a crude cut flow tracker
         
     ## def get_channel(self):
     ##     return 'LL'
@@ -272,6 +273,7 @@ class ZHAnalyzerBase(MegaBase):
         weight_func  = self.event_weight
 
         counter = 0
+        cutFlowSet = [[0,0,0,0,0]]
         for row in self.tree:
             ######################################################
             ##  SYNC W/ ABDOLLAH DEBUG PART
@@ -352,14 +354,41 @@ class ZHAnalyzerBase(MegaBase):
             #event_weight = 1.0 # quick hack FIXMEE!!!
 
             # Figure out which folder/region we are in, multiple regions allowed
+            cutFlowList = [row.run, row.lumi, row.evt, -1, weight_func(row)]
+            #print cutFlowList
             for folder, region_info in cut_region_map.iteritems():
-                if not (preselection(row)):
-                    continue
+                preselectionTup = preselection(row)
+                #print preselectionTup[0]
+                #print preselectionTup[1]
                 if svFitHMassCut:
                     h_svFitMass = getattr(row, "%s_%s_SVfitMass" % self.H_decay_products() ) 
                     if not (h_svFitMass > 50 and h_svFitMass < 200):
                         #print "H svFitMass cut: %f" % h_svFitMass
                         continue
+                # The FlowList is for the CutFlow histogram
+                if not (preselectionTup[0]):
+                    if cutFlowList[3] < preselectionTup[1]:
+                        cutFlowList[3] = preselectionTup[1]
+                        #print cutFlowList
+                    continue
+                if not self.tau1Selection(row):
+                    if cutFlowList[3] < 10:
+                        cutFlowList[3] = 10
+                        #print cutFlowList
+                if not self.tau2Selection(row):
+                    if cutFlowList[3] < 10: # < 10 because we want tau1selection to remain as the last recorded
+					# cut in cut_flow unless it passes tau1sel and dies later.
+                        cutFlowList[3] = 11
+                        #print cutFlowList
+                if not self.sign_cut(row):
+                    if cutFlowList[3] < 10: # same as 4 lines above
+                        cutFlowList[3] = 12
+                        #print cutFlowList
+                else:
+                    if cutFlowList[3] < 15:
+                        cutFlowList[3] = 15
+                        #print cutFlowList
+		    
                 #if row.evt == 306250:
                 #  if folder[1]=='All_Passed':
                 #    print "analyzing event 306250"
@@ -417,6 +446,17 @@ class ZHAnalyzerBase(MegaBase):
                     if len(wToApply) > 1:
                         w_prod = reduce(lambda x, y: x*y, [x for y,x in wToApply])
                         fill_histos(histos, folder+('all_weights_applied',), row, event_weight*w_prod)
+            if cutFlowSet[-1][0] == row.run and cutFlowSet[-1][1] == row.lumi and cutFlowSet[-1][2] == row.evt:
+	       if cutFlowSet[-1][3] < cutFlowList[3]:
+	           cutFlowSet[-1][3] = cutFlowList[3]
+            else: cutFlowSet.append( cutFlowList )
+            if len( cutFlowSet ) > 5:
+		print cutFlowSet.pop(0)
+        for cycle in range(0, len( cutFlowSet ) ):
+	    print cutFlowSet.pop(0)
+        #print "Last item"
+        #print cutFlowSet
+
         #sync_file.close()
 
     def book_general_histos(self, folder):

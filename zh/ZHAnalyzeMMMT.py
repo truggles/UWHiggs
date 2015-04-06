@@ -73,22 +73,42 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
 
         Excludes FR object IDs and sign cut.
         '''
-        if not selections.ZMuMuSelection(row): return False
-        if not selections.generalCuts(row, 'm1','m2','m3','t') : return False
-        if not selections.looseTauSelectionTESUp(row,'t'): return False
-        if not bool(row.tAntiMuonTight2): return False
-        if not bool(row.tAntiElectronLoose): return False
-        if (row.m3Pt + row.tPt < 45): return False
+        if not selections.ZMuMuSelection(row):
+		#print "0:Z Selection:evt:%i" % row.evt 
+		return (False, 0)
+        if not selections.generalCuts(row, 'm1','m2','m3','t') :
+		#print "1:General Cuts:evt:%i" % row.evt
+		return (False, 1)
+        if not selections.looseTauSelectionTESUp(row,'t'):
+		#print "2:t2Selection:evt:%i" % row.evt
+		return (False, 2)
+        if not bool(row.tAntiMuonTight2):
+		#print "3:t2AntiID:evt:%i" % row.evt
+		return (False, 3)
+        if not bool(row.tAntiElectronLoose):
+		#print "3:t2AntiID:evt:%i" % row.evt
+		return (False, 3)
+        if (row.m3Pt + row.tPt < 45):
+		#print "4:higgsPt:evt:%i" % row.evt
+		return (False, 4)
         #X# if (row.eTightCountZH > 0): return False #THR
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2') + selections.bJetOverlapMu(row, 'm3')
-        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
-        if not selections.looseMuonSelection(row,'m3'): return False
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets):
+		#print "5:bJet:evt:%i" % row.evt
+		return (False, 5)
+        if not selections.looseMuonSelection(row,'m3'):
+		#print "6:t1Selection:evt:%i" % row.evt
+		return (False, 6)
         # XXX Count Test
-        if row.eTightCountZH > 0: return False
-        if row.muTightCountZH_0 > 3: return False
+        if row.eTightCountZH > 0:
+		#print "7:goodLeptonVeto:evt:%i" % row.evt
+		return (False, 7)
+        if row.muTightCountZH_0 > 3:
+		#print "7:goodLeptonVeto:evt:%i" % row.evt
+		return (False, 7)
 
-        return True
+        return (True, 999)
 
     def sign_cut(self, row):
         ''' Returns true if the probes are OS '''
