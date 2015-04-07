@@ -42,7 +42,11 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
     def H_decay_products():
         return ('m3','t')
 
+#    def book_cut_flow(self, folder):
+#        self.book_cut_flow_histos(folder)
+
     def book_histos(self, folder):
+        self.book_cut_flow_histos(folder)
         self.book_general_histos(folder)
         self.book_kin_histos(folder, 'm1')
         self.book_kin_histos(folder, 'm2')

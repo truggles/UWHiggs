@@ -255,6 +255,8 @@ class ZHAnalyzerBase(MegaBase):
             if len(wToApply) > 1:
                 subf = "/".join([folder, 'all_weights_applied'] )
                 self.book_histos(subf)
+        #self.book_cut_flow("os")
+        #self.book_cut_flow("ss")
             
     def process(self):
         # output text file with run:lumi:evt info for syncing purposes
@@ -357,6 +359,8 @@ class ZHAnalyzerBase(MegaBase):
             cutFlowList = [row.run, row.lumi, row.evt, -1, weight_func(row)]
             #print cutFlowList
             for folder, region_info in cut_region_map.iteritems():
+                #print folder
+                #print region_info
                 preselectionTup = preselection(row)
                 #print preselectionTup[0]
                 #print preselectionTup[1]
@@ -450,14 +454,21 @@ class ZHAnalyzerBase(MegaBase):
 	       if cutFlowSet[-1][3] < cutFlowList[3]:
 	           cutFlowSet[-1][3] = cutFlowList[3]
             else: cutFlowSet.append( cutFlowList )
+            cutFolder = ('os', 'All_Passed')
             if len( cutFlowSet ) > 5:
-		print cutFlowSet.pop(0)
+		#print cutFlowSet.pop(0)
+    #def fill_cut_flow(self, histos, folder, cutNum, weight):
+                self.fill_cut_flow(histos, cutFolder, cutFlowList[3], cutFlowList[4])
         for cycle in range(0, len( cutFlowSet ) ):
-	    print cutFlowSet.pop(0)
+	    #print cutFlowSet.pop(0)
+            self.fill_cut_flow(histos, cutFolder, cutFlowList[3], cutFlowList[4])
         #print "Last item"
         #print cutFlowSet
 
         #sync_file.close()
+    def book_cut_flow_histos(self, folder):
+	'''Book general histogram of the cut flow sequence with flags specified in each analyzer'''
+	self.book(folder, "cutFlow", "Cut Flow Squence", 30, 0, 30)
 
     def book_general_histos(self, folder):
         '''Book general histogram, valid for each analyzer'''
@@ -572,9 +583,35 @@ class ZHAnalyzerBase(MegaBase):
 
                 # This is because the new "If" string wants to iterate over A_SVFitMass_tesUp
                 elif attr == 'A_SVfitMass_tesUp': pass
+                elif attr == 'cutFlow': pass
+		#    if key == 'os/All_Passed/cutFlow':
+                #      print "HORRAY!!!"
+                #      print "Attr: %s --- Key: %s --- Value: %s" % (attr, key, value)
+                #      value.Fill( cutNum, weight )
+                      
+                    #print "Key: %s Value: %s" % (key, value)
                 else:
                     # general case, we can just do getattr(row, "variable") i.e. row.variable
                     value.Fill( getattr(row,attr), weight )
+        return None
+
+    def fill_cut_flow(self, histos, folder, cutNum, weight):
+        '''fills cut flow histo ONLY'''
+        folder_str = '/'.join(folder + ('',))
+        for key, value in histos.iteritems():
+	    if not key == 'os/All_Passed/cutFlow': continue
+            location = key[ : key.rfind('/')]+'/'
+            if folder_str != location:
+                continue
+            attr = key[ key.rfind('/') + 1 :]
+
+            if not attr == 'cutFlow': pass
+            else:
+                #print "HORRAY!!!"
+                #print "Attr: %s --- Key: %s --- Value: %s" % (attr, key, value)
+                for index in range(0, cutNum+1 ):
+                  value.Fill( index, weight )
+
         return None
 
     def finish(self):
