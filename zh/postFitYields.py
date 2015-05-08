@@ -10,11 +10,11 @@ cardsDir = 'cardsMF'
 mass = '300'
 variable = "A_SVfitMass"
 
+title = ['Channel', 'Sample', 'Pre-Yield', 'Post-Yield', 'Pre/Post', 'Post/Pre']
 pre = ROOT.TFile("%s/shapes.root" % cardsDir, "r")
 ofile = open("postFitNormalization.txt", 'w')
 ofile.write("%12s %12s %14s %14s %14s %14s\n" % (title[0], title[1], title[2], title[3], title[4], title[5] ) )
 
-title = ['Channel', 'Sample', 'Pre-Yield', 'Post-Yield', 'Pre/Post', 'Post/Pre']
 
 AllChannels = ['mmtt', 'eett', 'mmmt', 'eemt', 'mmet', 'eeet', 'mmme', 'eeem']
 for sample in ['ZH_ww125', 'ZH_tt125', 'TTZ', 'GGToZZ2L2L', 'ZZ', 'Zjets', 'ZZZ', 'WZZ', 'WWZ']:
