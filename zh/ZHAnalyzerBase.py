@@ -108,6 +108,7 @@ class ZHAnalyzerBase(MegaBase):
 							      ] ),}
         #print '__init__->self.channel %s' % self.channel
         self.eventSet = set() # to keep track of duplicate events
+        self.numAllPass = 0
         #self.cutFlowSet = set() # to make a crude cut flow tracker
         
     ## def get_channel(self):
@@ -276,6 +277,7 @@ class ZHAnalyzerBase(MegaBase):
 
         counter = 0
         cutFlowSet = [[0,0,0,0,0]]
+        #numAllPass = 0
         for row in self.tree:
             ######################################################
             ##  SYNC W/ ABDOLLAH DEBUG PART
@@ -356,14 +358,8 @@ class ZHAnalyzerBase(MegaBase):
             #event_weight = 1.0 # quick hack FIXMEE!!!
 
             # Figure out which folder/region we are in, multiple regions allowed
-            cutFlowList = [row.run, row.lumi, row.evt, -1, weight_func(row)]
-            #print cutFlowList
             for folder, region_info in cut_region_map.iteritems():
-                #print folder
-                #print region_info
                 preselectionTup = preselection(row)
-                #print preselectionTup[0]
-                #print preselectionTup[1]
                 if svFitHMassCut:
                     h_svFitMass = getattr(row, "%s_%s_SVfitMass" % self.H_decay_products() ) 
                     if not (h_svFitMass > 50 and h_svFitMass < 200):
@@ -371,39 +367,8 @@ class ZHAnalyzerBase(MegaBase):
                         continue
                 # The FlowList is for the CutFlow histogram
                 if not (preselectionTup[0]):
-                    if cutFlowList[3] < preselectionTup[1]:
-                        cutFlowList[3] = preselectionTup[1]
-                        #print cutFlowList
                     continue
-                if not self.tau1Selection(row):
-                    if cutFlowList[3] < 10:
-                        cutFlowList[3] = 10
-                        #print cutFlowList
-                if not self.tau2Selection(row):
-                    if cutFlowList[3] < 10: # < 10 because we want tau1selection to remain as the last recorded
-					# cut in cut_flow unless it passes tau1sel and dies later.
-                        cutFlowList[3] = 11
-                        #print cutFlowList
-                if not self.sign_cut(row):
-                    if cutFlowList[3] < 10: # same as 4 lines above
-                        cutFlowList[3] = 12
-                        #print cutFlowList
-                else:
-                    if cutFlowList[3] < 15:
-                        cutFlowList[3] = 15
-                        #print cutFlowList
 		    
-                #if row.evt == 306250:
-                #  if folder[1]=='All_Passed':
-                #    print "analyzing event 306250"
-                ##    print row.t1Pt, row.t2Pt
-                #    print int((row.evt)/10**5),int((row.evt)%10**5)
-                #if not preselection(row):
-                #  if folder[1]=='All_Passed': 
-                #    print "event %f failed preselection" % row.evt
-                #    print row.t1Pt, row.t2Pt
-                #  continue
-           
                 selection = region_info['selection']
                 #if counter < 200:
                 #print [ (row_id_map[f] == res) for f, res in selection.iteritems() if res is not None], all( [ (row_id_map[f] == res) for f, res in selection.iteritems() if res is not None] )
@@ -413,21 +378,6 @@ class ZHAnalyzerBase(MegaBase):
                     if folder[1] == 'All_Passed_Leg4Real' and not self.leg4IsReal(row): continue
                     if folder[1] == 'All_Passed_Leg3Real' and not self.leg3IsReal(row): continue
 
-                    #if folder[0]=='os' and folder[1] == 'All_Passed' and row.evt == 306250:
-                    #  print "event 306250 passed full selections"
-                    #  print
-                    #else: continue 
-                    ## add fully passed events to sync file
-                    #if folder[1] == 'All_Passed':
-                    #    hmass = round(getattr(row, "%s_%s_SVfitMass" % self.H_decay_products()), 1) # should switch to SVfitMas when ready
-                    #    hmass_visible = round(getattr(row, "%s_%s_Mass" % self.H_decay_products()), 1)
-                    #    #zmass = round(getattr(row, "%s_%s_Mass" % self.Z_decay_products()), 1)
-                    #    sync_info = str(self.name) + ' ' + str(row.run) + ' ' + str(row.lumi) + ' ' + str(row.evt) + ' '+ str(hmass_visible) + ' ' + str(hmass) + '\n'
-                    #    sync_file.write(sync_info)
-                    #    #print "sync_info: " + sync_info
-
-
- 
                     # make sure we don't have any duplicates
                     # Doesn't work, this currently eliminates duplicates before all selection has happened and thus throws away good events.
                     eventTuple = (row.run, row.lumi, row.evt, folder[0], folder[1] )
@@ -450,25 +400,49 @@ class ZHAnalyzerBase(MegaBase):
                     if len(wToApply) > 1:
                         w_prod = reduce(lambda x, y: x*y, [x for y,x in wToApply])
                         fill_histos(histos, folder+('all_weights_applied',), row, event_weight*w_prod)
+                '''End Folder iteration'''
+
+            ''' Cut Flow section '''
+            # The FlowList is for the CutFlow histogram
+            cutFlowList = [row.run, row.lumi, row.evt, -1, weight_func(row)]
+            cutFlowVal = self.getCutFlow( row )
+            cutFlowList[3] = cutFlowVal
+            #print cutFlowVal
             if cutFlowSet[-1][0] == row.run and cutFlowSet[-1][1] == row.lumi and cutFlowSet[-1][2] == row.evt:
-	       if cutFlowSet[-1][3] < cutFlowList[3]:
-	           cutFlowSet[-1][3] = cutFlowList[3]
+	       if cutFlowSet[-1][3] < cutFlowVal:
+	           cutFlowSet[-1][3] = cutFlowVal
             else: cutFlowSet.append( cutFlowList )
             cutFolder = ('os', 'All_Passed')
             if len( cutFlowSet ) > 5:
-		#print cutFlowSet.pop(0)
-    #def fill_cut_flow(self, histos, folder, cutNum, weight):
-                self.fill_cut_flow(histos, cutFolder, cutFlowList[3], cutFlowList[4])
-        for cycle in range(0, len( cutFlowSet ) ):
-	    #print cutFlowSet.pop(0)
-            self.fill_cut_flow(histos, cutFolder, cutFlowList[3], cutFlowList[4])
-        #print "Last item"
-        #print cutFlowSet
+		tempCutFlow = cutFlowSet.pop(1)
+                #print tempCutFlow
+                self.fill_cut_flow(histos, cutFolder, tempCutFlow[3], tempCutFlow[4])
+                #if tempCutFlow[3] == 10:
+                #  self.numAllPass += 1
+        for item in range(1, len( cutFlowSet ) ):
+            tempCutFlow = cutFlowSet.pop(1)
+            #print tempCutFlow
+            self.fill_cut_flow(histos, cutFolder, tempCutFlow[3], tempCutFlow[4])
+        #print "All passing events: %i" % self.numAllPass
 
-        #sync_file.close()
+    # Provide a cut flow value based on which cuts a 'row' passes
+    # See ZHAnalyzerXXXX.py for the numbers corresponding to preselection
+    def getCutFlow(self, row):
+        preselectionTup = self.preselection(row)
+        if not (preselectionTup[0]):
+            return preselectionTup[1]
+        if not self.sign_cut(row):
+            return 7
+        if not self.tau1Selection(row):
+            return 8
+        if not self.tau2Selection(row):
+            return 9
+        else:
+            return 10 # 10 = passed all cuts
+
     def book_cut_flow_histos(self, folder):
 	'''Book general histogram of the cut flow sequence with flags specified in each analyzer'''
-	self.book(folder, "cutFlow", "Cut Flow Squence", 30, 0, 30)
+	self.book(folder, "cutFlow", "Cut Flow Squence", 11, 0, 11)
 
     def book_general_histos(self, folder):
         '''Book general histogram, valid for each analyzer'''
@@ -607,9 +581,9 @@ class ZHAnalyzerBase(MegaBase):
 
             if not attr == 'cutFlow': pass
             else:
-                #print "HORRAY!!!"
                 #print "Attr: %s --- Key: %s --- Value: %s" % (attr, key, value)
-                for index in range(0, cutNum+1 ):
+                for index in range(1, cutNum+1 ):
+                # leave slot zero open so we can fill it with total event count
                   value.Fill( index, weight )
 
         return None
