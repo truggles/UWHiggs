@@ -39,6 +39,7 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         return ('m','t')
 
     def book_histos(self, folder):
+        self.book_cut_flow_histos(folder)
         self.book_general_histos(folder)
         self.book_kin_histos(folder, 'e1')
         self.book_kin_histos(folder, 'e2')
@@ -65,23 +66,30 @@ class ZHAnalyzeEEMT(ZHAnalyzerBase.ZHAnalyzerBase):
         Excludes FR object IDs and sign cut.
         '''
         #Z Selection
-        if not selections.ZEESelection(row): return False
-        if not selections.generalCuts(row, 'e1','e2','m','t') : return False
-        if not selections.looseTauSelectionTESUp(row,'t'): return False
-        if not bool(row.tAntiMuonTight2): return False
-        if not bool(row.tAntiElectronLoose): return False
-        if (row.mPt + row.tPt < 45): return False
-        #X# if not (row.eTightCountZH == 2): return False #THR
+        if not selections.ZEESelection(row):
+		return (False, 1)
+        if not selections.looseMuonSelection(row,'m'):
+		return (False, 2)
+        if not selections.looseTauSelectionTESUp(row,'t'):
+		return (False, 3)
+        if not bool(row.tAntiMuonTight2):
+		return (False, 3)
+        if not bool(row.tAntiElectronLoose):
+		return (False, 3)
+        if not selections.generalCuts(row, 'e1','e2','m','t') :
+		return (False, 4)
+        if not row.eTightCountZH_0 == 2:
+		return (False, 4)
+        if row.muTightCountZH_0 > 1:
+		return (False, 4)
+        if (row.mPt + row.tPt < 45):
+		return (False, 5)
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2') + selections.bJetOverlapMu(row, 'm')
-        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
-        if not selections.looseMuonSelection(row,'m'): return False
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets):
+		return (False, 6)
 
-        #XXX Count Test
-        if not row.eTightCountZH_0 == 2: return False
-        if row.muTightCountZH_0 > 1: return False
-
-        return True
+        return (True, -1)
 
 
     def sign_cut(self, row):

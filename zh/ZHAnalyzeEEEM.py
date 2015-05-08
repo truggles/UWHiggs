@@ -39,6 +39,7 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
         return ('e3','m')
 
     def book_histos(self, folder):
+        self.book_cut_flow_histos(folder)
         self.book_general_histos(folder)
         self.book_kin_histos(folder, 'e1')
         self.book_kin_histos(folder, 'e2')
@@ -64,20 +65,27 @@ class ZHAnalyzeEEEM(ZHAnalyzerBase.ZHAnalyzerBase):
 
         Excludes FR object IDs and sign cut.
         '''
-        if not selections.ZEESelection(row): return False
-        if not selections.generalCuts(row, 'e1','e2','e3','m') : return False
-        if not selections.looseMuonSelection(row,'m'): return False
-        if not selections.looseElectronSelection(row,'e3'): return False
-        if (row.e3Pt + row.mPt < 25): return False
+        if not selections.ZEESelection(row):
+		return (False, 1)
+        if not selections.looseElectronSelection(row,'e3'):
+		return (False, 2)
+        if not selections.looseMuonSelection(row,'m'):
+		return (False, 3)
+        if not selections.generalCuts(row, 'e1','e2','e3','m'):
+		return (False, 4)
+        # XXX Count Test - no requirements
+        if row.muTightCountZH_0 > 1:
+		return (False, 4)
+        if row.eTightCountZH_0 > 3:
+		return (False, 4)
+        if (row.e3Pt + row.mPt < 25):
+		return (False, 5)
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2') + selections.bJetOverlapElec(row, 'e3') + selections.bJetOverlapMu(row, 'm')
-        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets):
+		return (False, 6)
 
-        # XXX Count Test - no requirements
-        if row.muTightCountZH_0 > 1: return False
-        if row.eTightCountZH_0 > 3: return False
-
-        return True
+        return (True, -1)
 
     def sign_cut(self, row):
         ''' Returns true if muons are SS '''

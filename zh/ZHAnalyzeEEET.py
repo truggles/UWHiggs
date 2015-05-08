@@ -39,6 +39,7 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
         return ('e3','t')
 
     def book_histos(self, folder):
+        self.book_cut_flow_histos(folder)
         self.book_general_histos(folder)
         self.book_kin_histos(folder, 'e1')
         self.book_kin_histos(folder, 'e2')
@@ -64,25 +65,30 @@ class ZHAnalyzeEEET(ZHAnalyzerBase.ZHAnalyzerBase):
 
         Excludes FR object IDs and sign cut.
         '''
-        #Z Selection
-        if not selections.ZEESelection(row): return False
-        if not selections.generalCuts(row, 'e1','e2','e3','t') : return False
-        if not selections.looseTauSelectionTESUp(row,'t'): return False
-        if not bool(row.tAntiMuonLoose2): return False
-        if not bool(row.tAntiElectronMVA3Tight): return False
-        if not selections.looseElectronSelection(row,'e3'): return False
-        if (row.e3Pt + row.tPt < 30): return False
+        if not selections.ZEESelection(row):
+		return (False, 1)
+        if not selections.looseElectronSelection(row,'e3'):
+		return (False, 2)
+        if not selections.looseTauSelectionTESUp(row,'t'):
+		return (False, 3)
+        if not bool(row.tAntiMuonLoose2):
+		return (False, 3)
+        if not bool(row.tAntiElectronMVA3Tight):
+		return (False, 3)
+        if not selections.generalCuts(row, 'e1','e2','e3','t'):
+		return (False, 4)
+        if row.muTightCountZH_0 > 0:
+		return (False, 4)
+        if row.eTightCountZH_0 > 3:
+		return (False, 4)
+        if (row.e3Pt + row.tPt < 30):
+		return (False, 5)
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapElec(row, 'e1') + selections.bJetOverlapElec(row, 'e2') + selections.bJetOverlapElec(row, 'e3')
-        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
-        #X# if (row.muTightCountZH > 0): return False #THR
-        #X# if not (row.eTightCountZH == 3): return False #remove post- debug 
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets):
+		return (False, 6)
 
-        # XXX Count check
-        if row.muTightCountZH_0 > 0: return False
-        if row.eTightCountZH_0 > 3: return False
-
-	return True
+	return (True, -1)
 
     def sign_cut(self, row):
         ''' Returns true if muons are SS '''
