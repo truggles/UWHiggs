@@ -1,0 +1,12 @@
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-009A1A2E-A82C-E211-B92B-E0CB4E19F973.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-0AB33D57-A72C-E211-B475-00259073E4B4.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-0E4FB9AA-AB2C-E211-A1BB-00259073E3C8.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-1A18BB93-AA2C-E211-9D7D-001EC9D7FA18.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-2C9E5A0C-A52C-E211-B623-20CF3027A57C.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-82E702A2-A92C-E211-9842-E0CB4E1A1180.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-A4331CBE-A62C-E211-9782-00261834B51E.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-ACB321FA-BE2C-E211-93E6-E0CB4EA0A937.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-B4221858-A32C-E211-907C-00259073E4AC.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-E06BD5A0-A52C-E211-AA2B-001EC9D8D49F.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-E4F358D9-C12C-E211-BAD3-001EC9D26F7D.root
+/nfs_scratch/truggles/2015-01-12-Ntups/VH_H2Tau_M-125/make_ntuples_cfg-patTuple_cfg-F6A55A5B-8E2C-E211-B6D7-E0CB4E19F9A4.root
