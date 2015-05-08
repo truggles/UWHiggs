@@ -119,77 +119,25 @@ def ZMuMuSelection(row):
     '''
     Z Selection as AN
     '''
-    #Z Selection
-   # print "x" 
     if not (row.doubleMuPass > 0 or row.mu17TkMu8Pass > 0):  return False   
-   # print "y"
     if not tightMuonSelection(row, 'm1'):            return False
     if not tightMuonSelection(row, 'm2'):            return False
-   # print "z1"
     if row.m1Pt < 20:                                return False
-   # print "z2"
     if bool(row.m1_m2_SS):                           return False
-   # print "z3"
     if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 : return False
-   # print "z4"
-   
-    #if row.m1Pt < row.m2Pt:                            return False
-    #if row.m1Pt < 20:                                  return False
-    #if row.m2Pt < 10:                                  return False
-    #if row.m1AbsEta > 2.4:                             return False
-    #if row.m2AbsEta > 2.4:                             return False
-    #if abs(row.m1DZ) > 0.1:                            return False
-    #if abs(row.m2DZ) > 0.1:                            return False
-    #if not muIDLoose(row,'m1'):                      return False
-    #if not muIsoLoose(row,'m1'):                       return False
-    #if not muIDLoose(row,'m2'):                      return False
-    #if not muIsoLoose(row,'m2'):                       return False
-    #if bool(row.m1_m2_SS):                             return False
-    #if row.m1_m2_Mass < 60 or row.m1_m2_Mass > 120 :   return False
-    # a bit of a hack in an attempt to sync
-    #if bool(row.m1MatchesMu17Ele8IsoPath > 0): return False
-    #if bool(row.m2MatchesMu17Ele8IsoPath > 0): return False
-    #if bool(row.m1MatchesMu8Ele17IsoPath > 0): return False
-    #if bool(row.m2MatchesMu8Ele17IsoPath > 0): return False
     return True
-
-    #return MuTriggerMatching(row)
-
-#    print "z5"
 
 def ZEESelection(row):
     '''
     Z Selection as AN
     '''
-#    print "x"
     if not tightElectronSelection(row, 'e1'):        return False
-#    print "y"
     if not tightElectronSelection(row, 'e2'):        return False
-#    print "z1"
     if row.e1Pt < 20:                                return False
-#    print "z2"
     if bool(row.e1_e2_SS):                           return False
-#    print "z3"
     if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
-#    print "z4"
     if not row.doubleEPass > 0:                      return False
-#    print "z4p5"
-    #if row.e1Pt < row.e2Pt:                          return False
-    #if row.e1Pt < 20:                                return False
-    #if row.e2Pt < 10:                                return False
-    #if row.e1AbsEta > 2.5:                           return False
-    #if row.e2AbsEta > 2.5:                           return False
-    #if abs(row.e1DZ) > 0.1:                          return False
-    #if abs(row.e2DZ) > 0.1:                          return False
-    #if not eleID(row, 'e1'):                         return False
-    #if not elIsoLoose(row, 'e1'):                    return False
-    #if not eleID(row, 'e2'):                         return False
-    #if not elIsoLoose(row, 'e1'):                    return False
-    #if bool(row.e1_e2_SS):                           return False
-    #if row.e1_e2_Mass < 60 or row.e1_e2_Mass > 120 : return False
     return True
-    #return ElTriggerMatching(row)
-    #print "z5"    
 
 def looseMuonSelection(row,muId):
     '''
@@ -203,11 +151,8 @@ def looseMuonSelection(row,muId):
 def tightMuonSelection(row, muId):
     if getattr(row, getVar(muId,'Pt') ) < 10:              return False
     if getattr(row, getVar(muId,'AbsEta') ) > 2.4:         return False
-    #print "hi1"
     if not muIDLoose(row, muId): return False
-    #print "hi2"
     if not muIsoLoose(row, muId): return False
-    #print "hi3"
     return True
     
 
@@ -271,7 +216,6 @@ def looseElectronSelection(row, elId):
     if getattr(row, getVar(elId, 'Pt') ) < 10:                 return False
     if getattr(row, getVar(elId, 'AbsEta') ) > 2.5:            return False
     if getattr(row, getVar(elId, 'MuOverlapZHTight') ) > 0:	   
-#        print "LooseElecSelection failed MuOverlapLoose"
         return False
     return True
 
@@ -281,7 +225,6 @@ def tightElectronSelection(row, elId):
     if not eleIDLoose(row, elId): return False
     if not elIsoLoose(row, elId): return False
     if getattr(row, getVar(elId, 'MuOverlapZHTight') ) > 0:	
-#        print "TightElecSelection failed MuOverlapZHTight"
         return False
     return True
     
