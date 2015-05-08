@@ -37,6 +37,7 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
         return ('e','m3')
 
     def book_histos(self, folder):
+        self.book_cut_flow_histos(folder)
         self.book_general_histos(folder)
         self.book_kin_histos(folder, 'm1')
         self.book_kin_histos(folder, 'm2')
@@ -60,29 +61,26 @@ class ZHAnalyzeMMEM(ZHAnalyzerBase.ZHAnalyzerBase):
         return True
 
     def preselection(self, row):
-          
-        if not selections.generalCuts(row, 'm1','m2','e','m3') : return False
-        if not selections.ZMuMuSelection(row): return False
-        if not selections.looseElectronSelection(row, 'e'): return False
-        if not selections.looseMuonSelection(row, 'm3'): return False
-        if (row.ePt + row.m3Pt < 25): return False
-
-        #if not selections.ZMuMuSelection(row): return False
-        #if selections.overlap(row, 'm1','m2','e','m3') : return False
-        #if not selections.signalMuonSelection(row,'m3'): return False
-        #if not selections.signalElectronSelection(row,'e'): return False
-        #if row.LT < 25: return False
-        #if (row.ePt + row.m3Pt < 25): return False
-        #if row.eMissingHits > 1: return False
-        #if (row.e_m3_SVfitMass < 100 or row.e_m3_SVfitMass > 150): return False # for MSSM
+        if not selections.ZMuMuSelection(row):
+		return (False, 1)
+        if not selections.looseElectronSelection(row, 'e'):
+		return (False, 2)
+        if not selections.looseMuonSelection(row, 'm3'):
+		return (False, 3)
+        if not selections.generalCuts(row, 'm1','m2','e','m3'):
+		return (False, 4)
+        if row.muTightCountZH_0 > 3:
+		return (False, 4)
+        if row.eTightCountZH_0 > 1 and row.eMuOverlapZHTight == 0:
+		return (False, 4)
+        if (row.ePt + row.m3Pt < 25):
+		return (False, 5)
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2') + selections.bJetOverlapElec(row, 'e') + selections.bJetOverlapMu(row, 'm3')
-        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
-        # XXX Count Test - no requirements
-        if row.muTightCountZH_0 > 3: return False
-        if row.eTightCountZH_0 > 1 and row.eMuOverlapZHTight == 0: return False
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets):
+		return (False, 6)
 
-        return True
+        return (True, -1)
         
 
     def sign_cut(self, row):

@@ -42,9 +42,6 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
     def H_decay_products():
         return ('m3','t')
 
-#    def book_cut_flow(self, folder):
-#        self.book_cut_flow_histos(folder)
-
     def book_histos(self, folder):
         self.book_cut_flow_histos(folder)
         self.book_general_histos(folder)
@@ -52,10 +49,7 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         self.book_kin_histos(folder, 'm2')
         self.book_kin_histos(folder, 'm3')
         self.book_kin_histos(folder, 't')
-
         self.book(folder, 'Pt',"total pt",100,0,100) # stephane
-        #self.book(folder, '"Pt/(m1_m2_Pt+m3_t_Pt)', "ZH system kinematic ratio",20,0,1) 
-
         self.book_Z_histos(folder)
         self.book_H_histos(folder)
         self.book(folder, "doubleMuPrescale", "HLT prescale", 26, -5.5, 20.5)
@@ -78,41 +72,29 @@ class ZHAnalyzeMMMT(ZHAnalyzerBase.ZHAnalyzerBase):
         Excludes FR object IDs and sign cut.
         '''
         if not selections.ZMuMuSelection(row):
-		#print "0:Z Selection:evt:%i" % row.evt 
-		return (False, 0)
-        if not selections.generalCuts(row, 'm1','m2','m3','t') :
-		#print "1:General Cuts:evt:%i" % row.evt
 		return (False, 1)
-        if not selections.looseTauSelectionTESUp(row,'t'):
-		#print "2:t2Selection:evt:%i" % row.evt
+        if not selections.looseMuonSelection(row,'m3'):
 		return (False, 2)
+        if not selections.looseTauSelectionTESUp(row,'t'):
+		return (False, 3)
         if not bool(row.tAntiMuonTight2):
-		#print "3:t2AntiID:evt:%i" % row.evt
 		return (False, 3)
         if not bool(row.tAntiElectronLoose):
-		#print "3:t2AntiID:evt:%i" % row.evt
 		return (False, 3)
-        if (row.m3Pt + row.tPt < 45):
-		#print "4:higgsPt:evt:%i" % row.evt
+        if not selections.generalCuts(row, 'm1','m2','m3','t') :
 		return (False, 4)
-        #X# if (row.eTightCountZH > 0): return False #THR
+        if row.eTightCountZH > 0:
+		return (False, 4)
+        if row.muTightCountZH_0 > 3:
+		return (False, 4)
+        if (row.m3Pt + row.tPt < 45):
+		return (False, 5)
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2') + selections.bJetOverlapMu(row, 'm3')
         if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets):
-		#print "5:bJet:evt:%i" % row.evt
-		return (False, 5)
-        if not selections.looseMuonSelection(row,'m3'):
-		#print "6:t1Selection:evt:%i" % row.evt
 		return (False, 6)
-        # XXX Count Test
-        if row.eTightCountZH > 0:
-		#print "7:goodLeptonVeto:evt:%i" % row.evt
-		return (False, 7)
-        if row.muTightCountZH_0 > 3:
-		#print "7:goodLeptonVeto:evt:%i" % row.evt
-		return (False, 7)
 
-        return (True, 999)
+        return (True, -1)
 
     def sign_cut(self, row):
         ''' Returns true if the probes are OS '''

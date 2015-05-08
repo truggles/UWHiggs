@@ -22,7 +22,6 @@ import fake_rate_functions as fr_fcn
 
 class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
     tree = 'mmtt/final/Ntuple'
-    #tree = 'Ntuple'
     name = 1
     def __init__(self, tree, outfile, **kwargs):
         super(ZHAnalyzeMMTT, self).__init__(tree, outfile, MuMuTauTauTree, 'TT', **kwargs)
@@ -40,6 +39,7 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
         return ('t1','t2')
 
     def book_histos(self, folder):
+        self.book_cut_flow_histos(folder)
         self.book_general_histos(folder)
         self.book_kin_histos(folder, 'm1')
         self.book_kin_histos(folder, 'm2')
@@ -53,11 +53,9 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
 
     def tau1Selection(self, row):
         return bool(row.t1MediumIso3Hits)
-       # return bool(row.t1MediumIso) 
 
     def tau2Selection(self, row):
         return bool(row.t2MediumIso3Hits)
-      #  return bool(row.t2MediumIso)
 
     def red_shape_cuts(self, row):
         if (row.t1MVA2IsoRaw <= 0.0): return False
@@ -69,26 +67,36 @@ class ZHAnalyzeMMTT(ZHAnalyzerBase.ZHAnalyzerBase):
 
         Excludes FR object IDs and sign cut.
         '''
-        if not selections.ZMuMuSelection(row): return False
-        if not selections.generalCuts(row, 'm1','m2','t1','t2') : return False
-        if not selections.looseTauSelectionTESUp(row,'t1'): return False
-        if not selections.looseTauSelectionTESUp(row,'t2'): return False
-        if not bool(row.t1AntiMuonLoose2): return False
-        if not bool(row.t1AntiElectronLoose): return False
-        if not bool(row.t2AntiMuonLoose2): return False
-        if not bool(row.t2AntiElectronLoose): return False
-        if (row.t1Pt < row.t2Pt): return False #Avoid double counting
-        if (row.t1Pt + row.t2Pt < 70): return False
-        #X# if not (row.muTightCountZH == 2): return False #THR
-        #X# if (row.eTightCountZH > 0): return False #THR
+        if not selections.ZMuMuSelection(row):
+		return (False, 1)
+        if not selections.looseTauSelectionTESUp(row,'t1'):
+		return (False, 2)
+        if not bool(row.t1AntiMuonLoose2):
+		return (False, 2)
+        if not bool(row.t1AntiElectronLoose):
+		return (False, 2)
+        if not selections.looseTauSelectionTESUp(row,'t2'):
+		return (False, 3)
+        if not bool(row.t2AntiMuonLoose2):
+		return (False, 3)
+        if not bool(row.t2AntiElectronLoose):
+		return (False, 3)
+        if not selections.generalCuts(row, 'm1','m2','t1','t2'):
+		return (False, 4)
+        if not row.muTightCountZH_0 == 2: 
+		return (False, 4)
+        if row.eTightCountZH > 0:
+		return (False, 4)
+        if (row.t1Pt < row.t2Pt): #Avoid double counting
+		return (False, 4)
+        if (row.t1Pt + row.t2Pt < 70):
+		return (False, 5)
         # Out homemade bJet Veto, bjetCSVVetoZHLikeNoJetId_2 counts total number of bJets, upper line removes those which overlapped with tight E/Mu
         removedBJets = selections.bJetOverlapMu(row, 'm1') + selections.bJetOverlapMu(row, 'm2')
-        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets): return False
-        # XXX Count Test
-        if not row.muTightCountZH_0 == 2: return False
-        if row.eTightCountZH > 0: return False
+        if (row.bjetCSVVetoZHLikeNoJetId_2 > removedBJets):
+		return (False, 6)
 
-        return True
+        return (True, -1)
 
     def sign_cut(self, row):
         ''' Returns true if muons are SS '''
